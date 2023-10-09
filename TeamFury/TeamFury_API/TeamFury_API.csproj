@@ -4,9 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>d4e59b20-5b97-4822-b1f7-73b1a79af80d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.22" />
+
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.22">
       <PrivateAssets>all</PrivateAssets>
@@ -19,8 +24,10 @@
     </PackageReference>
   </ItemGroup>
 
+
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
+
 
 </Project>
