@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using TeamFury_API.Data;
 
 namespace TeamFury_API
-{
+{ 
     public class Program
     {
         public static void Main(string[] args)
