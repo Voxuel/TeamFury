@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 namespace TeamFury_API
-{
+{ 
     public class Program
     {
         public static void Main(string[] args)
