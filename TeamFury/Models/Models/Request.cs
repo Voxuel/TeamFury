@@ -17,6 +17,7 @@ namespace Models.Models
         public string MessageForDecline { get; set; }
         public int RequestTypeID { get; set; }
         public StatusRequest StatusRequest { get; set; }
+        public string AdminName { get; set; }
     }
     public enum StatusRequest
     {
