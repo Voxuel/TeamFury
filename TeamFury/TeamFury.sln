@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamFury_API", "TeamFury_API\TeamFury_API.csproj", "{7738F035-30D7-4699-A0E7-E7FA31331680}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamFury_API", "TeamFury_API\TeamFury_API.csproj", "{7738F035-30D7-4699-A0E7-E7FA31331680}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{AFC9D5FE-9D37-4938-AA4B-5009784B7AD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7738F035-30D7-4699-A0E7-E7FA31331680}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7738F035-30D7-4699-A0E7-E7FA31331680}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7738F035-30D7-4699-A0E7-E7FA31331680}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFC9D5FE-9D37-4938-AA4B-5009784B7AD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFC9D5FE-9D37-4938-AA4B-5009784B7AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFC9D5FE-9D37-4938-AA4B-5009784B7AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFC9D5FE-9D37-4938-AA4B-5009784B7AD9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
