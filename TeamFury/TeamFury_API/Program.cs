@@ -51,7 +51,7 @@ namespace TeamFury_API
             var info = new OpenApiInfo()
             {
                 Version = "v1",
-                Title = "Minimal API - JWT Authentication with Swagger demo"
+                Title = "Minimal API - JWT Authentication with Swagger"
             };
 
             builder.Services.AddEndpointsApiExplorer();
@@ -86,12 +86,11 @@ namespace TeamFury_API
             {
                 opt.AddPolicy("IsAdmin", policy =>
                 {
-                    policy.RequireRole("Admin");
+                    policy.RequireRole("admin");
                 });
             });
             builder.Services.AddEndpointsApiExplorer();
-
-
+            
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 //Password Settings
