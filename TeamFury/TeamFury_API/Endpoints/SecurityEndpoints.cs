@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTOs;
+using Models.Models;
 
 namespace TeamFury_API.Endpoints;
 
