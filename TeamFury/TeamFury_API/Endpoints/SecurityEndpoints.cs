@@ -2,32 +2,36 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTOs;
 using Models.Models;
+using TeamFury_API.Data;
 
 namespace TeamFury_API.Endpoints;
 
 public static class SecurityEndpoints
 {
-
     public static void SecurityConfig(this WebApplication app)
     {
         app.MapPost("/api/token/", CreateJwtToken).AllowAnonymous();
     }
 
 
-    private static async Task<IResult> CreateJwtToken(IConfiguration config, LoginDTO user)
+    private static async Task<IResult> CreateJwtToken(IConfiguration config, IdentityUser user)
     {
-        if (user.Username != "Admin2" && user.Password != "MTG15") return Results.Unauthorized();
+        var hasher = new PasswordHasher<IdentityUser>();
+        var pass = hasher.HashPassword(null, "Password");
+
+        
+        if (user.UserName != "Admin1" && user.PasswordHash != pass) return Results.Unauthorized();
         
         var claims = new[]
         {
             new Claim("Id", "1"),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Username),
-            new Claim(JwtRegisteredClaimNames.Email, user.Username),
+            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Email, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("role","admin")
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
