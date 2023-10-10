@@ -6,7 +6,7 @@ namespace Models.Models
     public class Employee
     {
         [Key]
-        public int EmployeeID { get; set; }
+        public Guid EmployeeID { get; set; }
         [Required]
         public string UserName { get; set; }
         [PasswordPropertyText]

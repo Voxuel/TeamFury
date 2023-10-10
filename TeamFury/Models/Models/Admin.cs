@@ -11,7 +11,7 @@ namespace Models.Models
 	public class Admin
 	{
         [Key]
-        public int AdminID { get; set; }
+        public Guid AdminID { get; set; }
         public string UserName { get; set; }
         [PasswordPropertyText]
         public string Password { get; set; }

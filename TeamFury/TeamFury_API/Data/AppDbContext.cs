@@ -25,7 +25,7 @@ namespace TeamFury_API.Data
 
             modelBuilder.Entity<Admin>().HasData(new Admin()
             {
-                AdminID = 1,
+                AdminID = Guid.NewGuid(),
                 FirstName = "Patrik",
                 LastName = "Skattberg",
                 Email = "trolllovecookies@gmail.com",
@@ -34,7 +34,7 @@ namespace TeamFury_API.Data
             },
             new Admin()
             {
-                AdminID = 2,
+                AdminID = Guid.NewGuid(),
                 FirstName = "Leo",
                 LastName = "Fridh",
                 Email = "leo.fridh@hotmail.com",
@@ -43,7 +43,7 @@ namespace TeamFury_API.Data
 			});
             modelBuilder.Entity<Employee>().HasData(new Employee()
             {
-                EmployeeID = 1,
+                EmployeeID = Guid.NewGuid(),
                 FirstName = "Alfred",
                 LastName = "Larsson",
                 Email = "alfred.co95@gmail.com",
@@ -52,7 +52,7 @@ namespace TeamFury_API.Data
             },
             new Employee()
             {
-                EmployeeID = 2,
+                EmployeeID = Guid.NewGuid(),
                 FirstName = "Sebastian",
                 LastName = "Gamboa",
                 Email = "Seebastian.gamboa@gmail.com",
