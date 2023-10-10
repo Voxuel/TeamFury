@@ -3,50 +3,33 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTOs;
 using Models.Models;
 using TeamFury_API.Data;
+using TeamFury_API.Services.SecurityServices;
+using TeamFury_API.Services.UserServices;
 
 namespace TeamFury_API.Endpoints;
 
 public static class SecurityEndpoints
 {
-    public static void SecurityConfig(this WebApplication app)
+    public static void AddSecurityEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/token/", CreateJwtToken).AllowAnonymous();
-    }
-
-
-    private static async Task<IResult> CreateJwtToken(IConfiguration config, IdentityUser user)
-    {
-        var hasher = new PasswordHasher<IdentityUser>();
-        var pass = hasher.HashPassword(null, "Password");
-
-        
-        if (user.UserName != "Admin1" && user.PasswordHash != pass) return Results.Unauthorized();
-        
-        var claims = new[]
+        app.MapPost("/api/login/", async (IAuthService authService, LoginDTO login) =>
         {
-            new Claim("Id", "1"),
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Email, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
+            if (login == null) return Results.BadRequest();
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-        var signinCred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var (status, message) = await authService.Login(login);
 
-        var token = new JwtSecurityToken(
-            issuer:config["Jwt:Issuer"],
-            audience:config["Jwt:Audience"],
-            expires:DateTime.UtcNow.AddHours(6),
-            claims:claims,
-            signingCredentials:signinCred
-            );
+            return status == 0 ? Results.BadRequest() : Results.Ok(message);
+        }).AllowAnonymous();
 
-        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-        return Results.Ok(jwt);
+        app.MapPost("/api/user/", async (IUserServices services) =>
+        {
+            await services.CreateUserAsync();
+        }).AllowAnonymous();
     }
+    
 }

@@ -5,27 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamFury_API.Migrations
 {
-    public partial class initialC : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Admins",
-                columns: table => new
-                {
-                    AdminID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Admins", x => x.AdminID);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -45,6 +28,7 @@ namespace TeamFury_API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -63,23 +47,6 @@ namespace TeamFury_API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    EmployeeID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.EmployeeID);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,23 +220,47 @@ namespace TeamFury_API.Migrations
                         principalColumn: "RequestLogID");
                 });
 
-            migrationBuilder.InsertData(
-                table: "Admins",
-                columns: new[] { "AdminID", "Email", "FirstName", "LastName", "Password", "UserName" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "LeaveDays",
+                columns: table => new
                 {
-                    { 1, "trolllovecookies@gmail.com", "Patrik", "Skattberg", "troll123", "Admin1" },
-                    { 2, "leo.fridh@hotmail.com", "Leo", "Fridh", "MTG15", "Admin2" }
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmplyeeID = table.Column<int>(type: "int", nullable: false),
+                    RequestTypeID = table.Column<int>(type: "int", nullable: false),
+                    Days = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeaveDays", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_LeaveDays_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LeaveDays_RequestTypes_RequestTypeID",
+                        column: x => x.RequestTypeID,
+                        principalTable: "RequestTypes",
+                        principalColumn: "RequestTypeID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                table: "Employees",
-                columns: new[] { "EmployeeID", "Email", "FirstName", "LastName", "Password", "UserName" },
-                values: new object[,]
-                {
-                    { 1, "alfred.co95@gmail.com", "Alfred", "Larsson", "AngularLover1", "user1" },
-                    { 2, "Seebastian.gamboa@gmail.com", "Sebastian", "Gamboa", "AssEater420", "BigCockLover0" }
-                });
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "59727953-c0f0-4c81-b9f7-16b09803937e", "admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "6cef773a-6124-4182-a8ad-3567cd037ea7", 0, "f14aa60b-9ca3-43bb-92e7-1637f8b486a6", "User", "trolllovecookies@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEAA9ZBwzsYLm+UmlfNU1ie7B0dNcjK8XnjAHpUv2s6RashWGkKuChvFbxfAk7LHPKA==", null, false, "a697d668-3dfa-4c7f-b5db-cf9438a2ecb8", false, null });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "6cef773a-6124-4182-a8ad-3567cd037ea7" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -311,6 +302,16 @@ namespace TeamFury_API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LeaveDays_RequestTypeID",
+                table: "LeaveDays",
+                column: "RequestTypeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeaveDays_UserId",
+                table: "LeaveDays",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Requests_RequestLogID",
                 table: "Requests",
                 column: "RequestLogID");
@@ -318,9 +319,6 @@ namespace TeamFury_API.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Admins");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -337,22 +335,22 @@ namespace TeamFury_API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
                 name: "EmployeesRequest");
 
             migrationBuilder.DropTable(
-                name: "Requests");
+                name: "LeaveDays");
 
             migrationBuilder.DropTable(
-                name: "RequestTypes");
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "RequestTypes");
 
             migrationBuilder.DropTable(
                 name: "RequestLogs");

@@ -52,7 +52,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "96fb34b2-c840-4586-b0fa-31e3ecd36b22",
+                            ConcurrencyStamp = "231764e1-717f-4977-a7a6-7abed5472538",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -214,6 +214,13 @@ namespace TeamFury_API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "6cef773a-6124-4182-a8ad-3567cd037ea7",
+                            RoleId = "6c9cfbde-730a-4217-93ea-6d8fba1ee541"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -368,14 +375,15 @@ namespace TeamFury_API.Migrations
                         {
                             Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "528077d5-5095-4339-82d9-99cdc321cc3a",
+                            ConcurrencyStamp = "32962815-8df1-48b1-bccb-392c33c72ec9",
                             Email = "trolllovecookies@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEAe428d6MK+qzBxgZJ02OHb5UGZVmgAnokyBcQUvnw+545RdgRY3MaYpeRPy4gpgrg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHgG5npaEHV4sYl5/EXJOQGS2EQ/t5iu/obiES7PYzYArhm3y/Kv06FW7XGyxHHQOA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1420dabc-dce9-424c-aefc-4f447dfb150f",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "92cb17f5-b9e8-4f4b-a393-8d0440d73a2f",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin1"
                         });
                 });
 

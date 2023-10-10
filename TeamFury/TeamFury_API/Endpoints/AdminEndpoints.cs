@@ -8,10 +8,10 @@ public static class AdminEndpoints
 {
     public static void AdminEndpointConfig(this WebApplication app)
     {
-        app.MapGet("/api/admin/", GetAllAsync).RequireAuthorization("IsAdmin");
+        app.MapGet("/api/admin/", GetAllUsersAsync).RequireAuthorization("IsAdmin");
     }
 
-    private static async Task<IResult> GetAllAsync(AppDbContext context)
+    private static async Task<IResult> GetAllUsersAsync(AppDbContext context)
     {
         return Results.Ok(await context.Users.ToListAsync());
     }

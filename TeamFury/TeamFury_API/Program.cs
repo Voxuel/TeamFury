@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using Models.Models;
 using TeamFury_API.Data;
 using TeamFury_API.Endpoints;
+using TeamFury_API.Services.SecurityServices;
+using TeamFury_API.Services.UserServices;
 
 
 namespace TeamFury_API
@@ -17,9 +19,14 @@ namespace TeamFury_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
 			builder.Services.AddDbContext<AppDbContext>(opt =>
 	            opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+            
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IUserServices, UserServices>();
 
 			var securityScheme = new OpenApiSecurityScheme()
             {
@@ -112,7 +119,7 @@ namespace TeamFury_API
             });
 
 
-
+            
             
             
             // Build to app.
@@ -121,7 +128,7 @@ namespace TeamFury_API
             app.UseAuthentication();
             app.UseAuthorization();
             
-            app.SecurityConfig();
+            app.AddSecurityEndpoint();
             app.AdminEndpointConfig();
             
             app.UseSwagger();

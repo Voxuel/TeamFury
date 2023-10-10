@@ -12,14 +12,14 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231009130134_initialC")]
-    partial class initialC
+    [Migration("20231010193727_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.22")
+                .HasAnnotation("ProductVersion", "6.0.23")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -49,6 +49,15 @@ namespace TeamFury_API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
+                            ConcurrencyStamp = "59727953-c0f0-4c81-b9f7-16b09803937e",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -86,6 +95,10 @@ namespace TeamFury_API.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -139,6 +152,8 @@ namespace TeamFury_API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -201,6 +216,13 @@ namespace TeamFury_API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "6cef773a-6124-4182-a8ad-3567cd037ea7",
+                            RoleId = "6c9cfbde-730a-4217-93ea-6d8fba1ee541"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -222,112 +244,6 @@ namespace TeamFury_API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Models.Models.Admin", b =>
-                {
-                    b.Property<int>("AdminID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminID"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AdminID");
-
-                    b.ToTable("Admins");
-
-                    b.HasData(
-                        new
-                        {
-                            AdminID = 1,
-                            Email = "trolllovecookies@gmail.com",
-                            FirstName = "Patrik",
-                            LastName = "Skattberg",
-                            Password = "troll123",
-                            UserName = "Admin1"
-                        },
-                        new
-                        {
-                            AdminID = 2,
-                            Email = "leo.fridh@hotmail.com",
-                            FirstName = "Leo",
-                            LastName = "Fridh",
-                            Password = "MTG15",
-                            UserName = "Admin2"
-                        });
-                });
-
-            modelBuilder.Entity("Models.Models.Employee", b =>
-                {
-                    b.Property<int>("EmployeeID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EmployeeID");
-
-                    b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            EmployeeID = 1,
-                            Email = "alfred.co95@gmail.com",
-                            FirstName = "Alfred",
-                            LastName = "Larsson",
-                            Password = "AngularLover1",
-                            UserName = "user1"
-                        },
-                        new
-                        {
-                            EmployeeID = 2,
-                            Email = "Seebastian.gamboa@gmail.com",
-                            FirstName = "Sebastian",
-                            LastName = "Gamboa",
-                            Password = "AssEater420",
-                            UserName = "BigCockLover0"
-                        });
-                });
-
             modelBuilder.Entity("Models.Models.EmployeeRequest", b =>
                 {
                     b.Property<int>("ID")
@@ -345,6 +261,35 @@ namespace TeamFury_API.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("EmployeesRequest");
+                });
+
+            modelBuilder.Entity("Models.Models.LeaveDays", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int>("Days")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmplyeeID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("RequestTypeID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LeaveDays");
                 });
 
             modelBuilder.Entity("Models.Models.Request", b =>
@@ -421,6 +366,28 @@ namespace TeamFury_API.Migrations
                     b.ToTable("RequestTypes");
                 });
 
+            modelBuilder.Entity("Models.Models.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f14aa60b-9ca3-43bb-92e7-1637f8b486a6",
+                            Email = "trolllovecookies@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEAA9ZBwzsYLm+UmlfNU1ie7B0dNcjK8XnjAHpUv2s6RashWGkKuChvFbxfAk7LHPKA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "a697d668-3dfa-4c7f-b5db-cf9438a2ecb8",
+                            TwoFactorEnabled = false
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -472,6 +439,21 @@ namespace TeamFury_API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Models.Models.LeaveDays", b =>
+                {
+                    b.HasOne("Models.Models.RequestType", "RequestType")
+                        .WithMany()
+                        .HasForeignKey("RequestTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Models.User", null)
+                        .WithMany("LeaveDays")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("RequestType");
+                });
+
             modelBuilder.Entity("Models.Models.Request", b =>
                 {
                     b.HasOne("Models.Models.RequestLog", null)
@@ -482,6 +464,11 @@ namespace TeamFury_API.Migrations
             modelBuilder.Entity("Models.Models.RequestLog", b =>
                 {
                     b.Navigation("Requests");
+                });
+
+            modelBuilder.Entity("Models.Models.User", b =>
+                {
+                    b.Navigation("LeaveDays");
                 });
 #pragma warning restore 612, 618
         }
