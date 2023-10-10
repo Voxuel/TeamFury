@@ -17,6 +17,5 @@ namespace Models.Models
         public int RequestTypeID { get; set; }
         public int Days { get; set; }
         public RequestType RequestType { get; set; }
-        public Employee Employee { get; set; }
     }
 }

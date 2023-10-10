@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Models.DTOs;
+using Models.Models;
 using TeamFury_API.Data;
 using TeamFury_API.Endpoints;
 
@@ -32,6 +33,7 @@ namespace TeamFury_API
                 Description = "JSON Web Token based security",
             };
 
+
             var securityReq = new OpenApiSecurityRequirement()
             {
                 {
@@ -53,8 +55,10 @@ namespace TeamFury_API
                 Version = "v1",
                 Title = "Minimal API - JWT Authentication with Swagger"
             };
-
-            builder.Services.AddEndpointsApiExplorer();
+			builder.Services.AddIdentity<User, IdentityRole>()
+            	.AddEntityFrameworkStores<AppDbContext>()
+            	.AddDefaultTokenProviders();
+			builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("v1", info);

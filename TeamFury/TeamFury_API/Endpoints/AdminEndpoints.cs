@@ -13,6 +13,6 @@ public static class AdminEndpoints
 
     private static async Task<IResult> GetAllAsync(AppDbContext context)
     {
-        return Results.Ok(await context.Admins.ToListAsync());
+        return Results.Ok(await context.Users.ToListAsync());
     }
 }
