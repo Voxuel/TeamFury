@@ -35,9 +35,6 @@
 
 
 
-  <ItemGroup>
-    <Folder Include="Endpoints\" />
-  </ItemGroup>
 
 
 </Project>
