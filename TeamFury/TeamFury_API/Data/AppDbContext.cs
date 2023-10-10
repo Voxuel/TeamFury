@@ -5,7 +5,7 @@ using Models.Models;
 
 namespace TeamFury_API.Data
 {
-	public class AppDbContext : IdentityDbContext<IdentityUser>
+	public class AppDbContext : IdentityDbContext
 	{
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -39,11 +39,7 @@ namespace TeamFury_API.Data
 		            NormalizedName = "ADMIN",
 	            }
             });
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>()
-            {
-	            RoleId = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-	            UserId = "6cef773a-6124-4182-a8ad-3567cd037ea7"
-            });
+
 		}
 	}
 }
