@@ -21,6 +21,7 @@ namespace TeamFury_API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
             var hasher = new PasswordHasher<IdentityUser>();
 
             modelBuilder.Entity<User>().HasData(new User()
