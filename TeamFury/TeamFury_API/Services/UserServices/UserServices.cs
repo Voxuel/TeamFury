@@ -16,15 +16,15 @@ public class UserServices : IUserServices
 
     public async Task CreateUserAsync()
     {
-        var admin = await _userManager.FindByNameAsync("Admin");
+        var admin = await _userManager.FindByNameAsync("User1");
 
         if (admin == null)
         {
             var newUser = new User
             {
-                Email = "admin@admin.com",
-                UserName = "Admin",
-                PhoneNumber = "0796544854",
+                Email = "User@user.com",
+                UserName = "User1",
+                PhoneNumber = "0394837463",
                 EmailConfirmed = true
             };
 
@@ -32,8 +32,8 @@ public class UserServices : IUserServices
 
             if (createAdmin.Succeeded)
             {
-                if (await _roleManager.RoleExistsAsync("Admin"))
-                    await _userManager.AddToRoleAsync(newUser, "Admin");
+                if (await _roleManager.RoleExistsAsync("User"))
+                    await _userManager.AddToRoleAsync(newUser, "User");
             }
         }
         

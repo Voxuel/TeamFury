@@ -20,6 +20,8 @@ namespace TeamFury_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            #region Service Container
 			builder.Services.AddDbContext<AppDbContext>(opt =>
 	            opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
             builder.Services.AddIdentity<User, IdentityRole>()
@@ -29,7 +31,10 @@ namespace TeamFury_API
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddAutoMapper(typeof(UserConfig));
+            #endregion
 
+            #region Swagger Configuration.
+            
 			var securityScheme = new OpenApiSecurityScheme()
             {
                 Name = "Authorization",
@@ -39,9 +44,6 @@ namespace TeamFury_API
                 In = ParameterLocation.Header,
                 Description = "JSON Web Token based security",
             };
-            
-
-
             var securityReq = new OpenApiSecurityRequirement()
             {
                 {
@@ -56,15 +58,12 @@ namespace TeamFury_API
                     new string[] { }
                 }
             };
-            
-
             var info = new OpenApiInfo()
             {
                 Version = "v1",
                 Title = "Minimal API - JWT Authentication with Swagger"
             };
-
-
+            
 			builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(o =>
             {
@@ -72,7 +71,10 @@ namespace TeamFury_API
                 o.AddSecurityDefinition("Bearer", securityScheme);
                 o.AddSecurityRequirement(securityReq);
             });
-
+            #endregion
+            
+            #region Authentication/Authorization options.
+            
             builder.Services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -100,7 +102,9 @@ namespace TeamFury_API
                     policy.RequireRole("admin");
                 });
             });
-            builder.Services.AddEndpointsApiExplorer();
+            #endregion
+
+            #region Identity requirments config.
             
             builder.Services.Configure<IdentityOptions>(options =>
             {
@@ -119,10 +123,7 @@ namespace TeamFury_API
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
                 options.User.RequireUniqueEmail = true;
             });
-
-
-            
-            
+            #endregion
             
             // Build to app.
             var app = builder.Build();
