@@ -21,12 +21,11 @@ public class AuthService : IAuthService
         _config = config;
     }
     
-    
-    public Task<(int, string)> Registration()
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <summary>
+    /// Login
+    /// </summary>
+    /// <param name="login">Login object containing username and password</param>
+    /// <returns>Access token with set role for authentication/authorization</returns>
     public async Task<(int, string)> Login(LoginDTO login)
     {
         var user = await _userManager.FindByNameAsync(login.Username);
@@ -44,11 +43,16 @@ public class AuthService : IAuthService
         
         authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        string token = GenerateToken(authClaims);
+        var token = GenerateToken(authClaims);
 
         return (1, token);
     }
-
+    
+    /// <summary>
+    /// Generates a new access token.
+    /// </summary>
+    /// <param name="claims"></param>
+    /// <returns>JwtToken with roles as claims for login</returns>
     private string GenerateToken(IEnumerable<Claim> claims)
     {
         var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

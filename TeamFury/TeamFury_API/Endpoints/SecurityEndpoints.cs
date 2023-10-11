@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +18,14 @@ public static class SecurityEndpoints
 {
     public static void AddSecurityEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/login/", async (IAuthService authService, LoginDTO login) =>
+        app.MapPost("/api/login/", async
+            (IAuthService authService, LoginDTO login) =>
         {
             if (login == null) return Results.BadRequest();
 
             var (status, message) = await authService.Login(login);
 
             return status == 0 ? Results.BadRequest() : Results.Ok(message);
-        }).AllowAnonymous();
-
-        app.MapPost("/api/user/", async (IUserServices services) =>
-        {
-            await services.CreateUserAsync();
         }).AllowAnonymous();
     }
     

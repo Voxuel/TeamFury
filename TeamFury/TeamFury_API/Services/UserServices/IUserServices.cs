@@ -1,6 +1,10 @@
-﻿namespace TeamFury_API.Services.UserServices;
+﻿using Models.DTOs;
+using Models.Models;
+
+namespace TeamFury_API.Services.UserServices;
 
 public interface IUserServices
 {
-    Task CreateUserAsync();
+    Task<User> CreateEmployeeUser(UserCreateDTO user);
+    Task CreateRoleAsync();
 }
