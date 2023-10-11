@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamFury_API.Data;
 
@@ -11,9 +12,10 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231011141011_refactor_connection_employeeRequest")]
+    partial class refactor_connection_employeeRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "c1f4d5a8-f4ca-4763-8beb-7b045c9ffb25",
+                            ConcurrencyStamp = "1d447e1a-d890-447b-94fe-fdeb548b7843",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -250,17 +252,20 @@ namespace TeamFury_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("RequestID")
+                    b.Property<int>("RequestId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdentityUserId");
 
-                    b.HasIndex("RequestID");
+                    b.HasIndex("RequestId");
 
                     b.ToTable("EmployeesRequest");
                 });
@@ -379,12 +384,12 @@ namespace TeamFury_API.Migrations
                         {
                             Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "329706a2-3095-436e-b151-61de9aaed9ed",
+                            ConcurrencyStamp = "c6c810a6-72b3-48e6-ac4f-8432dfe3891c",
                             Email = "trolllovecookies@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3adab785-226b-409a-aaa8-bd5d3d485459",
+                            SecurityStamp = "99005caa-7eac-4d89-9916-b1fd66ee077e",
                             TwoFactorEnabled = false,
                             UserName = "Admin1"
                         });
@@ -449,7 +454,7 @@ namespace TeamFury_API.Migrations
 
                     b.HasOne("Models.Models.Request", "Request")
                         .WithMany()
-                        .HasForeignKey("RequestID")
+                        .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

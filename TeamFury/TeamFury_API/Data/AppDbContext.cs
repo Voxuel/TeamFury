@@ -46,6 +46,7 @@ namespace TeamFury_API.Data
                 RoleId = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
                 UserId = "6cef773a-6124-4182-a8ad-3567cd037ea7"
             });
+            
         }
     }
 }
