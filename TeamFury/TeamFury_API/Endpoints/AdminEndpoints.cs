@@ -2,11 +2,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Models;
 using Models.Models.API_Model_Tools;
 using TeamFury_API.Data;
+using TeamFury_API.Services.AdminServices;
 using TeamFury_API.Services.UserServices;
 
 namespace TeamFury_API.Endpoints;
@@ -17,21 +19,77 @@ public static class AdminEndpoints
     {
         app.MapGet("/api/admin/employee/", async (UserManager<User> manager, IMapper mapper) =>
         {
-            return Results.Ok(await manager.Users.ToListAsync());
-        }).RequireAuthorization("IsAdmin");
+            try
+            {
+                var response = new ApiResponse();
+                var result = await manager.Users.ToListAsync();
+                response.Result = result;
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+            .Produces<ApiResponse>(200)
+            .WithName("GetAllEmployees");
         
         app.MapPost("/api/admin/employee/", async
-            (IUserServices services, UserCreateDTO user_c_dto) =>
+            (IAdminService services, IMapper mapper, UserCreateDTO user_c_dto) =>
         {
-            var response = new ApiResponse();
+            try
+            {
+                var response = new ApiResponse();
+                var hasher = new PasswordHasher<User>();
+                var user = mapper.Map<User>(user_c_dto);
+                user.PasswordHash = hasher.HashPassword(null, user_c_dto.Password);
+                var result = await services.CreateAsync(user);
+                if (result == null) return Results.BadRequest();
+                response.Result = result;
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.Created;
 
-            var result = await services.CreateEmployeeUser(user_c_dto);
-            if (result == null) return Results.BadRequest();
-            response.Result = result;
-            response.IsSuccess = true;
-            response.StatusCode = HttpStatusCode.Created;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+            .Accepts<UserCreateDTO>("application/json")
+            .Produces<ApiResponse>(201)
+            .Produces(400)
+            .WithName("CreateEmployee");
 
-            return Results.Ok(response);
-        }).RequireAuthorization("IsAdmin");
+        app.MapDelete("/api/admin/employee/{id}", async (IAdminService services, string id) =>
+        {
+            try
+            {
+                var response = new ApiResponse();
+                var result = await services.DeleteAsync(id);
+
+                if (result == null)
+                {
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    response.IsSuccess = false;
+                    return Results.NotFound(response);
+                }
+
+                response.Result = result;
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+            .Produces<ApiResponse>(200)
+            .Produces(400)
+            .WithName("DeleteEmployee");
     }
 }

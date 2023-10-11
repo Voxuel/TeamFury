@@ -4,27 +4,27 @@ namespace TeamFury_API.Services
 {
     public class RequestService : ICRUDService<Request>, IRequestService
     {
-        public Task<T> GetAll<T>()
+        public Task<Request> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> GetByID<T>(int id)
+        public Task<Request> GetByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> UpdateAsync<T>(T newUpdate)
+        public Task<Request> UpdateAsync(Request newUpdate)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> DeleteAsync<T>(int id)
+        public Task<Request> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> CreateAsync<T>(T toCreate)
+        public Task<Request> CreateAsync(Request toCreate)
         {
             throw new NotImplementedException();
         }

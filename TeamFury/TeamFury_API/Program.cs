@@ -10,6 +10,7 @@ using Models.Models;
 using TeamFury_API.Data;
 using TeamFury_API.Endpoints;
 using TeamFury_API.MappingProfiles;
+using TeamFury_API.Services.AdminServices;
 using TeamFury_API.Services.SecurityServices;
 using TeamFury_API.Services.UserServices;
 
@@ -31,6 +32,7 @@ namespace TeamFury_API
             
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserServices, UserServices>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddAutoMapper(typeof(UserConfig));
             #endregion
 
