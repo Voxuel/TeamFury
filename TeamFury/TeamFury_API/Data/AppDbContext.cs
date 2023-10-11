@@ -28,8 +28,7 @@ namespace TeamFury_API.Data
             {
                 Id = new Guid("6cef773a-6124-4182-a8ad-3567cd037ea7").ToString(),
                 UserName = "Admin1",
-                Email = "trolllovecookies@gmail.com",
-                PasswordHash = hasher.HashPassword(null, "Password!"),
+                Email = "trolllovecookies@gmail.com"
             });
 
             modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole>()
