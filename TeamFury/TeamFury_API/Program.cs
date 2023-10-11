@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -104,6 +105,7 @@ namespace TeamFury_API
             });
             #endregion
 
+            
             #region Identity requirments config.
             
             builder.Services.Configure<IdentityOptions>(options =>
