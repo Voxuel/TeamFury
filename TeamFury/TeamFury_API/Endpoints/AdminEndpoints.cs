@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Runtime.CompilerServices;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,8 @@ public static class AdminEndpoints
 {
     public static void AdminEndpointConfig(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/admin/employee/", async (UserManager<User> manager, IMapper mapper) =>
+        app.MapGet("/api/admin/employee/", async
+                (UserManager<User> manager, IMapper mapper) =>
         {
             try
             {
@@ -64,7 +66,8 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("CreateEmployee");
 
-        app.MapDelete("/api/admin/employee/{id}", async (IAdminService services, string id) =>
+        app.MapDelete("/api/admin/employee/{id}", async
+                (IAdminService services, string id) =>
         {
             try
             {
@@ -91,5 +94,38 @@ public static class AdminEndpoints
             .Produces<ApiResponse>(200)
             .Produces(400)
             .WithName("DeleteEmployee");
+
+        app.MapPut("/api/admin/employee/", async
+            (IAdminService services, IMapper mapper, UserUpdateDTO newUpdate) =>
+        {
+            try
+            {
+                var response = new ApiResponse();
+                var user = mapper.Map<User>(newUpdate);
+                var result = await services.UpdateAsync(user, newUpdate.Password);
+
+                if (result == null)
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    response.ErrorMessages.Add("No employee with the given ID could be found");
+                    return Results.NotFound(response);
+                }
+
+                response.Result = result;
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.NoContent;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+            .Accepts<UserUpdateDTO>("application/json")
+            .Produces<ApiResponse>(200)
+            .Produces(204)
+            .Produces(400)
+            .WithName("UpdateEmployee");
     }
 }

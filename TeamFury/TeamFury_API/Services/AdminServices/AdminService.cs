@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Models;
 
@@ -16,30 +17,38 @@ public class AdminService : IAdminService
         _userManager = userManager;
         _roleManager = roleManager;
     }
-    
-    
 
-    
-    
-    // Save for azure db migration.
-    public async Task CreateRoleAsync()
+    public async Task<IEnumerable<User>> GetAll()
     {
-        await _roleManager.CreateAsync(new IdentityRole("Employee"));
+        return await _userManager.Users.ToListAsync();
     }
 
-    public Task<User> GetAll()
+    public async Task<User> GetByIdAsync(string id)
     {
-        throw new NotImplementedException();
+        return await _userManager.FindByIdAsync(id);
     }
-
-    public Task<User> GetByID(int id)
+    
+    public async Task<User> UpdateAsync(User newUpdate, string password)
     {
-        throw new NotImplementedException();
-    }
+        var found = await _userManager.FindByIdAsync(newUpdate.Id);
+        if (found == null) return null;
 
-    public Task<User> UpdateAsync(User newUpdate)
-    {
-        throw new NotImplementedException();
+        if (!string.IsNullOrEmpty(password))
+        {
+            var passwordToken = await _userManager.GeneratePasswordResetTokenAsync(found);
+            await _userManager.ResetPasswordAsync(found, passwordToken, password);
+        }
+
+        found.UserName = newUpdate.UserName;
+        found.NormalizedUserName = newUpdate.UserName.ToUpper();
+        found.Email = newUpdate.Email;
+        found.NormalizedUserName = newUpdate.Email.ToUpper();
+        found.PhoneNumber = newUpdate.PhoneNumber;
+        
+        
+        await _userManager.UpdateAsync(found);
+
+        return found;
     }
     
     public async Task<User> DeleteAsync(string id)
@@ -69,9 +78,25 @@ public class AdminService : IAdminService
 
         return user;
     }
+
     
-    
+    // Save for azure db migration.
+    public async Task CreateRoleAsync()
+    {
+        await _roleManager.CreateAsync(new IdentityRole("Employee"));
+        await _roleManager.CreateAsync(new IdentityRole("Admin"));
+    }
+
+    public Task<User> UpdateAsync(User newUpdate)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<User> DeleteAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<User> GetByID(int id)
     {
         throw new NotImplementedException();
     }

@@ -4,7 +4,7 @@ namespace TeamFury_API.Services
 {
     public class RequestService : ICRUDService<Request>, IRequestService
     {
-        public Task<Request> GetAll()
+        public Task<IEnumerable<Request>> GetAll()
         {
             throw new NotImplementedException();
         }

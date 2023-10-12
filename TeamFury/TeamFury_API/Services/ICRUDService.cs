@@ -2,7 +2,7 @@
 {
     public interface ICRUDService<T>
     {
-        Task<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
         Task<T> GetByID(int id);
         Task<T> UpdateAsync(T newUpdate);
         Task<T> DeleteAsync(int id);
