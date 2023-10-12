@@ -52,7 +52,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "8f5096bb-633b-4151-9abd-704ed0fa5120",
+                            ConcurrencyStamp = "1a13c784-d9fb-485a-9ae3-885b62e11638",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -355,12 +355,12 @@ namespace TeamFury_API.Migrations
                         {
                             Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a661800f-cf01-4e7a-b7ed-c7f36b93c18e",
+                            ConcurrencyStamp = "bc95dccc-86a4-4456-b02b-815cc88dece8",
                             Email = "trolllovecookies@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4761d146-7fbe-451d-b6e7-d4a4d8e01200",
+                            SecurityStamp = "ffb82038-8af3-4c1e-b120-5e64dc1bab96",
                             TwoFactorEnabled = false,
                             UserName = "Admin1"
                         });
