@@ -108,8 +108,23 @@ public class AdminService : IAdminService
     // Save for azure db migration.
     public async Task CreateRoleAsync()
     {
-        await _roleManager.CreateAsync(new IdentityRole("Employee"));
-        await _roleManager.CreateAsync(new IdentityRole("Admin"));
+        if (!await _roleManager.RoleExistsAsync("Employee"))
+        {
+            await _roleManager.CreateAsync(new IdentityRole("Employee"));
+        }
+        else
+        {
+            Console.WriteLine("Role exists for employee");
+        }
+        
+        if (!await _roleManager.RoleExistsAsync("Admin"))
+        {
+            await _roleManager.CreateAsync(new IdentityRole("Admin"));
+        }
+        else
+        {
+            Console.WriteLine("Role exists for admin");
+        }
     }
     
     #endregion
