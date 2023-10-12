@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamFury_API.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class initial_new_Db : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,20 +47,6 @@ namespace TeamFury_API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeesRequest",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RequestID = table.Column<int>(type: "int", nullable: false),
-                    EmployeeID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeesRequest", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,6 +204,12 @@ namespace TeamFury_API.Migrations
                         column: x => x.RequestLogID,
                         principalTable: "RequestLogs",
                         principalColumn: "RequestLogID");
+                    table.ForeignKey(
+                        name: "FK_Requests_RequestTypes_RequestTypeID",
+                        column: x => x.RequestTypeID,
+                        principalTable: "RequestTypes",
+                        principalColumn: "RequestTypeID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,36 +218,35 @@ namespace TeamFury_API.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmplyeeID = table.Column<int>(type: "int", nullable: false),
-                    RequestTypeID = table.Column<int>(type: "int", nullable: false),
                     Days = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    RequestID = table.Column<int>(type: "int", nullable: false),
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeaveDays", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_LeaveDays_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_LeaveDays_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_LeaveDays_RequestTypes_RequestTypeID",
-                        column: x => x.RequestTypeID,
-                        principalTable: "RequestTypes",
-                        principalColumn: "RequestTypeID",
+                        name: "FK_LeaveDays_Requests_RequestID",
+                        column: x => x.RequestID,
+                        principalTable: "Requests",
+                        principalColumn: "RequestID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "59727953-c0f0-4c81-b9f7-16b09803937e", "admin", "ADMIN" });
+                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "1a13c784-d9fb-485a-9ae3-885b62e11638", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "6cef773a-6124-4182-a8ad-3567cd037ea7", 0, "f14aa60b-9ca3-43bb-92e7-1637f8b486a6", "User", "trolllovecookies@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEAA9ZBwzsYLm+UmlfNU1ie7B0dNcjK8XnjAHpUv2s6RashWGkKuChvFbxfAk7LHPKA==", null, false, "a697d668-3dfa-4c7f-b5db-cf9438a2ecb8", false, null });
+                values: new object[] { "6cef773a-6124-4182-a8ad-3567cd037ea7", 0, "bc95dccc-86a4-4456-b02b-815cc88dece8", "User", "trolllovecookies@gmail.com", false, false, null, null, null, null, null, false, "ffb82038-8af3-4c1e-b120-5e64dc1bab96", false, "Admin1" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -302,19 +293,24 @@ namespace TeamFury_API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaveDays_RequestTypeID",
+                name: "IX_LeaveDays_IdentityUserId",
                 table: "LeaveDays",
-                column: "RequestTypeID");
+                column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaveDays_UserId",
+                name: "IX_LeaveDays_RequestID",
                 table: "LeaveDays",
-                column: "UserId");
+                column: "RequestID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Requests_RequestLogID",
                 table: "Requests",
                 column: "RequestLogID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_RequestTypeID",
+                table: "Requests",
+                column: "RequestTypeID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -335,13 +331,7 @@ namespace TeamFury_API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EmployeesRequest");
-
-            migrationBuilder.DropTable(
                 name: "LeaveDays");
-
-            migrationBuilder.DropTable(
-                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -350,10 +340,13 @@ namespace TeamFury_API.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "RequestTypes");
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "RequestLogs");
+
+            migrationBuilder.DropTable(
+                name: "RequestTypes");
         }
     }
 }

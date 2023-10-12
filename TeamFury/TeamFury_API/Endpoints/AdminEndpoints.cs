@@ -48,7 +48,7 @@ public static class AdminEndpoints
                 var hasher = new PasswordHasher<User>();
                 var user = mapper.Map<User>(user_c_dto);
                 user.PasswordHash = hasher.HashPassword(null, user_c_dto.Password);
-                var result = await services.CreateAsync(user);
+                var result = await services.CreateAsync(user, user_c_dto.Role);
                 if (result == null) return Results.BadRequest();
                 response.Result = result;
                 response.IsSuccess = true;
@@ -127,5 +127,13 @@ public static class AdminEndpoints
             .Produces(204)
             .Produces(400)
             .WithName("UpdateEmployee");
+        
+        
+        app.MapPost("/api/Mock/" ,async (IAdminService service) =>
+        {
+            await service.CreateRoleAsync();
+        });
     }
+    
+    
 }
