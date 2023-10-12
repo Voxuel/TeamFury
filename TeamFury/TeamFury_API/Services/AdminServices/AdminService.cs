@@ -94,6 +94,7 @@ public class AdminService : IAdminService
 
         if (userFound != null) return null;
         
+        user.SecurityStamp = Guid.NewGuid().ToString();
         var createUserResult = await _userManager.CreateAsync(user);
 
         if (!createUserResult.Succeeded) return null;
