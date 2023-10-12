@@ -3,44 +3,50 @@ using Models.Models;
 using Microsoft.EntityFrameworkCore;
 using TeamFury_API.Data;
 
-
 namespace TeamFury_API.Services
 {
     public class RequestService : IRequestService
     {
 
         private readonly AppDbContext _context;
-        
-        private readonly UserManager<User> _userManager;
 
 
-        public RequestService(UserManager<User> userManager, AppDbContext context) 
+        public RequestService(AppDbContext context) 
         {
-            _userManager = userManager;
             _context = context;
         }
-        public Task<IEnumerable<Request>> GetAll()
+        public async Task<IEnumerable<Request>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Requests.ToListAsync();
         }
 
-        public Task<Request> GetByID(int id)
+        public async Task<Request> GetByID(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Requests.FindAsync(id);
         }
 
         public async Task<Request> UpdateAsync(Request newUpdate)
         {
-            throw new NotImplementedException();
+            var found = await _context.Requests.FindAsync(newUpdate.RequestID);
+            if (found == null) return null;
+            _context.Update(newUpdate);
+            _context.SaveChanges();
+            return found;
         }
 
-        public Task<Request> DeleteAsync(int id)
+        public async Task<Request> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var found = await _context.Requests.FindAsync(id);
+            if (found == null) return null;
+            _context.Remove(found);
+            _context.SaveChanges();
+            return found;
         }
 
-        public Task<Request> CreateAsync(Request toCreate)
+        public async Task<Request> CreateAsync(Request toCreate)
         {
+
+
             throw new NotImplementedException();
         }
 
