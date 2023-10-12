@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,11 +12,9 @@ namespace Models.Models
     {
         [Key]
         public int ID { get; set; }
-        [Required]
-        public int EmplyeeID { get; set; }
-        [Required]
-        public int RequestTypeID { get; set; }
+        
         public int Days { get; set; }
-        public RequestType RequestType { get; set; }
+        public Request Request { get; set; }
+        public IdentityUser IdentityUser { get; set; }
     }
 }
