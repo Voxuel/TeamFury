@@ -18,16 +18,33 @@ public class AdminService : IAdminService
         _roleManager = roleManager;
     }
 
+    #region Employee Commands
+    
+    /// <summary>
+    /// Gets all employees in the database.
+    /// </summary>
+    /// <returns>IEnumerable of all employees</returns>
     public async Task<IEnumerable<User>> GetAll()
     {
         return await _userManager.Users.ToListAsync();
     }
-
+    
+    /// <summary>
+    /// Gets single entity from database.
+    /// </summary>
+    /// <param name="id">Employee Id</param>
+    /// <returns>Task of type: <see cref="User"/></returns>
     public async Task<User> GetByIdAsync(string id)
     {
         return await _userManager.FindByIdAsync(id);
     }
     
+    /// <summary>
+    /// Updates existing employee in the database
+    /// </summary>
+    /// <param name="newUpdate">Object of type <see cref="User"/></param>
+    /// <param name="password">Password contained in newUpdate object</param>
+    /// <returns>Task of type: <see cref="User"/></returns>
     public async Task<User> UpdateAsync(User newUpdate, string password)
     {
         var found = await _userManager.FindByIdAsync(newUpdate.Id);
@@ -51,6 +68,11 @@ public class AdminService : IAdminService
         return found;
     }
     
+    /// <summary>
+    /// Deletes employee with given ID in the database.
+    /// </summary>
+    /// <param name="id">ID of employee to delete from record</param>
+    /// <returns>Task of type: <see cref="User"/></returns>
     public async Task<User> DeleteAsync(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
@@ -61,7 +83,11 @@ public class AdminService : IAdminService
         return !userDeleted.Succeeded ? null : user;
     }
 
-
+    /// <summary>
+    /// Creates a new entity and adds it to the database of type Employee / <see cref="User"/>
+    /// </summary>
+    /// <param name="user">Object to create</param>
+    /// <returns>Task of type: <see cref="User"/></returns>
     public async Task<User> CreateAsync(User user)
     {
         var userFound = await _userManager.FindByNameAsync(user.UserName);
@@ -87,11 +113,11 @@ public class AdminService : IAdminService
         await _roleManager.CreateAsync(new IdentityRole("Admin"));
     }
 
+    #region Overridden methods
     public Task<User> UpdateAsync(User newUpdate)
     {
         throw new NotImplementedException();
     }
-
     public Task<User> DeleteAsync(int id)
     {
         throw new NotImplementedException();
@@ -100,4 +126,6 @@ public class AdminService : IAdminService
     {
         throw new NotImplementedException();
     }
+    #endregion
+    #endregion
 }
