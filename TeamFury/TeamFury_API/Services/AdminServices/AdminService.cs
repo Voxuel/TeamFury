@@ -28,7 +28,7 @@ public class AdminService : IAdminService
     {
         return await _userManager.Users.ToListAsync();
     }
-    
+
     /// <summary>
     /// Gets single entity from database.
     /// </summary>
@@ -88,7 +88,7 @@ public class AdminService : IAdminService
     /// </summary>
     /// <param name="user">Object to create</param>
     /// <returns>Task of type: <see cref="User"/></returns>
-    public async Task<User> CreateAsync(User user)
+    public async Task<User> CreateAsync(User user, string role)
     {
         var userFound = await _userManager.FindByNameAsync(user.UserName);
 
@@ -97,11 +97,10 @@ public class AdminService : IAdminService
         var createUserResult = await _userManager.CreateAsync(user);
 
         if (!createUserResult.Succeeded) return null;
-        if (await _roleManager.RoleExistsAsync("Employee"))
+        if (await _roleManager.RoleExistsAsync(role))
         {
-            await _userManager.AddToRoleAsync(user, "Employee");
+            await _userManager.AddToRoleAsync(user, role);
         }
-
         return user;
     }
 
@@ -112,7 +111,9 @@ public class AdminService : IAdminService
         await _roleManager.CreateAsync(new IdentityRole("Employee"));
         await _roleManager.CreateAsync(new IdentityRole("Admin"));
     }
-
+    
+    #endregion
+    
     #region Overridden methods
     public Task<User> UpdateAsync(User newUpdate)
     {
@@ -122,10 +123,15 @@ public class AdminService : IAdminService
     {
         throw new NotImplementedException();
     }
+
+    public Task<User> CreateAsync(User toCreate)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<User> GetByID(int id)
     {
         throw new NotImplementedException();
     }
-    #endregion
     #endregion
 }
