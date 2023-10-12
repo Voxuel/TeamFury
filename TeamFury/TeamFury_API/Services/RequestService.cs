@@ -1,9 +1,19 @@
-﻿using Models.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Models.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace TeamFury_API.Services
 {
-    public class RequestService : ICRUDService<Request>, IRequestService
+    public class RequestService : IRequestService
     {
+        private readonly UserManager<User> _userManager;
+
+
+        public RequestService(UserManager<User> userManager) 
+        {
+            _userManager = userManager;
+        }
         public Task<IEnumerable<Request>> GetAll()
         {
             throw new NotImplementedException();
@@ -29,7 +39,7 @@ namespace TeamFury_API.Services
             throw new NotImplementedException();
         }
 
-        public Task<T> GetRequestByEmployeeID<T>(int id)
+        public Task<Request> GetRequestByEmployeeID(string id)
         {
             throw new NotImplementedException();
         }
