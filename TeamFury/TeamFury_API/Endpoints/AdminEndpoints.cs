@@ -127,5 +127,13 @@ public static class AdminEndpoints
             .Produces(204)
             .Produces(400)
             .WithName("UpdateEmployee");
+        
+        
+        app.MapPost("/api/Mock/" ,async (IAdminService service) =>
+        {
+            await service.CreateRoleAsync();
+        });
     }
+    
+    
 }

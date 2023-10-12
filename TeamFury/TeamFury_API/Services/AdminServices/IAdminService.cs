@@ -8,4 +8,6 @@ public interface IAdminService : ICRUDService<User>
     Task<User> UpdateAsync(User newUpdate, string password);
     Task<User> DeleteAsync(string id);
     Task<User> CreateAsync(User user, string role);
+
+    Task CreateRoleAsync();
 }
