@@ -30,7 +30,7 @@ namespace TeamFury_API.Services
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
             _context.Update(newUpdate);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return found;
         }
 
@@ -39,20 +39,31 @@ namespace TeamFury_API.Services
             var found = await _context.Requests.FindAsync(id);
             if (found == null) return null;
             _context.Remove(found);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return found;
         }
 
-        public async Task<Request> CreateAsync(Request toCreate)
+        public async Task<Request> CreateAsync(Request toCreate, string id)
         {
+            var found = await _context.LeaveDays.FirstOrDefaultAsync(x => x.IdentityUser.Id == id &&
+            x.Request.StartDate == toCreate.StartDate && x.Request.EndDate == toCreate.EndDate);
+            if (found != null) return null;
+            _context.Add(toCreate);
+            await _context.SaveChangesAsync();
+            return toCreate;
+        }
 
+        public async Task<IEnumerable<Request>> GetRequestsByEmployeeID(string id)
+        {
+            return await _context.LeaveDays.Where(x=>x.IdentityUser.Id == id).Select(x=> x.Request).ToListAsync();
+        }
 
+        #region Overidden Methods
+        public Task<Request> CreateAsync(Request toCreate)
+        {
             throw new NotImplementedException();
         }
 
-        public Task<Request> GetRequestByEmployeeID(string id)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }
