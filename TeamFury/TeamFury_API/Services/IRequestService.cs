@@ -1,7 +1,9 @@
-﻿namespace TeamFury_API.Services
+﻿using Models.Models;
+
+namespace TeamFury_API.Services
 {
-    public interface IRequestService
+    public interface IRequestService: ICRUDService<Request>
     {
-        Task<T> GetRequestByEmployeeID<T>(int id);
+        Task<Request> GetRequestByEmployeeID(string id);
     }
 }
