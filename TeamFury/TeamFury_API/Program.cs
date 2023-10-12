@@ -25,6 +25,7 @@ namespace TeamFury_API
             #region Service Container
 			builder.Services.AddDbContext<AppDbContext>(opt =>
 	            opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();

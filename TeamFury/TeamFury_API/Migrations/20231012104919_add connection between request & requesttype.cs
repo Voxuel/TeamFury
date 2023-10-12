@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamFury_API.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class addconnectionbetweenrequestrequesttype : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,20 +47,6 @@ namespace TeamFury_API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeesRequest",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RequestID = table.Column<int>(type: "int", nullable: false),
-                    EmployeeID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeesRequest", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -196,31 +182,6 @@ namespace TeamFury_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Requests",
-                columns: table => new
-                {
-                    RequestID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RequestSent = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MessageForDecline = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RequestTypeID = table.Column<int>(type: "int", nullable: false),
-                    StatusRequest = table.Column<int>(type: "int", nullable: false),
-                    AdminName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RequestLogID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Requests", x => x.RequestID);
-                    table.ForeignKey(
-                        name: "FK_Requests_RequestLogs_RequestLogID",
-                        column: x => x.RequestLogID,
-                        principalTable: "RequestLogs",
-                        principalColumn: "RequestLogID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LeaveDays",
                 columns: table => new
                 {
@@ -247,15 +208,46 @@ namespace TeamFury_API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Requests",
+                columns: table => new
+                {
+                    RequestID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RequestSent = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MessageForDecline = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RequestTypeID = table.Column<int>(type: "int", nullable: false),
+                    StatusRequest = table.Column<int>(type: "int", nullable: false),
+                    AdminName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RequestLogID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requests", x => x.RequestID);
+                    table.ForeignKey(
+                        name: "FK_Requests_RequestLogs_RequestLogID",
+                        column: x => x.RequestLogID,
+                        principalTable: "RequestLogs",
+                        principalColumn: "RequestLogID");
+                    table.ForeignKey(
+                        name: "FK_Requests_RequestTypes_RequestTypeID",
+                        column: x => x.RequestTypeID,
+                        principalTable: "RequestTypes",
+                        principalColumn: "RequestTypeID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "59727953-c0f0-4c81-b9f7-16b09803937e", "admin", "ADMIN" });
+                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "cf19d873-4243-4351-9fa1-9597afb6eaf2", "admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "6cef773a-6124-4182-a8ad-3567cd037ea7", 0, "f14aa60b-9ca3-43bb-92e7-1637f8b486a6", "User", "trolllovecookies@gmail.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEAA9ZBwzsYLm+UmlfNU1ie7B0dNcjK8XnjAHpUv2s6RashWGkKuChvFbxfAk7LHPKA==", null, false, "a697d668-3dfa-4c7f-b5db-cf9438a2ecb8", false, null });
+                values: new object[] { "6cef773a-6124-4182-a8ad-3567cd037ea7", 0, "835aa163-2737-442a-8c01-d69f440f584e", "User", "trolllovecookies@gmail.com", false, false, null, null, null, null, null, false, "14296dfc-f7f1-43ab-8f30-be08c07caf25", false, "Admin1" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -315,6 +307,11 @@ namespace TeamFury_API.Migrations
                 name: "IX_Requests_RequestLogID",
                 table: "Requests",
                 column: "RequestLogID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Requests_RequestTypeID",
+                table: "Requests",
+                column: "RequestTypeID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -335,25 +332,22 @@ namespace TeamFury_API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EmployeesRequest");
-
-            migrationBuilder.DropTable(
                 name: "LeaveDays");
-
-            migrationBuilder.DropTable(
-                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Requests");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "RequestTypes");
+                name: "RequestLogs");
 
             migrationBuilder.DropTable(
-                name: "RequestLogs");
+                name: "RequestTypes");
         }
     }
 }

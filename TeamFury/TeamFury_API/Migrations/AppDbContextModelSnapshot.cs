@@ -52,7 +52,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "c1f4d5a8-f4ca-4763-8beb-7b045c9ffb25",
+                            ConcurrencyStamp = "8f5096bb-633b-4151-9abd-704ed0fa5120",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -242,29 +242,6 @@ namespace TeamFury_API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Models.Models.EmployeeRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("RequestID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdentityUserId");
-
-                    b.HasIndex("RequestID");
-
-                    b.ToTable("EmployeesRequest");
-                });
-
             modelBuilder.Entity("Models.Models.LeaveDays", b =>
                 {
                     b.Property<int>("ID")
@@ -276,20 +253,17 @@ namespace TeamFury_API.Migrations
                     b.Property<int>("Days")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmplyeeID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequestTypeID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RequestID")
+                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RequestTypeID");
+                    b.HasIndex("IdentityUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("RequestID");
 
                     b.ToTable("LeaveDays");
                 });
@@ -331,6 +305,8 @@ namespace TeamFury_API.Migrations
                     b.HasKey("RequestID");
 
                     b.HasIndex("RequestLogID");
+
+                    b.HasIndex("RequestTypeID");
 
                     b.ToTable("Requests");
                 });
@@ -379,12 +355,12 @@ namespace TeamFury_API.Migrations
                         {
                             Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "329706a2-3095-436e-b151-61de9aaed9ed",
+                            ConcurrencyStamp = "a661800f-cf01-4e7a-b7ed-c7f36b93c18e",
                             Email = "trolllovecookies@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3adab785-226b-409a-aaa8-bd5d3d485459",
+                            SecurityStamp = "4761d146-7fbe-451d-b6e7-d4a4d8e01200",
                             TwoFactorEnabled = false,
                             UserName = "Admin1"
                         });
@@ -441,7 +417,7 @@ namespace TeamFury_API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Models.Models.EmployeeRequest", b =>
+            modelBuilder.Entity("Models.Models.LeaveDays", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
@@ -458,36 +434,24 @@ namespace TeamFury_API.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("Models.Models.LeaveDays", b =>
+            modelBuilder.Entity("Models.Models.Request", b =>
                 {
+                    b.HasOne("Models.Models.RequestLog", null)
+                        .WithMany("Requests")
+                        .HasForeignKey("RequestLogID");
+
                     b.HasOne("Models.Models.RequestType", "RequestType")
                         .WithMany()
                         .HasForeignKey("RequestTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Models.Models.User", null)
-                        .WithMany("LeaveDays")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("RequestType");
-                });
-
-            modelBuilder.Entity("Models.Models.Request", b =>
-                {
-                    b.HasOne("Models.Models.RequestLog", null)
-                        .WithMany("Requests")
-                        .HasForeignKey("RequestLogID");
                 });
 
             modelBuilder.Entity("Models.Models.RequestLog", b =>
                 {
                     b.Navigation("Requests");
-                });
-
-            modelBuilder.Entity("Models.Models.User", b =>
-                {
-                    b.Navigation("LeaveDays");
                 });
 #pragma warning restore 612, 618
         }
