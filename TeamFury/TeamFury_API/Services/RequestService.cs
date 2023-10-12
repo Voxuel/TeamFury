@@ -7,6 +7,7 @@ namespace TeamFury_API.Services
 {
     public class RequestService : IRequestService
     {
+
         private readonly AppDbContext _context;
 
 
