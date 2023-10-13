@@ -30,7 +30,7 @@ public class AuthService : IAuthService
     public async Task<(int, string)> Login(LoginDTO login)
     {
         var user = await _userManager.FindByNameAsync(login.Username);
-        if (user == null) return (0, "Invalid user");
+        if (user == null) return (0, "Invalid Username or password");
         
         
         if (!await _userManager.CheckPasswordAsync(user, login.Password)) return (0, "Invalid Username or password");
