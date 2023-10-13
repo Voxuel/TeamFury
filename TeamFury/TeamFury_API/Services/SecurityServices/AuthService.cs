@@ -33,7 +33,7 @@ public class AuthService : IAuthService
         if (user == null) return (0, "Invalid user");
         
         
-        if (!await _userManager.CheckPasswordAsync(user, login.Password)) return (0, "Invalid password");
+        if (!await _userManager.CheckPasswordAsync(user, login.Password)) return (0, "Invalid Username or password");
 
         var userRoles = await _userManager.GetRolesAsync(user);
         var authClaims = new List<Claim>
