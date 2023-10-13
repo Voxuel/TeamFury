@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTOs;
 using Models.Models;
@@ -37,8 +38,11 @@ public class AuthService : IAuthService
         var userRoles = await _userManager.GetRolesAsync(user);
         var authClaims = new List<Claim>
         {
+            new Claim("Id", Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
         
         authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));

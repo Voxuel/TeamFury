@@ -94,6 +94,7 @@ public class AdminService : IAdminService
 
         if (userFound != null) return null;
         
+        user.SecurityStamp = Guid.NewGuid().ToString();
         var createUserResult = await _userManager.CreateAsync(user);
 
         if (!createUserResult.Succeeded) return null;
@@ -101,32 +102,13 @@ public class AdminService : IAdminService
         {
             await _userManager.AddToRoleAsync(user, role);
         }
+        else
+        {
+            await _roleManager.CreateAsync(new IdentityRole(role));
+            await _userManager.AddToRoleAsync(user, role);
+        }
         return user;
     }
-
-    
-    // Save for azure db migration.
-    public async Task CreateRoleAsync()
-    {
-        if (!await _roleManager.RoleExistsAsync("Employee"))
-        {
-            await _roleManager.CreateAsync(new IdentityRole("Employee"));
-        }
-        else
-        {
-            Console.WriteLine("Role exists for employee");
-        }
-        
-        if (!await _roleManager.RoleExistsAsync("Admin"))
-        {
-            await _roleManager.CreateAsync(new IdentityRole("Admin"));
-        }
-        else
-        {
-            Console.WriteLine("Role exists for admin");
-        }
-    }
-    
     #endregion
     
     #region Overridden methods
