@@ -137,7 +137,7 @@ public static class AdminEndpoints
                 if (result == null)
                 {
                     response.IsSuccess = false;
-                    response.ErrorMessages.Add("Requesttype already exists");
+                    response.ErrorMessages.Add("Request type already exists");
                     response.StatusCode = HttpStatusCode.BadRequest;
                     return Results.BadRequest(response);
                 }
