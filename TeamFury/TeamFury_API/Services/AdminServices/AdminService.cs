@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Models;
+using TeamFury_API.Data;
 
 namespace TeamFury_API.Services.AdminServices;
 
@@ -11,11 +13,14 @@ public class AdminService : IAdminService
     
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly AppDbContext _context;
 
-    public AdminService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+    public AdminService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager,
+        AppDbContext context)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _context = context;
     }
 
     #region Employee Commands
@@ -109,6 +114,22 @@ public class AdminService : IAdminService
         }
         return user;
     }
+    #endregion
+
+    #region Request Commands
+
+    public async Task<RequestType> CreateRequestTypeAsync(RequestType requestType)
+    {
+        var found = await _context.RequestTypes.FirstOrDefaultAsync(r =>
+            r.Name == requestType.Name);
+        if (found != null) return null;
+
+        var result = await _context.RequestTypes.AddAsync(requestType);
+        await _context.SaveChangesAsync();
+
+        return result.Entity;
+    }
+
     #endregion
     
     #region Overridden methods

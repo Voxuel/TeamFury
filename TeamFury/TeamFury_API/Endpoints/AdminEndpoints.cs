@@ -127,7 +127,30 @@ public static class AdminEndpoints
             .Produces(204)
             .Produces(400)
             .WithName("UpdateEmployee");
+
+        app.MapPost("/api/admin/request/", async
+                (IAdminService service, IMapper mapper, RequestTypeCreateDto rt_c_dto) =>
+            {
+                var response = new ApiResponse();
+                var requestType = mapper.Map<RequestType>(rt_c_dto);
+                var result = await service.CreateRequestTypeAsync(requestType);
+                if (result == null)
+                {
+                    response.IsSuccess = false;
+                    response.ErrorMessages.Add("Request type already exists");
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    return Results.BadRequest(response);
+                }
+
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.Created;
+                response.Result = result;
+                return Results.Ok(response);
+            }).RequireAuthorization("IsAdmin")
+            .Accepts<RequestTypeCreateDto>("application/json")
+            .Produces<ApiResponse>(200)
+            .Produces(201)
+            .WithName("CreateRequestType");
+
     }
-    
-    
 }
