@@ -40,7 +40,7 @@ export class AuthService {
   }
   signOut(): void {
     window.sessionStorage.clear();
-    this.router.navigate(['/Home'])
+    this.router.navigate(['/login'])
     .then(() => {
       window.location.reload();
     });

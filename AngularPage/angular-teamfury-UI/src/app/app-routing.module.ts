@@ -8,7 +8,7 @@ import { AdminComponent } from './Components/admin/admin.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
-  {path: 'User', component: UserComponent, canActivate: [authGuard], data: {role: ['User', 'Admin']}},
+  {path: 'User', component: UserComponent, canActivate: [authGuard], data: {role: ['Employee']}},
   {path: 'Admin',component: AdminComponent,canActivate: [authGuard], data: {role: ['Admin'] }},
   {path: '', redirectTo: 'login', pathMatch:'full'}
 ];
