@@ -11,4 +11,6 @@ public interface IAdminService : ICRUDService<User>
     Task<User> CreateAsync(User user, string role);
 
     Task<RequestType> CreateRequestTypeAsync(RequestType requestType);
+    Task<RequestType> UpdateRequestTypeAsync(RequestType requestType);
+    Task<RequestType> DeleteRequestTypeAsync(RequestType requestType);
 }
