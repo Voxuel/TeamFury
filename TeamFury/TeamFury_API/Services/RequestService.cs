@@ -27,11 +27,11 @@ namespace TeamFury_API.Services
         {
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
-            if (newUpdate.StatusRequest == StatusRequest.Accepted && found.StatusRequest != StatusRequest.Accepted)
-            {
-                LeaveDaysService leaveDays = new(_context);
-                await leaveDays.UpdateLeaveDaysOnAprovedRequest(newUpdate);
-            }
+            // if (newUpdate.StatusRequest == StatusRequest.Accepted && found.StatusRequest != StatusRequest.Accepted)
+            // {
+            //     LeaveDaysService leaveDays = new();
+            //     await leaveDays.UpdateLeaveDaysOnAprovedRequest(newUpdate);
+            // }
             _context.Update(newUpdate);
             await _context.SaveChangesAsync();
             return found;

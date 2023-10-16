@@ -8,7 +8,7 @@ namespace Models.DTOs
 {
     public class RemainingLeaveDaysDTO
     {
-        public int DaysLeft { get; set; }
+        public int? DaysLeft { get; set; }
         public string LeaveType { get; set;}
     }
 }
