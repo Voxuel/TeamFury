@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.EntityFrameworkCore;
 using Models.Models;
-using Microsoft.EntityFrameworkCore;
 using TeamFury_API.Data;
 
 namespace TeamFury_API.Services
@@ -11,7 +10,7 @@ namespace TeamFury_API.Services
         private readonly AppDbContext _context;
 
 
-        public RequestService(AppDbContext context) 
+        public RequestService(AppDbContext context)
         {
             _context = context;
         }
@@ -24,11 +23,15 @@ namespace TeamFury_API.Services
         {
             return await _context.Requests.FindAsync(id);
         }
-
         public async Task<Request> UpdateAsync(Request newUpdate)
         {
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
+            if (newUpdate.StatusRequest == StatusRequest.Accepted && found.StatusRequest != StatusRequest.Accepted)
+            {
+                LeaveDaysService leaveDays = new(_context);
+                await leaveDays.UpdateLeaveDaysOnAprovedRequest(newUpdate);
+            }
             _context.Update(newUpdate);
             await _context.SaveChangesAsync();
             return found;
@@ -47,6 +50,17 @@ namespace TeamFury_API.Services
         {
             var found = await _context.LeaveDays.FirstOrDefaultAsync(x => x.IdentityUser.Id == id &&
             x.Request.StartDate == toCreate.StartDate && x.Request.EndDate == toCreate.EndDate);
+
+            //Finds the number of leave days used by the employee on requested type
+            var usedDays = await _context.LeaveDays.Where(x => x.IdentityUser.Id == id
+            && x.Request.RequestType.RequestTypeID == toCreate.RequestType.RequestTypeID)
+                .Select(y => y.Days).ToListAsync();
+
+            //Finds maximum allowed days of for the requested type
+            var daysCheck = await _context.RequestTypes.FirstOrDefaultAsync(y =>
+            y.RequestTypeID == toCreate.RequestType.RequestTypeID);
+
+            if (daysCheck.MaxDays - (Convert.ToInt32((toCreate.EndDate - toCreate.StartDate).TotalDays) + usedDays.Sum()) < 0) return null;
             if (found != null) return null;
             _context.Add(toCreate);
             await _context.SaveChangesAsync();
@@ -55,7 +69,7 @@ namespace TeamFury_API.Services
 
         public async Task<IEnumerable<Request>> GetRequestsByEmployeeID(string id)
         {
-            return await _context.LeaveDays.Where(x=>x.IdentityUser.Id == id).Select(x=> x.Request).ToListAsync();
+            return await _context.LeaveDays.Where(x => x.IdentityUser.Id == id).Select(x => x.Request).ToListAsync();
         }
 
         #region Overidden Methods
