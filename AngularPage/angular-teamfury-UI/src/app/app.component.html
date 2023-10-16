@@ -1,0 +1,26 @@
+<header class="container header">
+    <!-- ==== NAVBAR ==== -->
+    <nav>
+      <div class="nav_menu" id="nav_menu">
+  
+        <ul class="nav_menu_list">
+          <li class="nav_menu_item" routerLinkActive="active" *ngIf="isLoggedIn">
+            <a routerLink="/User" class="nav_menu_link">User</a>
+          </li>
+          <li class="nav_menu_item" routerLinkActive="active" *ngIf="isLoggedIn">
+            <a routerLink="/Admin" class="nav_menu_link">Admin</a>
+          </li>
+          <li class="nav_menu_item" *ngIf="isLoggedIn" style="cursor: pointer;">
+            <a (click)="signOut()" class="nav_menu_link">LogOut</a>
+          </li>
+          <li class="nav_menu_item" *ngIf="isLoggedIn">
+            <p class="toggle_btn">
+              {{getUserName()}}
+            </p>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <hr>
+  </header>
+  <router-outlet></router-outlet>

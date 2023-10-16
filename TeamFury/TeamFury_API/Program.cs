@@ -29,12 +29,17 @@ namespace TeamFury_API
             #region Service Container
 			builder.Services.AddDbContext<AppDbContext>(opt =>
 	            opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-            
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-            
-            builder.Services.AddScoped<IAuthService, AuthService>();
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("default", policy =>
+								  {
+                                      policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
+								  });
+			});
+			builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<ILeaveDaysService, LeaveDaysService>();
@@ -137,6 +142,8 @@ namespace TeamFury_API
             
             // Build to app.
             var app = builder.Build();
+
+            app.UseCors("default");
 
             app.UseAuthentication();
             app.UseAuthorization();

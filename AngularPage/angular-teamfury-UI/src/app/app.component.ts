@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from './Services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,17 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-teamfury-UI';
+  isLoggedIn!:boolean;
+
+  constructor(private authService: AuthService) { }
+
+  ngOnInit():void{
+    this.isLoggedIn = !!this.authService.getToken();
+  }
+  getUserName(){
+    return this.authService.getUser();
+  }
+  signOut(){
+    this.authService.signOut();
+  }
 }
