@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
-import { PageUserComponent } from './page-user/page-user.component';
-import { PageAdminComponent } from './page-admin/page-admin.component';
-import { ProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './Components/login/login.component';
+import { SecureInnerPagesGuard } from './Guards/secure-inner-pages.guard';
+import { UserComponent } from './Components/user/user.component';
+import { authGuard } from './Guards/auth.guard';
+import { AdminComponent } from './Components/admin/admin.component';
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: 'home', component: HomeComponent},
-  {path: 'user', component: PageUserComponent},
-  {path: 'admin', component: PageAdminComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: '', redirectTo: 'login', pathMatch: 'full'}
+  {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
+  {path: 'User', component: UserComponent, canActivate: [authGuard], data: {role: ['User', 'Admin']}},
+  {path: 'Admin',component: AdminComponent,canActivate: [authGuard], data: {role: ['Admin'] }},
+  {path: '', redirectTo: 'login', pathMatch:'full'}
 ];
 
 @NgModule({

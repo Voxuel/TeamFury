@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageAdminComponent } from './page-admin.component';
+import { UserComponent } from './user.component';
 
-describe('PageAdminComponent', () => {
-  let component: PageAdminComponent;
-  let fixture: ComponentFixture<PageAdminComponent>;
+describe('UserComponent', () => {
+  let component: UserComponent;
+  let fixture: ComponentFixture<UserComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PageAdminComponent]
+      declarations: [UserComponent]
     });
-    fixture = TestBed.createComponent(PageAdminComponent);
+    fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
