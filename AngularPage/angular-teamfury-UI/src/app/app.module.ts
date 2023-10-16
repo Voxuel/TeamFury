@@ -8,7 +8,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { PageAdminComponent } from './page-admin/page-admin.component';
 import { PageUserComponent } from './page-user/page-user.component';
-import { ModelsComponent } from './models/models.component';
+
+import { httpInterceptorProviders } from './_helpers/http.interceptor';
+import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,8 @@ import { ModelsComponent } from './models/models.component';
     LoginComponent,
     PageAdminComponent,
     PageUserComponent,
-    ModelsComponent
+    ProfileComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,7 +28,7 @@ import { ModelsComponent } from './models/models.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

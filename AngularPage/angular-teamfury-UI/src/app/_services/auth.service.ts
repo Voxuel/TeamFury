@@ -17,9 +17,13 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   Login(userName: string, password:string):Observable<any>{
-    return this.http.post(AUTH_API + 'signin',{
+    return this.http.post(AUTH_API ,{
       userName,
       password
     }, httpOptions);
+  };
+
+  logout():Observable<any>{
+    return this.http.post(AUTH_API + 'logout', { }, httpOptions)
   }
 }
