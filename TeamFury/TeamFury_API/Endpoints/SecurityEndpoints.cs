@@ -24,9 +24,10 @@ public static class SecurityEndpoints
             if (login == null) return Results.BadRequest();
 
             var (status, message) = await authService.Login(login);
-
+            
             return status == 0 ? Results.BadRequest() : Results.Ok(message);
         }).AllowAnonymous();
     }
+    
     
 }

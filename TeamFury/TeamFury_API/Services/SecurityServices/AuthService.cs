@@ -1,7 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTOs;
 using Models.Models;
@@ -29,16 +31,16 @@ public class AuthService : IAuthService
     public async Task<(int, string)> Login(LoginDTO login)
     {
         var user = await _userManager.FindByNameAsync(login.Username);
-        if (user == null) return (0, "Invalid user");
+        if (user == null) return (0, "Invalid Username or password");
         
-        
-        if (!await _userManager.CheckPasswordAsync(user, login.Password)) return (0, "Invalid password");
+        if (!await _userManager.CheckPasswordAsync(user, login.Password)) return (0, "Invalid Username or password");
 
         var userRoles = await _userManager.GetRolesAsync(user);
         var authClaims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim("Id", Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
         
         authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
@@ -68,5 +70,34 @@ public class AuthService : IAuthService
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDesc);
         return tokenHandler.WriteToken(token);
+    }
+    
+    
+    /// <summary>
+    /// Validates the created token and throws exception if not valid using IPrincipal with ValidateToken.
+    /// </summary>
+    /// <param name="authToken"></param>
+    /// <returns></returns>
+    private bool ValidateToken(string authToken)
+    {
+        var tokenhandler = new JwtSecurityTokenHandler();
+        var validationParameters = GetValidationParameters();
+        
+        SecurityToken validatedToken;
+        IPrincipal principal = tokenhandler.ValidateToken(authToken, validationParameters, out validatedToken);
+        return true;
+    }
+    
+    private TokenValidationParameters GetValidationParameters()
+    {
+        return new TokenValidationParameters()
+        {
+            ValidateLifetime = true,
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidIssuer = _config["Jwt:Issuer"],
+            ValidAudience = _config["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
+        };
     }
 }
