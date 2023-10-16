@@ -4,6 +4,8 @@ namespace TeamFury_API.Services
 {
     public interface IRequestService: ICRUDService<Request>
     {
-        Task<Request> GetRequestByEmployeeID(string id);
+        Task<IEnumerable<Request>> GetRequestsByEmployeeID(string id);
+        Task<Request> CreateAsync(Request toCreate, string id);
+
     }
 }

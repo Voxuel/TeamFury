@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamFury_API.Data;
 
@@ -11,9 +12,10 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231012124845_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +54,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-
-                            ConcurrencyStamp = "2437742a-151c-44ff-bf62-3e8a95bde147",
-
+                            ConcurrencyStamp = "92e6a805-bda3-4acf-99db-a8c8ab2fdac6",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -357,16 +357,12 @@ namespace TeamFury_API.Migrations
                         {
                             Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
                             AccessFailedCount = 0,
-
-                            ConcurrencyStamp = "e38fa870-d693-4785-a18f-19a444eaf090",
-
+                            ConcurrencyStamp = "d012fff9-f9db-4b7f-a62d-3ced22e8cce9",
                             Email = "trolllovecookies@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-
-                            SecurityStamp = "9a0e4d5e-3f13-4d70-8975-b57398fed3ff",
-
+                            SecurityStamp = "ef8667b7-2234-4ad4-b278-cb8a054d8f9d",
                             TwoFactorEnabled = false,
                             UserName = "Admin1"
                         });
