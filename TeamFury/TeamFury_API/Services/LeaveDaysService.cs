@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Models;
 using TeamFury_API.Data;
@@ -8,15 +9,18 @@ namespace TeamFury_API.Services
     public class LeaveDaysService : ILeaveDaysService
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<User> _manager;
 
 
-        public LeaveDaysService(AppDbContext context)
+        public LeaveDaysService(AppDbContext context, UserManager<User> manager)
         {
             _context = context;
+            _manager = manager;
         }
+
         public async Task<LeaveDays> CreateAsync(LeaveDays toCreate)
         {
-            var found = _context.LeaveDays.FirstOrDefaultAsync(x=>x.Request.RequestID == toCreate.Request.RequestID);
+            var found = _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == toCreate.Request.RequestID);
             if (found != null) return null;
             _context.Add(toCreate);
             await _context.SaveChangesAsync();
@@ -44,16 +48,14 @@ namespace TeamFury_API.Services
 
         public async Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysByEmployeeID(string id)
         {
-            var daysUsed = await _context.LeaveDays.Where(x => x.IdentityUser.Id == id).ToListAsync();
-            var maxDays = await _context.RequestTypes.ToListAsync();
-            var daysLeft = maxDays; 
-            foreach (var day in daysUsed)
-            {
-               maxDays.Where(x => x.RequestTypeID == day.Request.RequestType.RequestTypeID).Select(x => x.MaxDays - day.Days);
-            }
+            var user = await _manager.FindByIdAsync(id);
+            if (user == null) return null;
+            var leavedaysForUser = await _context.LeaveDays.Where(u => u.IdentityUser == user)
+                .Include(leaveDays => leaveDays.Request).ToListAsync();
+            var allRequestTypes = await _context.RequestTypes.ToListAsync();
 
-            return null;
-            throw new NotImplementedException();
+            var result = CalculateLeaveDays(leavedaysForUser, allRequestTypes);
+            return result;
         }
 
         public async Task<LeaveDays> UpdateAsync(LeaveDays newUpdate)
@@ -73,6 +75,32 @@ namespace TeamFury_API.Services
             _context.Update(daysLeft);
             await _context.SaveChangesAsync();
             return null;
+        }
+
+        private static IEnumerable<RemainingLeaveDaysDTO> CalculateLeaveDays
+            (List<LeaveDays> leaveDays, List<RequestType> Rts)
+        {
+            var combined = new Dictionary<string, int?>();
+            foreach (var day in leaveDays)
+            {
+                var daysSelected = Rts.Where(x =>
+                    x.RequestTypeID == day.Request.RequestType.RequestTypeID).Select(x => x.MaxDays).Sum();
+                if (combined.ContainsKey(day.Request.RequestType.Name))
+                {
+                    combined[day.Request.RequestType.Name] -= day.Days;
+                    continue;
+                }
+                combined.Add(day.Request.RequestType.Name, daysSelected - day.Days);
+            }
+
+            var result = new List<RemainingLeaveDaysDTO>();
+
+            foreach (var (key, value) in combined)
+            {
+                result.Add(new RemainingLeaveDaysDTO() {DaysLeft = value, LeaveType = key});
+            }
+
+            return result;
         }
     }
 }
