@@ -12,6 +12,7 @@ using Models.Models.API_Model_Tools;
 using TeamFury_API.Data;
 using TeamFury_API.Services.AdminServices;
 using TeamFury_API.Services.UserServices;
+using TeamFury_API.Services;
 
 namespace TeamFury_API.Endpoints;
 
@@ -239,5 +240,38 @@ public static class AdminEndpoints
             .Produces(204)
             .Produces(400)
             .WithName("DeleteRequestType");
+
+        app.MapPut("/api/admin/request/", async (IRequestService service, IMapper mapper,IValidator<RequestUpdateDTO> validator,
+            RequestUpdateDTO req_u_DTO) =>
+        {
+            try
+            {
+                ApiResponse response = new ApiResponse();
+                var validationResult = await validator.ValidateAsync(req_u_DTO);
+                if (!validationResult.IsValid)
+                {
+                    response.IsSuccess = false;
+                    response.Result = validationResult.Errors;
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    return Results.BadRequest(response);
+                }
+                var request = mapper.Map<Request>(req_u_DTO);
+                
+                var result = await service.UpdateAsync(request);
+
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Result = result;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+        .Produces<ApiResponse>(200)
+        .Produces(400)
+        .WithName("UpdateRequest");
     }
 }
