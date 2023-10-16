@@ -16,6 +16,7 @@ import { UserComponent } from './Components/user/user.component';
 import { LoginComponent } from './Components/login/login.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar'
 import { ErrorsStateMatcher } from './ErrorsStateMatcher';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function tokenGetter(){
   return sessionStorage.getItem("TOKEN_KEY");
@@ -35,10 +36,11 @@ export function tokenGetter(){
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["http://localhost:4200/"],
+        allowedDomains: ["http://localhost:4200/", "TeamFury.com"],
         disallowedRoutes: [],
       }
     })
