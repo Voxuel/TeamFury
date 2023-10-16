@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Models.DTOs;
 using Models.Models;
 using TeamFury_API.Data;
 using TeamFury_API.Endpoints;
@@ -39,17 +40,21 @@ namespace TeamFury_API
                                       policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
 								  });
 			});
-			builder.Services.AddScoped<IAuthService, AuthService>();
+			      builder.Services.AddScoped<IAuthService, AuthService>();
+
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<ILeaveDaysService, LeaveDaysService>();
+            builder.Services.AddScoped<IRequestService, RequestService>();
             builder.Services.AddAutoMapper(typeof(UserConfig));
+            builder.Services.AddAutoMapper(typeof(RequestConfig));
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
             #endregion
 
             #region Swagger Configuration.
-            
-			var securityScheme = new OpenApiSecurityScheme()
+
+            var securityScheme = new OpenApiSecurityScheme()
             {
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey,
