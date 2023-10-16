@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.RegularExpressions;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -36,6 +37,7 @@ namespace TeamFury_API
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddAutoMapper(typeof(UserConfig));
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
             #endregion
 
             #region Swagger Configuration.
