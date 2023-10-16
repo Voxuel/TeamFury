@@ -242,20 +242,13 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("DeleteRequestType");
 
-        app.MapPut("/api/admin/request/", async (IRequestService service, IMapper mapper,IValidator<RequestUpdateDTO> validator,
+        app.MapPut("/api/admin/request/", async (IRequestService service, IMapper mapper,
             RequestUpdateDTO req_u_DTO) =>
         {
             try
             {
                 ApiResponse response = new ApiResponse();
-                var validationResult = await validator.ValidateAsync(req_u_DTO);
-                if (!validationResult.IsValid)
-                {
-                    response.IsSuccess = false;
-                    response.Result = validationResult.Errors;
-                    response.StatusCode = HttpStatusCode.BadRequest;
-                    return Results.BadRequest(response);
-                }
+                
                 var request = mapper.Map<Request>(req_u_DTO);
                 
                 var result = await service.UpdateAsync(request);
@@ -270,7 +263,7 @@ public static class AdminEndpoints
 
                 return Results.BadRequest(e);
             }
-        }).RequireAuthorization("IsAdmin")
+        }).AllowAnonymous()
         .Produces<ApiResponse>(200)
         .Produces(400)
         .WithName("UpdateRequest");
