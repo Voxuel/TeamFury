@@ -129,7 +129,7 @@ public static class AdminEndpoints
             .WithName("UpdateEmployee");
 
         app.MapPost("/api/admin/request/", async
-                (IAdminService service, IMapper mapper, RequestTypeCreateDto rt_c_dto) =>
+                (IAdminService service, IMapper mapper, RequestTypeDto rt_c_dto) =>
             {
                 var response = new ApiResponse();
                 var requestType = mapper.Map<RequestType>(rt_c_dto);
@@ -147,10 +147,9 @@ public static class AdminEndpoints
                 response.Result = result;
                 return Results.Ok(response);
             }).RequireAuthorization("IsAdmin")
-            .Accepts<RequestTypeCreateDto>("application/json")
+            .Accepts<RequestTypeDto>("application/json")
             .Produces<ApiResponse>(200)
             .Produces(201)
             .WithName("CreateRequestType");
-
     }
 }

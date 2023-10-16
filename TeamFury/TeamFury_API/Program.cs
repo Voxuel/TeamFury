@@ -22,7 +22,8 @@ namespace TeamFury_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            
+            
             #region Service Container
 			builder.Services.AddDbContext<AppDbContext>(opt =>
 	            opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));

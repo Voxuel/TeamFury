@@ -130,6 +130,29 @@ public class AdminService : IAdminService
         return result.Entity;
     }
 
+    public async Task<RequestType> UpdateRequestTypeAsync(RequestType requestType)
+    {
+        var found = await _context.RequestTypes.FindAsync(requestType.RequestTypeID);
+        if (found == null) return null;
+
+        found.Name = requestType.Name;
+        found.MaxDays = requestType.MaxDays;
+
+        _context.RequestTypes.Update(found);
+        await _context.SaveChangesAsync();
+        return found;
+    }
+
+    public async Task<RequestType> DeleteRequestTypeAsync(RequestType requestType)
+    {
+        var found = await _context.RequestTypes.FindAsync(requestType.RequestTypeID);
+        if (found == null) return null;
+
+        _context.RequestTypes.Remove(found);
+        await _context.SaveChangesAsync();
+        return found;
+    }
+
     #endregion
     
     #region Overridden methods
