@@ -116,7 +116,7 @@ public class AdminService : IAdminService
     }
     #endregion
 
-    #region Request Commands
+    #region RequestType Commands
 
     public async Task<RequestType> CreateRequestTypeAsync(RequestType requestType)
     {
@@ -143,9 +143,9 @@ public class AdminService : IAdminService
         return found;
     }
 
-    public async Task<RequestType> DeleteRequestTypeAsync(RequestType requestType)
+    public async Task<RequestType> DeleteRequestTypeAsync(int id)
     {
-        var found = await _context.RequestTypes.FindAsync(requestType.RequestTypeID);
+        var found = await _context.RequestTypes.FindAsync(id);
         if (found == null) return null;
 
         _context.RequestTypes.Remove(found);
