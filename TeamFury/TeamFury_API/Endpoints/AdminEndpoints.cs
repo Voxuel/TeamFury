@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Runtime.CompilerServices;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -128,28 +129,115 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("UpdateEmployee");
 
-        app.MapPost("/api/admin/request/", async
-                (IAdminService service, IMapper mapper, RequestTypeDto rt_c_dto) =>
+        app.MapPost("/api/admin/type/", async
+                (IAdminService service, IValidator<RequestTypeDto> validator, IMapper mapper, RequestTypeDto rt_c_dto) =>
             {
-                var response = new ApiResponse();
-                var requestType = mapper.Map<RequestType>(rt_c_dto);
-                var result = await service.CreateRequestTypeAsync(requestType);
-                if (result == null)
+                try
                 {
-                    response.IsSuccess = false;
-                    response.ErrorMessages.Add("Request type already exists");
-                    response.StatusCode = HttpStatusCode.BadRequest;
-                    return Results.BadRequest(response);
+                    var response = new ApiResponse();
+                    var validResult = await validator.ValidateAsync(rt_c_dto);
+                    if (!validResult.IsValid)
+                    {
+                        response.IsSuccess = false;
+                        response.Result = validResult.Errors;
+                        response.StatusCode = HttpStatusCode.BadRequest;
+                        return Results.BadRequest(response);
+                    }
+                    var requestType = mapper.Map<RequestType>(rt_c_dto);
+                    var result = await service.CreateRequestTypeAsync(requestType);
+                    if (result == null)
+                    {
+                        response.IsSuccess = false;
+                        response.ErrorMessages.Add("Request type already exists");
+                        response.StatusCode = HttpStatusCode.BadRequest;
+                        return Results.BadRequest(response);
+                    }
+                    response.IsSuccess = true;
+                    response.StatusCode = HttpStatusCode.Created;
+                    response.Result = result;
+                    return Results.Ok(response);
                 }
-
-                response.IsSuccess = true;
-                response.StatusCode = HttpStatusCode.Created;
-                response.Result = result;
-                return Results.Ok(response);
+                catch (Exception e)
+                {
+                    return Results.BadRequest(e);
+                }
             }).RequireAuthorization("IsAdmin")
             .Accepts<RequestTypeDto>("application/json")
             .Produces<ApiResponse>(200)
             .Produces(201)
             .WithName("CreateRequestType");
+
+        app.MapPut("/api/admin/type/{id:int}", async
+            (IAdminService services, IValidator<RequestTypeDto> validator, IMapper mapper, RequestTypeDto rt_u_dto,
+                int id) =>
+        {
+            try
+            {
+                var response = new ApiResponse();
+                var validResult = await validator.ValidateAsync(rt_u_dto);
+                if (!validResult.IsValid)
+                {
+                    response.IsSuccess = false;
+                    response.Result = validResult.Errors;
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    return Results.BadRequest(response);
+                }
+                
+                var requestType = mapper.Map<RequestType>(rt_u_dto);
+                requestType.RequestTypeID = id;
+                var result = await services.UpdateRequestTypeAsync(requestType);
+                if (result == null)
+                {
+                    response.IsSuccess = false;
+                    response.ErrorMessages.Add("No request type with matching ID was found");
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    return Results.NotFound(response);
+                }
+                
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.NoContent;
+                response.Result = result;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+            .Accepts<RequestTypeDto>("application/json")
+            .Produces<ApiResponse>(200)
+            .Produces(204)
+            .Produces(400)
+            .WithName("UpdateRequestType");
+
+        app.MapDelete("/api/admin/type/{id:int}", async
+            (IAdminService services, int id) =>
+        {
+            try
+            {
+                var response = new ApiResponse();
+                var result = await services.DeleteRequestTypeAsync(id);
+                if (result == null)
+                {
+                    response.IsSuccess = false;
+                    response.ErrorMessages.Add("No request type with matching ID was found");
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    return Results.NotFound(response);
+                }
+
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.NoContent;
+                response.Result = result;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+            .Produces<ApiResponse>(200)
+            .Produces(204)
+            .Produces(400)
+            .WithName("DeleteRequestType");
     }
 }
