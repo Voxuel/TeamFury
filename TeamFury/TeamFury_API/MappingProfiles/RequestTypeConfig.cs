@@ -8,6 +8,9 @@ public class RequestTypeConfig : Profile
 {
     public RequestTypeConfig()
     {
+        CreateMap<RequestType, RemainingLeaveDaysDTO>().ForMember(dest => dest.LeaveType, opt => opt.MapFrom(src => src.Name))
+        .ForMember(dest => dest.DaysLeft, opt => opt.MapFrom(src => src.MaxDays));
+
         CreateMap<RequestType, RequestTypeDto>().ReverseMap();
     }
 }
