@@ -9,9 +9,9 @@ import { ProfileComponent } from './Components/profile/profile.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
-  {path: 'User', component: UserComponent, canActivate: [authGuard], data: {role: ['Employee']}},
-  {path: 'Admin',component: AdminComponent,canActivate: [authGuard], data: {role: ['Admin'] }},
-  {path: 'Profile', component:ProfileComponent, canActivate: [authGuard], data:{role:['Admin', 'Employee']}},
+  {path: 'User', component: UserComponent, canActivate: [authGuard], data: {role: ['EMPLOYEE']}},
+  {path: 'Admin',component: AdminComponent,canActivate: [authGuard], data: {role: ['ADMIN'] }},
+  {path: 'Profile', component:ProfileComponent, canActivate: [authGuard], data:{role:['ADMIN', 'EMPLOYEE']}},
   {path: '', redirectTo: 'login', pathMatch:'full'}
 ];
 
