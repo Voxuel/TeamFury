@@ -12,8 +12,8 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231012122722_initial_new_Db")]
-    partial class initial_new_Db
+    [Migration("20231017113958_Edited Request to allow nulls")]
+    partial class EditedRequesttoallownulls
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "1a13c784-d9fb-485a-9ae3-885b62e11638",
+                            ConcurrencyStamp = "7fcf1de8-1095-4a77-b55a-09002dea2484",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -279,14 +279,12 @@ namespace TeamFury_API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestID"), 1L, 1);
 
                     b.Property<string>("AdminName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MessageForDecline")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RequestLogID")
@@ -357,12 +355,12 @@ namespace TeamFury_API.Migrations
                         {
                             Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bc95dccc-86a4-4456-b02b-815cc88dece8",
+                            ConcurrencyStamp = "ab3c06f0-f542-49a8-8ea1-394953d572b9",
                             Email = "trolllovecookies@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ffb82038-8af3-4c1e-b120-5e64dc1bab96",
+                            SecurityStamp = "64fe5c96-38ef-48d8-9ad7-16f656810ec7",
                             TwoFactorEnabled = false,
                             UserName = "Admin1"
                         });

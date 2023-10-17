@@ -155,7 +155,8 @@ namespace TeamFury_API
             
             app.AddSecurityEndpoint();
             app.AdminEndpointConfig();
-            
+            app.RequestEndpointConfig();
+
             app.UseSwagger();
             app.UseSwaggerUI();
             app.Run();

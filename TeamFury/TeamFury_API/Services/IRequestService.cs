@@ -7,5 +7,7 @@ namespace TeamFury_API.Services
         Task<IEnumerable<Request>> GetRequestsByEmployeeID(string id);
         Task<Request> CreateAsync(Request toCreate, string id);
 
+        Task<RequestType> GetRequestTypeID(int id);
+
     }
 }

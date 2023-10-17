@@ -9,6 +9,7 @@ namespace TeamFury_API.MappingProfiles
         public RequestConfig()
         {
             CreateMap<Request, RequestUpdateDTO>().ReverseMap();
+            CreateMap<Request, RequestCreateDTO>().ReverseMap();
         }
     }
 }
