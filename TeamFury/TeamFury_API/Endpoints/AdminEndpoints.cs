@@ -41,6 +41,36 @@ public static class AdminEndpoints
         }).RequireAuthorization("IsAdmin")
             .Produces<ApiResponse>(200)
             .WithName("GetAllEmployees");
+
+        app.MapGet("/api/admin/employee/{id}", async
+            (IAdminService services, string id) =>
+        {
+            try
+            {
+                var response = new ApiResponse();
+                var result = await services.GetByIdAsync(id);
+                if (result == null)
+                {
+                    response.IsSuccess = false;
+                    response.ErrorMessages.Add("User not found");
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    return Results.NotFound(response);
+                }
+
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Result = result;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e);
+            }
+            
+        }).AllowAnonymous()
+            .Produces<ApiResponse>(200)
+            .Produces(400)
+            .WithName("GetSingleEmployee");
         
         app.MapPost("/api/admin/employee/", async
             (IAdminService services, IMapper mapper, UserCreateDTO user_c_dto) =>
