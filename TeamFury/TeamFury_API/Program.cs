@@ -41,13 +41,13 @@ namespace TeamFury_API
 								  });
 			});
 			      builder.Services.AddScoped<IAuthService, AuthService>();
-
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<ILeaveDaysService, LeaveDaysService>();
             builder.Services.AddScoped<IRequestService, RequestService>();
             builder.Services.AddAutoMapper(typeof(UserConfig));
             builder.Services.AddAutoMapper(typeof(RequestConfig));
+            builder.Services.AddAutoMapper(typeof(RequestTypeConfig));
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
             #endregion

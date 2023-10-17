@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Models;
@@ -10,17 +11,18 @@ namespace TeamFury_API.Services
     {
         private readonly AppDbContext _context;
         private readonly UserManager<User> _manager;
+        private readonly IMapper _mapper;
 
-
-        public LeaveDaysService(AppDbContext context, UserManager<User> manager)
+        public LeaveDaysService(AppDbContext context, UserManager<User> manager, IMapper mapper)
         {
             _context = context;
             _manager = manager;
+            _mapper = mapper;
         }
 
         public async Task<LeaveDays> CreateAsync(LeaveDays toCreate)
         {
-            var found = _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == toCreate.Request.RequestID);
+            var found = await _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == toCreate.Request.RequestID);
             if (found != null) return null;
             _context.Add(toCreate);
             await _context.SaveChangesAsync();
@@ -54,7 +56,7 @@ namespace TeamFury_API.Services
                 .Include(leaveDays => leaveDays.Request).ToListAsync();
             var allRequestTypes = await _context.RequestTypes.ToListAsync();
 
-            var result = CalculateLeaveDays(leavedaysForUser, allRequestTypes);
+            var result = CalculateLeaveDays(leavedaysForUser, allRequestTypes, _mapper);
             return result;
         }
 
@@ -78,7 +80,7 @@ namespace TeamFury_API.Services
         }
 
         private static IEnumerable<RemainingLeaveDaysDTO> CalculateLeaveDays
-            (List<LeaveDays> leaveDays, List<RequestType> Rts)
+            (List<LeaveDays> leaveDays, List<RequestType> Rts, IMapper mapper)
         {
             var combined = new Dictionary<string, int?>();
             foreach (var day in leaveDays)
@@ -93,10 +95,13 @@ namespace TeamFury_API.Services
                 combined.Add(day.Request.RequestType.Name, daysSelected - day.Days);
             }
 
-            var result = new List<RemainingLeaveDaysDTO>();
+            var result = mapper.Map<List<RemainingLeaveDaysDTO>>(Rts);
 
             foreach (var (key, value) in combined)
             {
+                RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.LeaveType == key);
+                if (found != null) result.Remove(found);
+
                 result.Add(new RemainingLeaveDaysDTO() {DaysLeft = value, LeaveType = key});
             }
 
