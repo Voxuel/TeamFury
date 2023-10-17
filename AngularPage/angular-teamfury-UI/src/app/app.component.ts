@@ -18,6 +18,7 @@ export class AppComponent {
   getUserName(){
     return this.authService.getUser();
   }
+
   signOut(){
     this.authService.signOut();
   }
