@@ -52,7 +52,6 @@ export class LoginComponent {
     if (this.form.valid) {
       this.userService.logIn(LoginInfo).subscribe({
         next: (data: any) => {
-          console.log(data)
           this.authService.saveToken(data);
           this.isLoginFailed = false;
           window.location.reload();
