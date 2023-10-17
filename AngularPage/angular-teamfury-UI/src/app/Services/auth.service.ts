@@ -40,7 +40,6 @@ export class AuthService {
     const jwtToken = this.getToken();
       const decodedToken: any = this.getToken() != null ? jwt_decode(jwtToken as string) : null;
       const userRole = decodedToken != null ? decodedToken?.role : null;
-      console.log(userRole);
     return userRole;
   }
   signOut(): void {
