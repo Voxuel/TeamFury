@@ -148,7 +148,7 @@ namespace TeamFury_API.Services
             }
 
             return result;
-            #endregion
         }
+            #endregion
     }
 }
