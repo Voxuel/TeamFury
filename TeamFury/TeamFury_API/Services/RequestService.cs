@@ -65,16 +65,21 @@ namespace TeamFury_API.Services
             var daysCheck = await _context.RequestTypes.FirstOrDefaultAsync(y =>
             y.RequestTypeID == toCreate.RequestType.RequestTypeID);
 
-            if (daysCheck.MaxDays - (Convert.ToInt32((toCreate.EndDate - toCreate.StartDate).TotalDays) + usedDays.Sum()) < 0)
-            {
-                Request req = new Request();
-                req.MessageForDecline = "Too many requested days.";
-                return req;
-            };
-            if (found != null) return null;
-            _context.Add(toCreate);
+            if (VerifyRequestTimeLimit(toCreate, daysCheck, usedDays, out var failedDaysCheck))
+                return failedDaysCheck;
             
+            if (found != null) return null;
+            
+            _context.Add(toCreate);
             await _context.SaveChangesAsync();
+            
+            await AddConnectionRequestEmployee(toCreate, id);
+            
+            return toCreate;
+        }
+
+        private async Task AddConnectionRequestEmployee(Request toCreate, string id)
+        {
             var x = await _context.Requests.FirstOrDefaultAsync(r => r.RequestSent == toCreate.RequestSent);
             var z = await _context.Users.FirstOrDefaultAsync(i => i.Id == id);
             LeaveDays newLeave = new LeaveDays();
@@ -82,9 +87,26 @@ namespace TeamFury_API.Services
             newLeave.Days = 0;
             newLeave.Request = x;
             _context.Add(newLeave);
-
             await _context.SaveChangesAsync();
-            return toCreate;
+        }
+
+        private static bool VerifyRequestTimeLimit
+            (Request toCreate, RequestType daysCheck, List<int> usedDays, out Request failedDaysCheck)
+        {
+            var time = (int)toCreate.StartDate.Subtract(toCreate.EndDate).TotalDays;
+            if (daysCheck.MaxDays - (time) + usedDays.Sum() < 0)
+            {
+                var req = new Request
+                {
+                    MessageForDecline = "Too many requested days."
+                };
+                {
+                    failedDaysCheck = req;
+                    return true;
+                }
+            }
+            failedDaysCheck = toCreate;
+            return false;
         }
 
         public async Task<RequestType> GetRequestTypeID(int id)
