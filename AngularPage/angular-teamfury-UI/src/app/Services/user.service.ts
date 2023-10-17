@@ -16,7 +16,6 @@ export class UserService extends DataService {
   }
 
   logIn(data: {username:string, password:string}):Observable<any>{
-    console.log(data)
-    return this.httpPrivate.post(APIUrlAuth, data)
+        return this.httpPrivate.post(APIUrlAuth, data)
   }
 }
