@@ -60,11 +60,31 @@ namespace TeamFury_API.Services
             var daysCheck = await _context.RequestTypes.FirstOrDefaultAsync(y =>
             y.RequestTypeID == toCreate.RequestType.RequestTypeID);
 
-            if (daysCheck.MaxDays - (Convert.ToInt32((toCreate.EndDate - toCreate.StartDate).TotalDays) + usedDays.Sum()) < 0) return null;
+            if (daysCheck.MaxDays - (Convert.ToInt32((toCreate.EndDate - toCreate.StartDate).TotalDays) + usedDays.Sum()) < 0)
+            {
+                Request req = new Request();
+                req.MessageForDecline = "Too many requested days.";
+                return req;
+            };
             if (found != null) return null;
             _context.Add(toCreate);
+            
+            await _context.SaveChangesAsync();
+            var x = await _context.Requests.FirstOrDefaultAsync(r => r.RequestSent == toCreate.RequestSent);
+            var z = await _context.Users.FirstOrDefaultAsync(i => i.Id == id);
+            LeaveDays newLeave = new LeaveDays();
+            newLeave.IdentityUser = z;
+            newLeave.Days = 0;
+            newLeave.Request = x;
+            _context.Add(newLeave);
+
             await _context.SaveChangesAsync();
             return toCreate;
+        }
+
+        public async Task<RequestType> GetRequestTypeID(int id)
+        {
+            return await _context.RequestTypes.FindAsync(id);
         }
 
         public async Task<IEnumerable<Request>> GetRequestsByEmployeeID(string id)
