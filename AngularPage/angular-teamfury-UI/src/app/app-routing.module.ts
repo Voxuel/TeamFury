@@ -5,11 +5,13 @@ import { SecureInnerPagesGuard } from './Guards/secure-inner-pages.guard';
 import { UserComponent } from './Components/user/user.component';
 import { authGuard } from './Guards/auth.guard';
 import { AdminComponent } from './Components/admin/admin.component';
+import { ProfileComponent } from './Components/profile/profile.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
   {path: 'User', component: UserComponent, canActivate: [authGuard], data: {role: ['Employee']}},
   {path: 'Admin',component: AdminComponent,canActivate: [authGuard], data: {role: ['Admin'] }},
+  {path: 'Profile', component:ProfileComponent, canActivate: [authGuard], data:{role:['Admin', 'Employee']}},
   {path: '', redirectTo: 'login', pathMatch:'full'}
 ];
 
