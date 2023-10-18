@@ -1,19 +1,13 @@
-﻿using System.Net;
-using System.Runtime.CompilerServices;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTOs;
 using Models.Models;
 using Models.Models.API_Model_Tools;
-using TeamFury_API.Data;
+using System.Net;
 using TeamFury_API.Services;
 using TeamFury_API.Services.AdminServices;
-using TeamFury_API.Services.UserServices;
-using TeamFury_API.Services;
 
 namespace TeamFury_API.Endpoints;
 
@@ -41,6 +35,7 @@ public static class AdminEndpoints
         }).RequireAuthorization("IsAdmin")
             .Produces<ApiResponse>(200)
             .WithName("GetAllEmployees");
+
 
         app.MapGet("/api/admin/employee/{id}", async
             (IAdminService services, string id) =>
@@ -72,6 +67,7 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("GetSingleEmployee");
         
+
         app.MapPost("/api/admin/employee/", async
             (IAdminService services, IMapper mapper, UserCreateDTO user_c_dto) =>
         {
@@ -214,7 +210,7 @@ public static class AdminEndpoints
                     response.StatusCode = HttpStatusCode.BadRequest;
                     return Results.BadRequest(response);
                 }
-                
+
                 var requestType = mapper.Map<RequestType>(rt_u_dto);
                 requestType.RequestTypeID = id;
                 var result = await services.UpdateRequestTypeAsync(requestType);
@@ -225,7 +221,7 @@ public static class AdminEndpoints
                     response.StatusCode = HttpStatusCode.NotFound;
                     return Results.NotFound(response);
                 }
-                
+
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.NoContent;
                 response.Result = result;
@@ -279,9 +275,9 @@ public static class AdminEndpoints
             try
             {
                 ApiResponse response = new ApiResponse();
-                
+
                 var request = mapper.Map<Request>(req_u_DTO);
-                
+
                 var result = await service.UpdateAsync(request);
                 if (result == null)
                 {
@@ -307,5 +303,26 @@ public static class AdminEndpoints
         .Produces<ApiResponse>(200)
         .Produces(400)
         .WithName("UpdateRequest");
+
+        app.MapGet("/api/admin/leavedays/totalused", async (ILeaveDaysService repo) =>
+        {
+            try
+            {
+                ApiResponse response = new();
+                var result = await repo.GetLeaveDaysUsed();
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Result = result;
+                return Results.Ok(response);
+
+            }
+            catch (Exception e)
+            {
+
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+        .Produces<ApiResponse>(200)
+        .WithName("GetTotalLeaveDaysUsed");
     }
 }
