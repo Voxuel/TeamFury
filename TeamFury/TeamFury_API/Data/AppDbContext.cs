@@ -21,6 +21,16 @@ namespace TeamFury_API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.Entity<IdentityRole>().HasData(new List<IdentityRole>()
+            {
+                new IdentityRole()
+                {
+                    Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                }
+            });
         }
     }
 }

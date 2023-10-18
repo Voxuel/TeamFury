@@ -31,14 +31,17 @@ namespace TeamFury_API
 
             builder.Services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+            
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("default",
                     policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
             });
+            
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IAdminService, AdminService>();
@@ -47,6 +50,7 @@ namespace TeamFury_API
             builder.Services.AddAutoMapper(typeof(UserConfig));
             builder.Services.AddAutoMapper(typeof(RequestConfig));
             builder.Services.AddAutoMapper(typeof(RequestTypeConfig));
+            builder.Services.AddAutoMapper(typeof(RequestLogConfig));
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
             #endregion

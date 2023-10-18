@@ -20,7 +20,7 @@ namespace TeamFury_API.Services
         }
         public async Task<IEnumerable<Request>> GetAll()
         {
-            return await _context.Requests.ToListAsync();
+            return await _context.Requests.Include(rt =>  rt.RequestType).ToListAsync();
         }
 
         public async Task<Request> GetByID(int id)

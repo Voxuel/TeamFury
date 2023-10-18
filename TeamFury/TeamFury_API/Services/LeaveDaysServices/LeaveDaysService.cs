@@ -61,7 +61,7 @@ namespace TeamFury_API.Services
         public async Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(Request days)
         {
             var daysLeft = await _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == days.RequestID);
-            int daysOff = Convert.ToInt32((days.EndDate - days.StartDate).TotalDays);
+            var daysOff = (int)days.EndDate.Subtract(days.StartDate).TotalDays;
             daysLeft.Days += daysOff;
             _context.Update(daysLeft);
             await _context.SaveChangesAsync();
