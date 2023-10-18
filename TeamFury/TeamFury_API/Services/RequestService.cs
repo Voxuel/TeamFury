@@ -105,7 +105,8 @@ namespace TeamFury_API.Services
                     return true;
                 }
             }
-            failedDaysCheck = toCreate;
+
+            failedDaysCheck = new Request();
             return false;
         }
 
