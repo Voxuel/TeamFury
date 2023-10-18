@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Models.Models;
 using TeamFury_API.Data;
 
@@ -8,11 +10,13 @@ namespace TeamFury_API.Services
     {
 
         private readonly AppDbContext _context;
+        private readonly UserManager<User> _manager;
 
 
-        public RequestService(AppDbContext context)
+        public RequestService(AppDbContext context, UserManager<User> manager)
         {
             _context = context;
+            _manager = manager;
         }
         public async Task<IEnumerable<Request>> GetAll()
         {
@@ -27,12 +31,13 @@ namespace TeamFury_API.Services
         {
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
-            // if (newUpdate.StatusRequest == StatusRequest.Accepted && found.StatusRequest != StatusRequest.Accepted)
-            // {
-            //     LeaveDaysService leaveDays = new();
-            //     await leaveDays.UpdateLeaveDaysOnAprovedRequest(newUpdate);
-            // }
-            _context.Update(newUpdate);
+            if (found.StatusRequest == StatusRequest.Accepted && newUpdate.StatusRequest != StatusRequest.Accepted)
+            {
+                return null;
+            }
+            found.StatusRequest = newUpdate.StatusRequest;
+            found.MessageForDecline = newUpdate.MessageForDecline;
+            _context.Update(found);
             await _context.SaveChangesAsync();
             return found;
         }
@@ -60,16 +65,21 @@ namespace TeamFury_API.Services
             var daysCheck = await _context.RequestTypes.FirstOrDefaultAsync(y =>
             y.RequestTypeID == toCreate.RequestType.RequestTypeID);
 
-            if (daysCheck.MaxDays - (Convert.ToInt32((toCreate.EndDate - toCreate.StartDate).TotalDays) + usedDays.Sum()) < 0)
-            {
-                Request req = new Request();
-                req.MessageForDecline = "Too many requested days.";
-                return req;
-            };
-            if (found != null) return null;
-            _context.Add(toCreate);
+            if (VerifyRequestTimeLimit(toCreate, daysCheck, usedDays, out var failedDaysCheck))
+                return failedDaysCheck;
             
+            if (found != null) return null;
+            
+            _context.Add(toCreate);
             await _context.SaveChangesAsync();
+            
+            await AddConnectionRequestEmployee(toCreate, id);
+            
+            return toCreate;
+        }
+
+        private async Task AddConnectionRequestEmployee(Request toCreate, string id)
+        {
             var x = await _context.Requests.FirstOrDefaultAsync(r => r.RequestSent == toCreate.RequestSent);
             var z = await _context.Users.FirstOrDefaultAsync(i => i.Id == id);
             LeaveDays newLeave = new LeaveDays();
@@ -77,9 +87,26 @@ namespace TeamFury_API.Services
             newLeave.Days = 0;
             newLeave.Request = x;
             _context.Add(newLeave);
-
             await _context.SaveChangesAsync();
-            return toCreate;
+        }
+
+        private static bool VerifyRequestTimeLimit
+            (Request toCreate, RequestType daysCheck, List<int> usedDays, out Request failedDaysCheck)
+        {
+            var time = (int)toCreate.EndDate.Subtract(toCreate.StartDate).TotalDays;
+            if (daysCheck.MaxDays - (time) + usedDays.Sum() < 0)
+            {
+                var req = new Request
+                {
+                    MessageForDecline = "Too many requested days."
+                };
+                {
+                    failedDaysCheck = req;
+                    return true;
+                }
+            }
+            failedDaysCheck = toCreate;
+            return false;
         }
 
         public async Task<RequestType> GetRequestTypeID(int id)
@@ -89,7 +116,35 @@ namespace TeamFury_API.Services
 
         public async Task<IEnumerable<Request>> GetRequestsByEmployeeID(string id)
         {
-            return await _context.LeaveDays.Where(x => x.IdentityUser.Id == id).Select(x => x.Request).ToListAsync();
+            return await _context.LeaveDays.Where(x =>
+                x.IdentityUser.Id == id).Select(x => x.Request).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Request>> GetAllLogs(string id)
+        {
+            var user = await _manager.FindByIdAsync(id);
+            
+            var requests = await _context.LeaveDays.Where(l =>
+                l.IdentityUser == user).Include(rt =>
+                rt.Request.RequestType).Select(r => r.Request).ToListAsync();
+            
+            var logs = await _context.RequestLogs.Include(requestLog =>
+                requestLog.Request).ToListAsync();
+
+            var RQLs = logs.Where(x =>
+                (requests.Any(y => y.RequestID == x.Request.RequestID)));
+
+            var result = RQLs.Select(r => r.Request);
+
+            return result;
+        }
+        
+        public async Task<RequestLog> AddRequestToLog(Request request)
+        {
+            var log = new RequestLog() {Request = request};
+            _context.RequestLogs.Add(log);
+            await _context.SaveChangesAsync();
+            return log;
         }
 
         #region Overidden Methods

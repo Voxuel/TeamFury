@@ -9,6 +9,7 @@ namespace Models.DTOs
 {
     public class RequestUpdateDTO
     {
+        public int RequestID { get; set; }
         public string MessageForDecline { get; set; }
         public StatusRequest StatusRequest { get; set; }
     }

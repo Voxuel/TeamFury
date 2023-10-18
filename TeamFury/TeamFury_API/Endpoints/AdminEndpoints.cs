@@ -272,7 +272,8 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("DeleteRequestType");
 
-        app.MapPut("/api/admin/request/", async (IRequestService service, IMapper mapper,
+        app.MapPut("/api/admin/request/", async
+            (IRequestService service,ILeaveDaysService leaveDays, IMapper mapper,
             RequestUpdateDTO req_u_DTO) =>
         {
             try
@@ -282,6 +283,15 @@ public static class AdminEndpoints
                 var request = mapper.Map<Request>(req_u_DTO);
                 
                 var result = await service.UpdateAsync(request);
+                if (result == null)
+                {
+                    response.ErrorMessages.Add("Already approved");
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    response.IsSuccess = false;
+                    return Results.BadRequest(response);
+                }
+                await leaveDays.UpdateLeaveDaysOnAprovedRequest(request);
+                await service.AddRequestToLog(result);
 
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;

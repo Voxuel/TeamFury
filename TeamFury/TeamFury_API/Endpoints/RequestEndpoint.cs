@@ -122,11 +122,42 @@ namespace TeamFury_API.Endpoints
                     {
                         return Results.BadRequest(e);
                     }
-                }).AllowAnonymous()
+
+                    response.IsSuccess = true;
+                    response.Result = result;
+                    response.StatusCode = HttpStatusCode.OK;
+                    return Results.Ok(response);
+                }
+
+            }).AllowAnonymous()
+            .Produces<ApiResponse>(200)
+            .Produces(201)
+            .Accepts<RequestCreateDTO>("application/json")
+            .WithName("CreateRequest");
+
+            app.MapGet("/api/request/log/", async
+                (IRequestService service, IMapper mapper, string EmpId) =>
+            {
+                try
+                {
+                    var response = new ApiResponse();
+                    var result = await service.GetAllLogs(EmpId);
+                    var logDtos = mapper.Map<IEnumerable<RequestLogEntityDTO>>(result);
+                    if (!result.Any()) return Results.Ok();
+                    
+                    response.Result = logDtos;
+                    response.IsSuccess = true;
+                    response.StatusCode = HttpStatusCode.OK;
+                    return Results.Ok(response);
+                }
+                catch (Exception e)
+                {
+                    return Results.BadRequest(e);
+                }
+            }).AllowAnonymous()
                 .Produces<ApiResponse>(200)
-                .Produces(201)
-                .Accepts<RequestCreateDTO>("application/json")
-                .WithName("CreateRequest");
+                .WithName("GetAllRequestLogs");
+
         }
     }
 }
