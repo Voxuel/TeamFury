@@ -93,7 +93,7 @@ namespace TeamFury_API.Services
         private static bool VerifyRequestTimeLimit
             (Request toCreate, RequestType daysCheck, List<int> usedDays, out Request failedDaysCheck)
         {
-            var time = (int)toCreate.StartDate.Subtract(toCreate.EndDate).TotalDays;
+            var time = (int)toCreate.EndDate.Subtract(toCreate.StartDate).TotalDays;
             if (daysCheck.MaxDays - (time) + usedDays.Sum() < 0)
             {
                 var req = new Request
