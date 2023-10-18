@@ -38,12 +38,14 @@ public class AuthService : IAuthService
         var userRoles = await _userManager.GetRolesAsync(user);
         var authClaims = new List<Claim>
         {
-            new Claim("Id", Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new("Id", Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new(JwtRegisteredClaimNames.Name, user.UserName),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         
-        authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+        authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role.ToUpper())));
 
         var token = GenerateToken(authClaims);
 

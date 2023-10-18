@@ -4,7 +4,7 @@
 
 namespace TeamFury_API.Migrations
 {
-    public partial class init : Migration
+    public partial class refactor_requestEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,14 +13,14 @@ namespace TeamFury_API.Migrations
                 keyColumn: "Id",
                 keyValue: "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
                 column: "ConcurrencyStamp",
-                value: "92e6a805-bda3-4acf-99db-a8c8ab2fdac6");
+                value: "2ec2cf8b-657e-4609-bf00-c1ea06521be0");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "6cef773a-6124-4182-a8ad-3567cd037ea7",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "d012fff9-f9db-4b7f-a62d-3ced22e8cce9", "ef8667b7-2234-4ad4-b278-cb8a054d8f9d" });
+                values: new object[] { "91bf57ad-cd68-4fb5-a690-05918d1e0552", "b875b79f-a17d-483a-9f70-1e8c1abd6873" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -30,14 +30,14 @@ namespace TeamFury_API.Migrations
                 keyColumn: "Id",
                 keyValue: "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
                 column: "ConcurrencyStamp",
-                value: "1a13c784-d9fb-485a-9ae3-885b62e11638");
+                value: "d30393e1-079b-443e-8f15-c0d1b2a4a7b4");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "6cef773a-6124-4182-a8ad-3567cd037ea7",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "bc95dccc-86a4-4456-b02b-815cc88dece8", "ffb82038-8af3-4c1e-b120-5e64dc1bab96" });
+                values: new object[] { "b2b84999-c2cb-4aab-99db-6cb20d504021", "e6dcc96f-5b60-4201-b3b3-3db4e15f1516" });
         }
     }
 }

@@ -10,7 +10,6 @@ namespace TeamFury_API.Services.AdminServices;
 
 public class AdminService : IAdminService
 {
-    
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly AppDbContext _context;
@@ -67,7 +66,6 @@ public class AdminService : IAdminService
         found.NormalizedUserName = newUpdate.Email.ToUpper();
         found.PhoneNumber = newUpdate.PhoneNumber;
         
-        
         await _userManager.UpdateAsync(found);
 
         return found;
@@ -92,11 +90,11 @@ public class AdminService : IAdminService
     /// Creates a new entity and adds it to the database of type Employee / <see cref="User"/>
     /// </summary>
     /// <param name="user">Object to create</param>
+    /// <param name="role">User Role for the created user</param>
     /// <returns>Task of type: <see cref="User"/></returns>
     public async Task<User> CreateAsync(User user, string role)
     {
         var userFound = await _userManager.FindByNameAsync(user.UserName);
-
         if (userFound != null) return null;
         
         user.SecurityStamp = Guid.NewGuid().ToString();

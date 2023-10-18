@@ -25,22 +25,21 @@ namespace TeamFury_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
-            
+
+
             #region Service Container
-			builder.Services.AddDbContext<AppDbContext>(opt =>
-	            opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+            builder.Services.AddDbContext<AppDbContext>(opt =>
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-			builder.Services.AddCors(options =>
-			{
-				options.AddPolicy("default", policy =>
-								  {
-                                      policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
-								  });
-			});
-			      builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("default",
+                    policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
+            });
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<ILeaveDaysService, LeaveDaysService>();
@@ -82,18 +81,19 @@ namespace TeamFury_API
                 Version = "v1",
                 Title = "Minimal API - JWT Authentication with Swagger"
             };
-            
-			builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(o =>
             {
                 o.SwaggerDoc("v1", info);
                 o.AddSecurityDefinition("Bearer", securityScheme);
                 o.AddSecurityRequirement(securityReq);
             });
+
             #endregion
-            
+
             #region Authentication/Authorization options.
-            
+
             builder.Services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -116,16 +116,14 @@ namespace TeamFury_API
 
             builder.Services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("IsAdmin", policy =>
-                {
-                    policy.RequireRole("admin");
-                });
+                opt.AddPolicy("IsAdmin", policy => { policy.RequireRole("ADMIN"); });
             });
+
             #endregion
 
-            
+
             #region Identity requirments config.
-            
+
             builder.Services.Configure<IdentityOptions>(options =>
             {
                 //Password Settings
@@ -143,8 +141,9 @@ namespace TeamFury_API
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@";
                 options.User.RequireUniqueEmail = true;
             });
+
             #endregion
-            
+
             // Build to app.
             var app = builder.Build();
 
@@ -152,10 +151,11 @@ namespace TeamFury_API
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.AddSecurityEndpoint();
             app.AdminEndpointConfig();
-            
+            app.RequestEndpointConfig();
+
             app.UseSwagger();
             app.UseSwaggerUI();
             app.Run();

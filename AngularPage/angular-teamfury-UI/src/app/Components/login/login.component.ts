@@ -30,7 +30,7 @@ export class LoginComponent {
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [
       Validators.required,
-      Validators.minLength(8),
+      Validators.minLength(5),
     ]),
   });
 
@@ -52,7 +52,6 @@ export class LoginComponent {
     if (this.form.valid) {
       this.userService.logIn(LoginInfo).subscribe({
         next: (data: any) => {
-          console.log(data)
           this.authService.saveToken(data);
           this.isLoginFailed = false;
           window.location.reload();
@@ -64,7 +63,7 @@ export class LoginComponent {
         },
       });
     } else {
-      this._snackBar.open('Enter a valid informations !!!', '❌');
+      this._snackBar.open('Enter valid information!', '❌');
     }
   }
 }

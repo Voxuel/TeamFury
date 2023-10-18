@@ -1,0 +1,14 @@
+<div class="navbar" *ngIf="isLoggedIn">
+    <div class="title">
+        <h1>{{title}}</h1>
+    </div>
+    <div class="navmenu">
+        <nav>
+            <p>welcome {{getUserName()}}</p>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'EMPLOYEE'"><a routerLink="/User" class="nav_menu_link">Employee</a></button>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/Admin" class="nav_menu_link" >Admin</a></button>
+            <button routerLinkActive="active"><a routerLink="/Profile" class="nav_menu_link" >Profile</a></button>
+            <button><a (click)="signOut()" class="nav_menu_link">LogOut</a></button>
+        </nav>
+    </div>
+</div>

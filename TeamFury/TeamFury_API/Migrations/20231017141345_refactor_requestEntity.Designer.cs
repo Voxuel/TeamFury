@@ -12,8 +12,8 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231013135712_initialLaptopCreate")]
-    partial class initialLaptopCreate
+    [Migration("20231017141345_refactor_requestEntity")]
+    partial class refactor_requestEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "2437742a-151c-44ff-bf62-3e8a95bde147",
+                            ConcurrencyStamp = "2ec2cf8b-657e-4609-bf00-c1ea06521be0",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         });
@@ -289,9 +289,6 @@ namespace TeamFury_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RequestLogID")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("RequestSent")
                         .HasColumnType("datetime2");
 
@@ -306,8 +303,6 @@ namespace TeamFury_API.Migrations
 
                     b.HasKey("RequestID");
 
-                    b.HasIndex("RequestLogID");
-
                     b.HasIndex("RequestTypeID");
 
                     b.ToTable("Requests");
@@ -321,7 +316,12 @@ namespace TeamFury_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestLogID"), 1L, 1);
 
+                    b.Property<int>("RequestID")
+                        .HasColumnType("int");
+
                     b.HasKey("RequestLogID");
+
+                    b.HasIndex("RequestID");
 
                     b.ToTable("RequestLogs");
                 });
@@ -357,12 +357,12 @@ namespace TeamFury_API.Migrations
                         {
                             Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e38fa870-d693-4785-a18f-19a444eaf090",
+                            ConcurrencyStamp = "91bf57ad-cd68-4fb5-a690-05918d1e0552",
                             Email = "trolllovecookies@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9a0e4d5e-3f13-4d70-8975-b57398fed3ff",
+                            SecurityStamp = "b875b79f-a17d-483a-9f70-1e8c1abd6873",
                             TwoFactorEnabled = false,
                             UserName = "Admin1"
                         });
@@ -438,10 +438,6 @@ namespace TeamFury_API.Migrations
 
             modelBuilder.Entity("Models.Models.Request", b =>
                 {
-                    b.HasOne("Models.Models.RequestLog", null)
-                        .WithMany("Requests")
-                        .HasForeignKey("RequestLogID");
-
                     b.HasOne("Models.Models.RequestType", "RequestType")
                         .WithMany()
                         .HasForeignKey("RequestTypeID")
@@ -453,7 +449,13 @@ namespace TeamFury_API.Migrations
 
             modelBuilder.Entity("Models.Models.RequestLog", b =>
                 {
-                    b.Navigation("Requests");
+                    b.HasOne("Models.Models.Request", "Request")
+                        .WithMany()
+                        .HasForeignKey("RequestID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Request");
                 });
 #pragma warning restore 612, 618
         }

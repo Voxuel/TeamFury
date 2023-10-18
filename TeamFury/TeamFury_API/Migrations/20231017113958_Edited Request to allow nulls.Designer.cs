@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeamFury_API.Data;
 
@@ -11,9 +12,10 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231017113958_Edited Request to allow nulls")]
+    partial class EditedRequesttoallownulls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +49,15 @@ namespace TeamFury_API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
+                            ConcurrencyStamp = "7fcf1de8-1095-4a77-b55a-09002dea2484",
+                            Name = "admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -205,6 +216,13 @@ namespace TeamFury_API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "6cef773a-6124-4182-a8ad-3567cd037ea7",
+                            RoleId = "6c9cfbde-730a-4217-93ea-6d8fba1ee541"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -269,6 +287,9 @@ namespace TeamFury_API.Migrations
                     b.Property<string>("MessageForDecline")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RequestLogID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("RequestSent")
                         .HasColumnType("datetime2");
 
@@ -283,6 +304,8 @@ namespace TeamFury_API.Migrations
 
                     b.HasKey("RequestID");
 
+                    b.HasIndex("RequestLogID");
+
                     b.HasIndex("RequestTypeID");
 
                     b.ToTable("Requests");
@@ -296,12 +319,7 @@ namespace TeamFury_API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestLogID"), 1L, 1);
 
-                    b.Property<int>("RequestID")
-                        .HasColumnType("int");
-
                     b.HasKey("RequestLogID");
-
-                    b.HasIndex("RequestID");
 
                     b.ToTable("RequestLogs");
                 });
@@ -331,6 +349,21 @@ namespace TeamFury_API.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ab3c06f0-f542-49a8-8ea1-394953d572b9",
+                            Email = "trolllovecookies@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "64fe5c96-38ef-48d8-9ad7-16f656810ec7",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin1"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -403,6 +436,10 @@ namespace TeamFury_API.Migrations
 
             modelBuilder.Entity("Models.Models.Request", b =>
                 {
+                    b.HasOne("Models.Models.RequestLog", null)
+                        .WithMany("Requests")
+                        .HasForeignKey("RequestLogID");
+
                     b.HasOne("Models.Models.RequestType", "RequestType")
                         .WithMany()
                         .HasForeignKey("RequestTypeID")
@@ -414,13 +451,7 @@ namespace TeamFury_API.Migrations
 
             modelBuilder.Entity("Models.Models.RequestLog", b =>
                 {
-                    b.HasOne("Models.Models.Request", "Request")
-                        .WithMany()
-                        .HasForeignKey("RequestID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Request");
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }
