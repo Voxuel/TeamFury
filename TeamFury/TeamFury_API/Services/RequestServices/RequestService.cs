@@ -31,6 +31,7 @@ namespace TeamFury_API.Services
         {
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
+
             if (found.StatusRequest == StatusRequest.Accepted && newUpdate.StatusRequest != StatusRequest.Accepted)
             {
                 return null;
@@ -38,6 +39,7 @@ namespace TeamFury_API.Services
             found.StatusRequest = newUpdate.StatusRequest;
             found.MessageForDecline = newUpdate.MessageForDecline;
             _context.Update(found);
+
             await _context.SaveChangesAsync();
             return found;
         }
@@ -143,6 +145,14 @@ namespace TeamFury_API.Services
         public async Task<RequestLog> AddRequestToLog(Request request)
         {
             var log = new RequestLog() {Request = request};
+            var found = await _context.RequestLogs.FirstOrDefaultAsync(x =>
+            x.Request.RequestID == log.Request.RequestID);
+            if (found != null)
+            {
+                _context.RequestLogs.Update(found);
+                await _context.SaveChangesAsync();
+                return log;
+            }
             _context.RequestLogs.Add(log);
             await _context.SaveChangesAsync();
             return log;

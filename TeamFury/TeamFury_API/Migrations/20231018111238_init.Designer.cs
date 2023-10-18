@@ -12,8 +12,8 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231017131318_refactor_requestLog")]
-    partial class refactor_requestLog
+    [Migration("20231018111238_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,15 +49,6 @@ namespace TeamFury_API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "d30393e1-079b-443e-8f15-c0d1b2a4a7b4",
-                            Name = "admin",
-                            NormalizedName = "ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -216,13 +207,6 @@ namespace TeamFury_API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "6cef773a-6124-4182-a8ad-3567cd037ea7",
-                            RoleId = "6c9cfbde-730a-4217-93ea-6d8fba1ee541"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -279,14 +263,12 @@ namespace TeamFury_API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestID"), 1L, 1);
 
                     b.Property<string>("AdminName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MessageForDecline")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RequestSent")
@@ -351,21 +333,6 @@ namespace TeamFury_API.Migrations
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.HasDiscriminator().HasValue("User");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "6cef773a-6124-4182-a8ad-3567cd037ea7",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "b2b84999-c2cb-4aab-99db-6cb20d504021",
-                            Email = "trolllovecookies@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "e6dcc96f-5b60-4201-b3b3-3db4e15f1516",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin1"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
