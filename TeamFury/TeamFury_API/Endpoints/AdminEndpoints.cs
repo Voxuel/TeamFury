@@ -278,7 +278,7 @@ public static class AdminEndpoints
         {
             try
             {
-                ApiResponse response = new ApiResponse();
+                var response = new ApiResponse();
                 
                 var request = mapper.Map<Request>(req_u_DTO);
                 
