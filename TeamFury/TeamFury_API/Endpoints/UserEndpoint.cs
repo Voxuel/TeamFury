@@ -10,72 +10,11 @@ using TeamFury_API.Services;
 
 namespace TeamFury_API.Endpoints
 {
-    public static class RequestEndpoint
+    public static class UserEndpoint
     {
-        public static void RequestEndpointConfig(this IEndpointRouteBuilder app)
+        public static void UserEndpointConfig(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/request", async
-                    (IRequestService service) =>
-                {
-                    try
-                    {
-                        var response = new ApiResponse();
-                        var result = await service.GetAll();
-
-                        response.Result = result;
-                        response.IsSuccess = true;
-                        response.StatusCode = HttpStatusCode.OK;
-                        return Results.Ok(response);
-                    }
-                    catch (Exception e)
-                    {
-                        return Results.BadRequest(e);
-                    }
-                }).RequireAuthorization("IsAdmin")
-                .Produces<ApiResponse>(200)
-                .WithName("GetAllRequests");
-
-            app.MapGet("/api/request/{id:int}", async
-                    (IRequestService service, int id) =>
-                {
-                    try
-                    {
-                        var response = new ApiResponse();
-                        var result = await service.GetByID(id);
-
-                        response.Result = result;
-                        response.IsSuccess = true;
-                        response.StatusCode = HttpStatusCode.OK;
-                        return Results.Ok(response);
-                    }
-                    catch (Exception e)
-                    {
-                        return Results.BadRequest(e);
-                    }
-                }).AllowAnonymous()
-                .WithName("GetRequestByID");
-
-            app.MapDelete("/api/request/", async
-                    (IRequestService service, int id) =>
-                {
-                    try
-                    {
-                        var response = new ApiResponse();
-                        var result = await service.DeleteAsync(id);
-
-                        response.Result = result;
-                        response.IsSuccess = true;
-                        response.StatusCode = HttpStatusCode.OK;
-                        return Results.Ok(response);
-                    }
-                    catch (Exception e)
-                    {
-                        return Results.BadRequest(e);
-                    }
-                }).WithName("DeleteRequest")
-                .Produces(204);
-
-            app.MapPost("/api/request/", async
+            app.MapPost("/api/user/request/", async
                 (IRequestService service, IMapper mapper, IValidator<RequestCreateDTO> validator,
                     RequestCreateDTO req_c_DTO, string id) =>
                 {
@@ -128,8 +67,8 @@ namespace TeamFury_API.Endpoints
                 .Accepts<RequestCreateDTO>("application/json")
                 .WithName("CreateRequest");
 
-            app.MapGet("/api/request/log/", async
-                    (IRequestService service, IMapper mapper, string EmpId) =>
+            app.MapGet("/api/user/request/log/",
+                async (IRequestService service, IMapper mapper, string EmpId) =>
                 {
                     try
                     {
