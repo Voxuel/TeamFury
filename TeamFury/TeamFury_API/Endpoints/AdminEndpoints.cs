@@ -36,6 +36,7 @@ public static class AdminEndpoints
             .Produces<ApiResponse>(200)
             .WithName("GetAllEmployees");
 
+
         app.MapGet("/api/admin/request", async
                 (IRequestService service) =>
         {
@@ -56,6 +57,8 @@ public static class AdminEndpoints
         }).RequireAuthorization("IsAdmin")
             .Produces<ApiResponse>(200)
             .WithName("GetAllRequests");
+        
+
 
         app.MapPost("/api/admin/employee/", async
             (IAdminService services, IMapper mapper, UserCreateDTO user_c_dto) =>
@@ -295,5 +298,26 @@ public static class AdminEndpoints
         .Produces<ApiResponse>(200)
         .Produces(400)
         .WithName("UpdateRequest");
+
+        app.MapGet("/api/admin/leavedays/totalused", async (ILeaveDaysService repo) =>
+        {
+            try
+            {
+                ApiResponse response = new();
+                var result = await repo.GetLeaveDaysUsed();
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Result = result;
+                return Results.Ok(response);
+
+            }
+            catch (Exception e)
+            {
+
+                return Results.BadRequest(e);
+            }
+        }).RequireAuthorization("IsAdmin")
+        .Produces<ApiResponse>(200)
+        .WithName("GetTotalLeaveDaysUsed");
     }
 }
