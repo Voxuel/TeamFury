@@ -37,36 +37,28 @@ public static class AdminEndpoints
             .WithName("GetAllEmployees");
 
 
-        app.MapGet("/api/admin/employee/{id}", async
-            (IAdminService services, string id) =>
+        app.MapGet("/api/admin/request", async
+                (IRequestService service) =>
         {
             try
             {
                 var response = new ApiResponse();
-                var result = await services.GetByIdAsync(id);
-                if (result == null)
-                {
-                    response.IsSuccess = false;
-                    response.ErrorMessages.Add("User not found");
-                    response.StatusCode = HttpStatusCode.NotFound;
-                    return Results.NotFound(response);
-                }
+                var result = await service.GetAll();
 
+                response.Result = result;
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;
-                response.Result = result;
                 return Results.Ok(response);
             }
             catch (Exception e)
             {
                 return Results.BadRequest(e);
             }
-            
-        }).AllowAnonymous()
+        }).RequireAuthorization("IsAdmin")
             .Produces<ApiResponse>(200)
-            .Produces(400)
-            .WithName("GetSingleEmployee");
+            .WithName("GetAllRequests");
         
+
 
         app.MapPost("/api/admin/employee/", async
             (IAdminService services, IMapper mapper, UserCreateDTO user_c_dto) =>
@@ -95,8 +87,8 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("CreateEmployee");
 
-        app.MapDelete("/api/admin/employee/{id}", async
-                (IAdminService services, string id) =>
+        app.MapDelete("/api/admin/employee/{id}",
+            async (IAdminService services, string id) =>
         {
             try
             {
@@ -124,8 +116,9 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("DeleteEmployee");
 
-        app.MapPut("/api/admin/employee/", async
-            (IAdminService services, IMapper mapper, UserUpdateDTO newUpdate) =>
+        app.MapPut("/api/admin/employee/",
+            async (IAdminService services, 
+            IMapper mapper, UserUpdateDTO newUpdate) =>
         {
             try
             {
@@ -157,8 +150,9 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("UpdateEmployee");
 
-        app.MapPost("/api/admin/type/", async
-                (IAdminService service, IValidator<RequestTypeDto> validator, IMapper mapper, RequestTypeDto rt_c_dto) =>
+        app.MapPost("/api/admin/type/", 
+            async (IAdminService service, IValidator<RequestTypeDto> validator,
+                IMapper mapper, RequestTypeDto rt_c_dto) =>
             {
                 try
                 {
@@ -195,8 +189,9 @@ public static class AdminEndpoints
             .Produces(201)
             .WithName("CreateRequestType");
 
-        app.MapPut("/api/admin/type/{id:int}", async
-            (IAdminService services, IValidator<RequestTypeDto> validator, IMapper mapper, RequestTypeDto rt_u_dto,
+        app.MapPut("/api/admin/type/{id:int}",
+            async (IAdminService services, IValidator<RequestTypeDto> validator
+            , IMapper mapper, RequestTypeDto rt_u_dto,
                 int id) =>
         {
             try
@@ -238,8 +233,8 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("UpdateRequestType");
 
-        app.MapDelete("/api/admin/type/{id:int}", async
-            (IAdminService services, int id) =>
+        app.MapDelete("/api/admin/type/{id:int}",
+            async (IAdminService services, int id) =>
         {
             try
             {
@@ -268,9 +263,9 @@ public static class AdminEndpoints
             .Produces(400)
             .WithName("DeleteRequestType");
 
-        app.MapPut("/api/admin/request/", async
-            (IRequestService service,ILeaveDaysService leaveDays, IMapper mapper,
-            RequestUpdateDTO req_u_DTO) =>
+        app.MapPut("/api/admin/request/", 
+            async(IRequestService service, ILeaveDaysService leaveDays,
+            IMapper mapper, RequestUpdateDTO req_u_DTO) =>
         {
             try
             {
@@ -299,7 +294,7 @@ public static class AdminEndpoints
 
                 return Results.BadRequest(e);
             }
-        }).AllowAnonymous()
+        }).RequireAuthorization("IsAdmin")
         .Produces<ApiResponse>(200)
         .Produces(400)
         .WithName("UpdateRequest");

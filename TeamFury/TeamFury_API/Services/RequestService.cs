@@ -145,6 +145,14 @@ namespace TeamFury_API.Services
         public async Task<RequestLog> AddRequestToLog(Request request)
         {
             var log = new RequestLog() {Request = request};
+            var found = await _context.RequestLogs.FirstOrDefaultAsync(x =>
+            x.Request.RequestID == log.Request.RequestID);
+            if (found != null)
+            {
+                _context.RequestLogs.Update(found);
+                await _context.SaveChangesAsync();
+                return log;
+            }
             _context.RequestLogs.Add(log);
             await _context.SaveChangesAsync();
             return log;
