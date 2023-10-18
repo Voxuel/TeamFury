@@ -14,108 +14,121 @@ namespace TeamFury_API.Endpoints
     {
         public static void RequestEndpointConfig(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/api/request", async (IRequestService service) =>
+            app.MapGet("/api/request", async
+                    (IRequestService service) =>
+                {
+                    try
+                    {
+                        var response = new ApiResponse();
+                        var result = await service.GetAll();
+                        
+                        response.Result = result;
+                        response.IsSuccess = true;
+                        response.StatusCode = HttpStatusCode.OK;
+                        return Results.Ok(response);
+                    }
+                    catch (Exception e)
+                    {
+                        return Results.BadRequest(e);
+                    }
+                }).RequireAuthorization("IsAdmin")
+                .Produces<ApiResponse>(200)
+                .WithName("GetAllRequests");
+
+            app.MapGet("/api/request/{id:int}", async
+                    (IRequestService service, int id) =>
             {
                 try
                 {
-                    ApiResponse response = new ApiResponse();
+                    var response = new ApiResponse();
+                    var result = await service.GetByID(id);
                     
-                    var result = await service.GetAll();
                     response.Result = result;
                     response.IsSuccess = true;
                     response.StatusCode = HttpStatusCode.OK;
                     return Results.Ok(response);
-                } 
-                catch (Exception e)
-                {
-
-                    return Results.BadRequest(e);
-                }
-            }).RequireAuthorization("IsAdmin")
-            .Produces<ApiResponse>(200)
-            .WithName("GetAllRequests");
-
-            app.MapGet("/api/request/{id:int}", async (IRequestService service, int id) =>
-            {
-                try
-                {
-                    ApiResponse response = new ApiResponse();
-
-                    response.Result = await service.GetByID(id);
-                    response.IsSuccess = true;
-                    response.StatusCode = HttpStatusCode.OK;
-                    return Results.Ok(response);
                 }
                 catch (Exception e)
                 {
-
                     return Results.BadRequest(e);
                 }
-            }).AllowAnonymous().WithName("GetRequestByID");
+            }).AllowAnonymous()
+                .WithName("GetRequestByID");
 
-            app.MapDelete("/api/request/", async (IRequestService service, int id) =>
-            {
-                try
+            app.MapDelete("/api/request/", async
+                    (IRequestService service, int id) =>
                 {
-                    ApiResponse response = new ApiResponse();
-
-                    response.Result = await service.DeleteAsync(id);
-                    response.IsSuccess = true;
-                    response.StatusCode= HttpStatusCode.OK;
-                    return Results.Ok(response);
-                }
-                catch (Exception e)
-                {
-
-                    return Results.BadRequest(e);
-                }
-            }).WithName("DeleteRequest")
-            .Produces(204);
-
-            app.MapPost("/api/request/", async (IRequestService service, IMapper mapper, IValidator<RequestCreateDTO> validator,
-                RequestCreateDTO req_c_DTO, string id) =>
-            {
-                try
-                {
-                    ApiResponse response = new ApiResponse();
-                    var validationResult = await validator.ValidateAsync(req_c_DTO);
-                    if (!validationResult.IsValid)
+                    try
                     {
-                        response.IsSuccess = false;
-                        response.Result = validationResult.Errors;
-                        response.StatusCode = HttpStatusCode.BadRequest;
-                        return Results.BadRequest(response);
+                        var response = new ApiResponse();
+                        var result = await service.DeleteAsync(id);
+                        
+                        response.Result = result;
+                        response.IsSuccess = true;
+                        response.StatusCode = HttpStatusCode.OK;
+                        return Results.Ok(response);
                     }
-                    var request = mapper.Map<Request>(req_c_DTO);
-                    RequestType tempRequestType = new RequestType();
-                    tempRequestType = await service.GetRequestTypeID(req_c_DTO.RequestTypeID);
-                    request.RequestType = tempRequestType;
-                    var result = await service.CreateAsync(request, id);
-                    if (result != null)
+                    catch (Exception e)
                     {
-                        if (!string.IsNullOrEmpty(result.MessageForDecline))
+                        return Results.BadRequest(e);
+                    }
+                }).WithName("DeleteRequest")
+                .Produces(204);
+
+            app.MapPost("/api/request/", async
+                (IRequestService service, IMapper mapper, IValidator<RequestCreateDTO> validator,
+                    RequestCreateDTO req_c_DTO, string id) =>
+                {
+                    try
+                    {
+                        var response = new ApiResponse();
+                        var validationResult = await validator.ValidateAsync(req_c_DTO);
+                        if (!validationResult.IsValid)
                         {
                             response.IsSuccess = false;
-                            response.ErrorMessages.Add(result.MessageForDecline);
+                            response.Result = validationResult.Errors;
+                            response.StatusCode = HttpStatusCode.BadRequest;
+                            return Results.BadRequest(response);
+                        }
+
+                        var request = mapper.Map<Request>(req_c_DTO);
+                        var tempRequestType = new RequestType();
+                        tempRequestType = await service.GetRequestTypeID(req_c_DTO.RequestTypeID);
+                        request.RequestType = tempRequestType;
+                        var result = await service.CreateAsync(request, id);
+                        if (result != null)
+                        {
+                            if (!string.IsNullOrEmpty(result.MessageForDecline))
+                            {
+                                response.IsSuccess = false;
+                                response.ErrorMessages.Add(result.MessageForDecline);
+                                response.StatusCode = HttpStatusCode.BadRequest;
+                            }
+                        }
+
+                        if (result == null)
+                        {
+                            response.IsSuccess = false;
+                            response.ErrorMessages.Add("Request already exist");
                             response.StatusCode = HttpStatusCode.BadRequest;
                         }
+
+                        response.IsSuccess = true;
+                        response.Result = result;
+                        response.StatusCode = HttpStatusCode.OK;
+                        return Results.Ok(response);
                     }
-                    if (result == null)
+                    catch (Exception e)
                     {
-                        response.IsSuccess = false;
-                        response.ErrorMessages.Add("Request already exist");
-                        response.StatusCode = HttpStatusCode.BadRequest;
+                        return Results.BadRequest(e);
                     }
+
                     response.IsSuccess = true;
                     response.Result = result;
                     response.StatusCode = HttpStatusCode.OK;
                     return Results.Ok(response);
                 }
-                catch (Exception e)
-                {
 
-                    return Results.BadRequest(e);
-                }
             }).AllowAnonymous()
             .Produces<ApiResponse>(200)
             .Produces(201)
@@ -144,6 +157,7 @@ namespace TeamFury_API.Endpoints
             }).AllowAnonymous()
                 .Produces<ApiResponse>(200)
                 .WithName("GetAllRequestLogs");
+
         }
     }
 }

@@ -17,6 +17,8 @@ import { LoginComponent } from './Components/login/login.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar'
 import { ErrorsStateMatcher } from './ErrorsStateMatcher';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ProfileComponent } from './Components/profile/profile.component';
+import { NavComponent } from './navbar/nav/nav.component';
 
 export function tokenGetter(){
   return sessionStorage.getItem("TOKEN_KEY");
@@ -27,7 +29,9 @@ export function tokenGetter(){
     AppComponent,
     AdminComponent,
     UserComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent,
+    NavComponent
   ],
   imports: [
     MaterialModule,

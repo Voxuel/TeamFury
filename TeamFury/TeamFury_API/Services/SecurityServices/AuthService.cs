@@ -45,7 +45,7 @@ public class AuthService : IAuthService
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
         
-        authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+        authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role.ToUpper())));
 
         var token = GenerateToken(authClaims);
 

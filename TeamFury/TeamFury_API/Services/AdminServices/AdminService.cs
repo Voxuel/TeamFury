@@ -10,7 +10,6 @@ namespace TeamFury_API.Services.AdminServices;
 
 public class AdminService : IAdminService
 {
-    
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly AppDbContext _context;
@@ -66,7 +65,6 @@ public class AdminService : IAdminService
         found.Email = newUpdate.Email;
         found.NormalizedUserName = newUpdate.Email.ToUpper();
         found.PhoneNumber = newUpdate.PhoneNumber;
-        
         
         await _userManager.UpdateAsync(found);
 
