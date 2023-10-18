@@ -21,7 +21,7 @@ namespace TeamFury_API.Endpoints
                     {
                         var response = new ApiResponse();
                         var result = await service.GetAll();
-                        
+
                         response.Result = result;
                         response.IsSuccess = true;
                         response.StatusCode = HttpStatusCode.OK;
@@ -37,22 +37,22 @@ namespace TeamFury_API.Endpoints
 
             app.MapGet("/api/request/{id:int}", async
                     (IRequestService service, int id) =>
-            {
-                try
                 {
-                    var response = new ApiResponse();
-                    var result = await service.GetByID(id);
-                    
-                    response.Result = result;
-                    response.IsSuccess = true;
-                    response.StatusCode = HttpStatusCode.OK;
-                    return Results.Ok(response);
-                }
-                catch (Exception e)
-                {
-                    return Results.BadRequest(e);
-                }
-            }).AllowAnonymous()
+                    try
+                    {
+                        var response = new ApiResponse();
+                        var result = await service.GetByID(id);
+
+                        response.Result = result;
+                        response.IsSuccess = true;
+                        response.StatusCode = HttpStatusCode.OK;
+                        return Results.Ok(response);
+                    }
+                    catch (Exception e)
+                    {
+                        return Results.BadRequest(e);
+                    }
+                }).AllowAnonymous()
                 .WithName("GetRequestByID");
 
             app.MapDelete("/api/request/", async
@@ -62,7 +62,7 @@ namespace TeamFury_API.Endpoints
                     {
                         var response = new ApiResponse();
                         var result = await service.DeleteAsync(id);
-                        
+
                         response.Result = result;
                         response.IsSuccess = true;
                         response.StatusCode = HttpStatusCode.OK;
@@ -122,42 +122,34 @@ namespace TeamFury_API.Endpoints
                     {
                         return Results.BadRequest(e);
                     }
-
-                    response.IsSuccess = true;
-                    response.Result = result;
-                    response.StatusCode = HttpStatusCode.OK;
-                    return Results.Ok(response);
-                }
-
-            }).AllowAnonymous()
-            .Produces<ApiResponse>(200)
-            .Produces(201)
-            .Accepts<RequestCreateDTO>("application/json")
-            .WithName("CreateRequest");
+                }).AllowAnonymous()
+                .Produces<ApiResponse>(200)
+                .Produces(201)
+                .Accepts<RequestCreateDTO>("application/json")
+                .WithName("CreateRequest");
 
             app.MapGet("/api/request/log/", async
-                (IRequestService service, IMapper mapper, string EmpId) =>
-            {
-                try
+                    (IRequestService service, IMapper mapper, string EmpId) =>
                 {
-                    var response = new ApiResponse();
-                    var result = await service.GetAllLogs(EmpId);
-                    var logDtos = mapper.Map<IEnumerable<RequestLogEntityDTO>>(result);
-                    if (!result.Any()) return Results.Ok();
-                    
-                    response.Result = logDtos;
-                    response.IsSuccess = true;
-                    response.StatusCode = HttpStatusCode.OK;
-                    return Results.Ok(response);
-                }
-                catch (Exception e)
-                {
-                    return Results.BadRequest(e);
-                }
-            }).AllowAnonymous()
+                    try
+                    {
+                        var response = new ApiResponse();
+                        var result = await service.GetAllLogs(EmpId);
+                        var logDtos = mapper.Map<IEnumerable<RequestLogEntityDTO>>(result);
+                        if (!result.Any()) return Results.Ok();
+
+                        response.Result = logDtos;
+                        response.IsSuccess = true;
+                        response.StatusCode = HttpStatusCode.OK;
+                        return Results.Ok(response);
+                    }
+                    catch (Exception e)
+                    {
+                        return Results.BadRequest(e);
+                    }
+                }).AllowAnonymous()
                 .Produces<ApiResponse>(200)
                 .WithName("GetAllRequestLogs");
-
         }
     }
 }
