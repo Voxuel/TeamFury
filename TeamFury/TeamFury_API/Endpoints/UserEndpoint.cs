@@ -3,9 +3,7 @@ using FluentValidation;
 using Models.DTOs;
 using Models.Models;
 using Models.Models.API_Model_Tools;
-using System.Data.Entity;
 using System.Net;
-using TeamFury_API.Data;
 using TeamFury_API.Services;
 
 namespace TeamFury_API.Endpoints
@@ -14,8 +12,9 @@ namespace TeamFury_API.Endpoints
     {
         public static void UserEndpointConfig(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/user/request/", async
-                (IRequestService service, IMapper mapper, IValidator<RequestCreateDTO> validator,
+            app.MapPost("/api/user/request/",
+                async (IRequestService service, IMapper mapper,
+                IValidator<RequestCreateDTO> validator,
                     RequestCreateDTO req_c_DTO, string id) =>
                 {
                     try
@@ -89,6 +88,33 @@ namespace TeamFury_API.Endpoints
                 }).AllowAnonymous()
                 .Produces<ApiResponse>(200)
                 .WithName("GetAllRequestLogs");
+
+            app.MapGet("/api/user/leavedays/used/{id}",
+               async (ILeaveDaysService service, string id) =>
+               {
+                   try
+                   {
+                       var response = new ApiResponse();
+                       var result = await service.GetLeaveDaysByEmployeeID(id);
+                       if (result == null)
+                       {
+                           response.IsSuccess = false;
+                           response.StatusCode = HttpStatusCode.BadRequest;
+                           response.ErrorMessages.Add("User not found");
+                           return Results.BadRequest();
+                       }
+                       response.IsSuccess = true;
+                       response.StatusCode = HttpStatusCode.OK;
+                       response.Result = result;
+                       return Results.Ok(response);
+                   }
+                   catch (Exception e)
+                   {
+                       return Results.BadRequest(e);
+                   }
+               }).AllowAnonymous()
+               .Produces<ApiResponse>(200)
+               .WithName("GetLeaveDaysLeft");
         }
     }
 }
