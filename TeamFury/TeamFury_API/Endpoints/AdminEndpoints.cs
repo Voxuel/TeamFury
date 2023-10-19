@@ -282,7 +282,7 @@ public static class AdminEndpoints
                     response.IsSuccess = false;
                     return Results.BadRequest(response);
                 }
-                await leaveDays.UpdateLeaveDaysOnAprovedRequest(request);
+                await leaveDays.UpdateLeaveDaysOnAprovedRequest(result);
                 await service.AddRequestToLog(result);
 
                 response.IsSuccess = true;

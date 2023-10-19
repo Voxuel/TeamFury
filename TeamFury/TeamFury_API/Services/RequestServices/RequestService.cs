@@ -32,10 +32,20 @@ namespace TeamFury_API.Services
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
 
-            if (found.StatusRequest == StatusRequest.Accepted && newUpdate.StatusRequest != StatusRequest.Accepted)
+            switch (found.StatusRequest)
             {
-                return null;
+                case StatusRequest.Accepted when newUpdate.StatusRequest != StatusRequest.Accepted:
+                case StatusRequest.Declined:
+                    return null;
+                case StatusRequest.Pending:
+                    break;
             }
+
+            if (newUpdate.StatusRequest == StatusRequest.Accepted)
+            {
+                found.AdminName = newUpdate.AdminName;
+            }
+
             found.StatusRequest = newUpdate.StatusRequest;
             found.MessageForDecline = newUpdate.MessageForDecline;
             _context.Update(found);
@@ -95,7 +105,8 @@ namespace TeamFury_API.Services
         private static bool VerifyRequestTimeLimit
             (Request toCreate, RequestType daysCheck, List<int> usedDays, out Request failedDaysCheck)
         {
-            var time = (int)toCreate.EndDate.Subtract(toCreate.StartDate).TotalDays;
+            var total = toCreate.EndDate.Subtract(toCreate.StartDate).TotalDays;
+            var time = Convert.ToInt32(total);
             if (daysCheck.MaxDays - (time) + usedDays.Sum() < 0)
             {
                 var req = new Request
