@@ -320,5 +320,11 @@ public static class AdminEndpoints
         }).RequireAuthorization("IsAdmin")
         .Produces<ApiResponse>(200)
         .WithName("GetTotalLeaveDaysUsed");
+
+        app.MapPut("/api/dev/reset/", async
+            (IAdminService service) =>
+        {
+            await service.ResetLeaveDays();
+        }).RequireAuthorization("IsAdmin");
     }
 }

@@ -121,6 +121,7 @@ namespace TeamFury_API
             builder.Services.AddAuthorization(opt =>
             {
                 opt.AddPolicy("IsAdmin", policy => { policy.RequireRole("ADMIN"); });
+                opt.AddPolicy("Dev", policy => { policy.RequireRole("Dev");});
             });
 
             #endregion

@@ -8,7 +8,6 @@ namespace TeamFury_API.Services
 {
     public class RequestService : IRequestService
     {
-
         private readonly AppDbContext _context;
         private readonly UserManager<User> _manager;
 
@@ -18,15 +17,17 @@ namespace TeamFury_API.Services
             _context = context;
             _manager = manager;
         }
+
         public async Task<IEnumerable<Request>> GetAll()
         {
-            return await _context.Requests.Include(rt =>  rt.RequestType).ToListAsync();
+            return await _context.Requests.Include(rt => rt.RequestType).ToListAsync();
         }
 
         public async Task<Request> GetByID(int id)
         {
             return await _context.Requests.FindAsync(id);
         }
+
         public async Task<Request> UpdateAsync(Request newUpdate)
         {
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
@@ -66,27 +67,29 @@ namespace TeamFury_API.Services
         public async Task<Request> CreateAsync(Request toCreate, string id)
         {
             var found = await _context.LeaveDays.FirstOrDefaultAsync(x => x.IdentityUser.Id == id &&
-            x.Request.StartDate == toCreate.StartDate && x.Request.EndDate == toCreate.EndDate);
+                                                                          x.Request.StartDate == toCreate.StartDate &&
+                                                                          x.Request.EndDate == toCreate.EndDate);
 
             //Finds the number of leave days used by the employee on requested type
-            var usedDays = await _context.LeaveDays.Where(x => x.IdentityUser.Id == id
-            && x.Request.RequestType.RequestTypeID == toCreate.RequestType.RequestTypeID)
+            var usedDays = await _context.LeaveDays.Where(x => x.IdentityUser.Id == id 
+                                                               && x.Request.RequestType.RequestTypeID ==
+                                                               toCreate.RequestType.RequestTypeID)
                 .Select(y => y.Days).ToListAsync();
 
             //Finds maximum allowed days of for the requested type
             var daysCheck = await _context.RequestTypes.FirstOrDefaultAsync(y =>
-            y.RequestTypeID == toCreate.RequestType.RequestTypeID);
+                y.RequestTypeID == toCreate.RequestType.RequestTypeID);
 
             if (VerifyRequestTimeLimit(toCreate, daysCheck, usedDays, out var failedDaysCheck))
                 return failedDaysCheck;
-            
+
             if (found != null) return null;
-            
+
             _context.Add(toCreate);
             await _context.SaveChangesAsync();
-            
+
             await AddConnectionRequestEmployee(toCreate, id);
-            
+
             return toCreate;
         }
 
@@ -131,17 +134,20 @@ namespace TeamFury_API.Services
         public async Task<IEnumerable<Request>> GetRequestsByEmployeeID(string id)
         {
             return await _context.LeaveDays.Where(x =>
-                x.IdentityUser.Id == id).Select(x => x.Request).ToListAsync();
+                x.IdentityUser.Id == id
+                && x.Request.StatusRequest == StatusRequest.Pending)
+                .Include(r => r.Request.RequestType)
+                .Select(x => x.Request).ToListAsync();
         }
 
         public async Task<IEnumerable<Request>> GetAllLogs(string id)
         {
             var user = await _manager.FindByIdAsync(id);
-            
+
             var requests = await _context.LeaveDays.Where(l =>
                 l.IdentityUser == user).Include(rt =>
                 rt.Request.RequestType).Select(r => r.Request).ToListAsync();
-            
+
             var logs = await _context.RequestLogs.Include(requestLog =>
                 requestLog.Request).ToListAsync();
 
@@ -152,24 +158,26 @@ namespace TeamFury_API.Services
 
             return result;
         }
-        
+
         public async Task<RequestLog> AddRequestToLog(Request request)
         {
             var log = new RequestLog() {Request = request};
             var found = await _context.RequestLogs.FirstOrDefaultAsync(x =>
-            x.Request.RequestID == log.Request.RequestID);
+                x.Request.RequestID == log.Request.RequestID);
             if (found != null)
             {
                 _context.RequestLogs.Update(found);
                 await _context.SaveChangesAsync();
                 return log;
             }
+
             _context.RequestLogs.Add(log);
             await _context.SaveChangesAsync();
             return log;
         }
 
         #region Overidden Methods
+
         public Task<Request> CreateAsync(Request toCreate)
         {
             throw new NotImplementedException();

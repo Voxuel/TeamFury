@@ -22,6 +22,21 @@ public class AdminService : IAdminService
         _context = context;
     }
 
+    #region Development Commands
+
+    public async Task ResetLeaveDays()
+    {
+        var ld = await _context.LeaveDays.ToListAsync();
+        foreach (var day in ld)
+        {
+            day.Days = 0;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+    
     #region Employee Commands
     
     /// <summary>
