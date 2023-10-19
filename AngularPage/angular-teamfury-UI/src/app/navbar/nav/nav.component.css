@@ -1,7 +1,7 @@
 .navbar{
     min-height: 13vh;
     display: flex;
-    background-color: grey;
+    background-color: rgb(144, 52, 156);
 }
 .navmenu{
     min-width: 30vw;

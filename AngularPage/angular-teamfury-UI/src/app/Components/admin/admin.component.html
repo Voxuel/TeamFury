@@ -1,1 +1,8 @@
 <p>admin works!</p>
+
+<div class="container">
+    <p>{{getAllEmployees()}}</p>
+    <form *ngFor="let emp in getAllEmployees()">
+        <p>{{emp.username}}</p>
+    </form>
+</div>
