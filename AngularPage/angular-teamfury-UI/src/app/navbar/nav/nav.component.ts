@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
-  title = "placeholde";
+  title = "TIMEPORTAL";
   isLoggedIn!:boolean;
 
   constructor(private authService: AuthService) { }
