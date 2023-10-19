@@ -67,6 +67,65 @@ namespace TeamFury_API.Endpoints
                 .Accepts<RequestCreateDTO>("application/json")
                 .WithName("CreateRequest");
 
+
+            app.MapGet("/api/user/request/{id}", async
+                (IRequestService service, IMapper mapper, string id) =>
+            {
+                try
+                {
+                    var response = new ApiResponse()
+                    {
+                        StatusCode = HttpStatusCode.OK,
+                        IsSuccess = true
+                    };
+                    var result = await service.GetRequestsByEmployeeID(id);
+                    if (!result.Any())
+                    {
+                        response.Result = "You have no pending requests at the moment";
+                        return Results.Ok(response);
+                    }
+
+                    var requests = mapper.Map<IEnumerable<RequestLogEntityDTO>>(result);
+                    response.Result = requests;
+                    return Results.Ok(response);
+                }
+                catch (Exception e)
+                {
+                    return Results.BadRequest(e.Message);
+                }
+            }).AllowAnonymous()
+                .Produces<ApiResponse>(200)
+                .WithName("GetPendingRequestsForEmployee");
+            
+            app.MapGet("/api/user/leavedays/{id}", async
+                (ILeaveDaysService service, string id) =>
+            {
+                try
+                {
+                    var response = new ApiResponse();
+                    var result = await service.GetLeaveDaysByEmployeeID(id);
+                    if (result == null)
+                    {
+                        response.IsSuccess = false;
+                        response.ErrorMessages.Add("No user with ID given exists");
+                        response.StatusCode = HttpStatusCode.NotFound;
+                        return Results.NotFound(response);
+                    }
+
+                    response.IsSuccess = true;
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Result = result;
+                    return Results.Ok(response);
+                }
+                catch (Exception e)
+                {
+                    return Results.BadRequest(e);
+                }
+            }).AllowAnonymous()
+                .Produces<ApiResponse>(200)
+                .Produces(400)
+                .WithName("GetTotalLeavedaysByEmployeeID");
+
             app.MapGet("/api/user/request/log/",
                 async (IRequestService service, IMapper mapper, string EmpId) =>
                 {

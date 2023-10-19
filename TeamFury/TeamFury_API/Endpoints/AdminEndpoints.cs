@@ -282,7 +282,7 @@ public static class AdminEndpoints
                     response.IsSuccess = false;
                     return Results.BadRequest(response);
                 }
-                await leaveDays.UpdateLeaveDaysOnAprovedRequest(request);
+                await leaveDays.UpdateLeaveDaysOnAprovedRequest(result);
                 await service.AddRequestToLog(result);
 
                 response.IsSuccess = true;
@@ -320,5 +320,11 @@ public static class AdminEndpoints
         }).RequireAuthorization("IsAdmin")
         .Produces<ApiResponse>(200)
         .WithName("GetTotalLeaveDaysUsed");
+
+        app.MapPut("/api/dev/reset/", async
+            (IAdminService service) =>
+        {
+            await service.ResetLeaveDays();
+        }).RequireAuthorization("IsAdmin");
     }
 }

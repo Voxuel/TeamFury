@@ -11,6 +11,7 @@ namespace Models.DTOs
     {
         public int RequestID { get; set; }
         public string MessageForDecline { get; set; }
+        public string? AdminName { get; set; }
         public StatusRequest StatusRequest { get; set; }
     }
 }

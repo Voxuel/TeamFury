@@ -60,9 +60,11 @@ namespace TeamFury_API.Services
 
         public async Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(Request days)
         {
-            var daysLeft = await _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == days.RequestID);
-            var daysOff = (int)days.EndDate.Subtract(days.StartDate).TotalDays;
-            daysLeft.Days += daysOff;
+            var daysLeft = await _context.LeaveDays.Include(leaveDays =>
+                leaveDays.IdentityUser).FirstOrDefaultAsync(x => x.Request.RequestID == days.RequestID);
+            var daysOff = days.EndDate.Subtract(days.StartDate).TotalDays;
+            
+            daysLeft.Days += Convert.ToInt32(daysOff);
             _context.Update(daysLeft);
             await _context.SaveChangesAsync();
             return null;
