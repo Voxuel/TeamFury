@@ -90,11 +90,11 @@ public class AdminService : IAdminService
     /// Creates a new entity and adds it to the database of type Employee / <see cref="User"/>
     /// </summary>
     /// <param name="user">Object to create</param>
+    /// <param name="role">User Role for the created user</param>
     /// <returns>Task of type: <see cref="User"/></returns>
     public async Task<User> CreateAsync(User user, string role)
     {
         var userFound = await _userManager.FindByNameAsync(user.UserName);
-
         if (userFound != null) return null;
         
         user.SecurityStamp = Guid.NewGuid().ToString();

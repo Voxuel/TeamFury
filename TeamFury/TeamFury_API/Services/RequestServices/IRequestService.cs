@@ -9,5 +9,8 @@ namespace TeamFury_API.Services
 
         Task<RequestType> GetRequestTypeID(int id);
 
+        Task<RequestLog> AddRequestToLog(Request request);
+        Task<IEnumerable<Request>> GetAllLogs(string id);
+
     }
 }

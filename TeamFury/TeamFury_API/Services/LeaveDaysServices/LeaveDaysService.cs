@@ -48,17 +48,6 @@ namespace TeamFury_API.Services
             return await _context.LeaveDays.FindAsync(id);
         }
 
-        public async Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysByEmployeeID(string id)
-        {
-            var user = await _manager.FindByIdAsync(id);
-            if (user == null) return null;
-            var leavedaysForUser = await _context.LeaveDays.Where(u => u.IdentityUser == user)
-                .Include(leaveDays => leaveDays.Request).ToListAsync();
-            var allRequestTypes = await _context.RequestTypes.ToListAsync();
-
-            var result = CalculateLeaveDays(leavedaysForUser, allRequestTypes, _mapper);
-            return result;
-        }
 
         public async Task<LeaveDays> UpdateAsync(LeaveDays newUpdate)
         {
@@ -72,11 +61,23 @@ namespace TeamFury_API.Services
         public async Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(Request days)
         {
             var daysLeft = await _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == days.RequestID);
-            int daysOff = Convert.ToInt32((days.EndDate - days.StartDate).TotalDays);
+            var daysOff = (int)days.EndDate.Subtract(days.StartDate).TotalDays;
             daysLeft.Days += daysOff;
             _context.Update(daysLeft);
             await _context.SaveChangesAsync();
             return null;
+        }
+        #region LeavedaysUsedByEmployee
+        public async Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysByEmployeeID(string id)
+        {
+            var user = await _manager.FindByIdAsync(id);
+            if (user == null) return null;
+            var leavedaysForUser = await _context.LeaveDays.Where(u => u.IdentityUser == user)
+                .Include(leaveDays => leaveDays.Request).ToListAsync();
+            var allRequestTypes = await _context.RequestTypes.ToListAsync();
+
+            var result = CalculateLeaveDays(leavedaysForUser, allRequestTypes, _mapper);
+            return result;
         }
 
         private static IEnumerable<RemainingLeaveDaysDTO> CalculateLeaveDays
@@ -102,10 +103,52 @@ namespace TeamFury_API.Services
                 RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.LeaveType == key);
                 if (found != null) result.Remove(found);
 
-                result.Add(new RemainingLeaveDaysDTO() {DaysLeft = value, LeaveType = key});
+                result.Add(new RemainingLeaveDaysDTO() { DaysLeft = value, LeaveType = key });
             }
 
             return result;
         }
+        #endregion
+
+        #region GetTotalLeavedaysUsed 
+        public async Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysUsed()
+        {
+            var leavedaysForAllUsers = await _context.LeaveDays.Include(leaveDays => leaveDays.Request).ToListAsync();
+            var allRequestTypes = await _context.RequestTypes.ToListAsync();
+
+            var result = CalculateLeaveDaysUsed(leavedaysForAllUsers, allRequestTypes, _mapper);
+            return result;
+        }
+        private static IEnumerable<RemainingLeaveDaysDTO> CalculateLeaveDaysUsed
+         (List<LeaveDays> leaveDays, List<RequestType> Rts, IMapper mapper)
+        {
+            var combined = new Dictionary<string, int?>();
+            foreach (var day in leaveDays)
+            {
+                if (combined.ContainsKey(day.Request.RequestType.Name))
+                {
+                    combined[day.Request.RequestType.Name] += day.Days;
+                    continue;
+                }
+                combined.Add(day.Request.RequestType.Name,  day.Days);
+            }
+
+            var result = mapper.Map<List<RemainingLeaveDaysDTO>>(Rts);
+            foreach (var res in result)
+            {
+                res.DaysLeft = 0;
+            }
+
+            foreach (var (key, value) in combined)
+            {
+                RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.LeaveType == key);
+                if (found != null) result.Remove(found);
+
+                result.Add(new RemainingLeaveDaysDTO() { DaysLeft = value, LeaveType = key });
+            }
+
+            return result;
+        }
+            #endregion
     }
 }

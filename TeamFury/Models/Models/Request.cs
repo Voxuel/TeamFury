@@ -14,10 +14,10 @@ namespace Models.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime RequestSent { get; set; } = DateTime.Now;
-        public string MessageForDecline { get; set; }
+        public string? MessageForDecline { get; set; }
         public RequestType RequestType { get; set; }
-        public StatusRequest StatusRequest { get; set; }
-        public string AdminName { get; set; }
+        public StatusRequest StatusRequest { get; set; } = 0;
+        public string? AdminName { get; set; }
     }
     public enum StatusRequest
     {
