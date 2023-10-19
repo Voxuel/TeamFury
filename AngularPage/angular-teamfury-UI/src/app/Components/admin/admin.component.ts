@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, AbstractControl, FormGroupDirective, Validators } from '@angular/forms';
+import { AdminService } from 'src/app/Services/admin.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserService } from 'src/app/Services/user.service';
+import { Employee } from 'src/app/models/employee';
 
 @Component({
   selector: 'app-admin',
@@ -9,10 +12,12 @@ import { UserService } from 'src/app/Services/user.service';
 })
 export class AdminComponent {
 
-  constructor(private userService:UserService, private authService:AuthService){}
+  constructor(private userService:UserService, private authService:AuthService,){}
 
   getAllEmployees(){
     return this.userService.getAllEmployees();
-  }  
+  }
+  
+  
 
 }
