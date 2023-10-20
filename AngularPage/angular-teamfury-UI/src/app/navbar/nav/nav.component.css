@@ -55,3 +55,6 @@ button:focus-visible::after{
     transform-origin: left;
     scale: 1 1;
 }
+.title h1{
+    font-weight: bolder;
+}
