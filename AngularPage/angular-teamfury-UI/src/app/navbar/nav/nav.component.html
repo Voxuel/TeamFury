@@ -11,6 +11,7 @@
             <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/Admin" class="nav_menu_link" >Admin</a></button>
             <button routerLinkActive="active"><a routerLink="/Profile" class="nav_menu_link" >Profile</a></button>
             <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/register" class="nav_menu_link">Register</a></button>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/user-manager" class="nav_menu_link">Manage Users</a></button>
             <button><a (click)="signOut()" class="nav_menu_link">LogOut</a></button>
         </nav>
     </div>
