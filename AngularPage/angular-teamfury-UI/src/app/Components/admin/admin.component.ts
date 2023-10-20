@@ -13,14 +13,7 @@ import { UserViewModel } from 'src/app/models/user.view.model';
 })
 export class AdminComponent {
 
-  users:UserViewModel[] = [];
 
-  constructor(private adminService:AdminService){}
 
-  ngOnInit(){
-    this.getAllEmployees();
-  }
-  getAllEmployees(){
-    return this.adminService.getAllUsers().subscribe(response => {this.users = response});
-  }
+  constructor(){}
 }
