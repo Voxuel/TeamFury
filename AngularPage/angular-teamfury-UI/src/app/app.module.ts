@@ -19,6 +19,7 @@ import { ErrorsStateMatcher } from './ErrorsStateMatcher';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { NavComponent } from './navbar/nav/nav.component';
+import { RegisterComponent } from './Components/register/register.component';
 
 export function tokenGetter(){
   return sessionStorage.getItem("TOKEN_KEY");
@@ -31,7 +32,8 @@ export function tokenGetter(){
     UserComponent,
     LoginComponent,
     ProfileComponent,
-    NavComponent
+    NavComponent,
+    RegisterComponent
   ],
   imports: [
     MaterialModule,
