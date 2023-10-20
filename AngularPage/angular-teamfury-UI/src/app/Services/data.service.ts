@@ -9,8 +9,8 @@ export class DataService {
 
   constructor(@Inject(String) private APIUrl: string,private http: HttpClient) { }
 
-  getAll():Observable<any>{
-    return this.http.get<any>(this.APIUrl)
+  getAllEmployees():Observable<any>{
+    return this.http.get<any>(this.APIUrl + "admin/employee")
   }
 
     // Get with id Method

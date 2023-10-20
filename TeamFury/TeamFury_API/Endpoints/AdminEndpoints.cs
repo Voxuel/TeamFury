@@ -16,12 +16,12 @@ public static class AdminEndpoints
     public static void AdminEndpointConfig(this IEndpointRouteBuilder app)
     {
         app.MapGet("/api/admin/employee/", async
-                (UserManager<User> manager, IMapper mapper) =>
+                (IAdminService service, IMapper mapper) =>
         {
             try
             {
                 var response = new ApiResponse();
-                var result = await manager.Users.ToListAsync();
+                var result = await service.GetAll();
                 response.Result = result;
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;
@@ -36,6 +36,23 @@ public static class AdminEndpoints
             .Produces<ApiResponse>(200)
             .WithName("GetAllEmployees");
 
+        app.MapGet("/api/admin/employee/view", async
+            (IAdminService service) =>
+        {
+            try
+            {
+                var response = new ApiResponse();
+                var result = await service.GetAllViewModels();
+                response.Result = result;
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                return Results.Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        });
 
         app.MapGet("/api/admin/request", async
                 (IRequestService service) =>
@@ -52,7 +69,7 @@ public static class AdminEndpoints
             }
             catch (Exception e)
             {
-                return Results.BadRequest(e);
+                return Results.BadRequest(e.Message);
             }
         }).RequireAuthorization("IsAdmin")
             .Produces<ApiResponse>(200)
@@ -79,7 +96,7 @@ public static class AdminEndpoints
             }
             catch (Exception e)
             {
-                return Results.BadRequest(e);
+                return Results.BadRequest(e.Message);
             }
         }).RequireAuthorization("IsAdmin")
             .Accepts<UserCreateDTO>("application/json")
@@ -109,7 +126,7 @@ public static class AdminEndpoints
             }
             catch (Exception e)
             {
-                return Results.BadRequest(e);
+                return Results.BadRequest(e.Message);
             }
         }).RequireAuthorization("IsAdmin")
             .Produces<ApiResponse>(200)
@@ -141,7 +158,7 @@ public static class AdminEndpoints
             }
             catch (Exception e)
             {
-                return Results.BadRequest(e);
+                return Results.BadRequest(e.Message);
             }
         }).RequireAuthorization("IsAdmin")
             .Accepts<UserUpdateDTO>("application/json")
@@ -181,7 +198,7 @@ public static class AdminEndpoints
                 }
                 catch (Exception e)
                 {
-                    return Results.BadRequest(e);
+                    return Results.BadRequest(e.Message);
                 }
             }).RequireAuthorization("IsAdmin")
             .Accepts<RequestTypeDto>("application/json")
@@ -224,7 +241,7 @@ public static class AdminEndpoints
             }
             catch (Exception e)
             {
-                return Results.BadRequest(e);
+                return Results.BadRequest(e.Message);
             }
         }).RequireAuthorization("IsAdmin")
             .Accepts<RequestTypeDto>("application/json")
@@ -255,7 +272,7 @@ public static class AdminEndpoints
             }
             catch (Exception e)
             {
-                return Results.BadRequest(e);
+                return Results.BadRequest(e.Message);
             }
         }).RequireAuthorization("IsAdmin")
             .Produces<ApiResponse>(200)
@@ -293,7 +310,7 @@ public static class AdminEndpoints
             catch (Exception e)
             {
 
-                return Results.BadRequest(e);
+                return Results.BadRequest(e.Message);
             }
         }).RequireAuthorization("IsAdmin")
         .Produces<ApiResponse>(200)

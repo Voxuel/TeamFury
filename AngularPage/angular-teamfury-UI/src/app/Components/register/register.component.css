@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+    padding: 1em;
+}
+.form-container{
+    padding: .5em 1em;
+    background: linear-gradient(0deg, rgba(22,159,165,1) 37%, rgba(35,147,163,1) 38%);
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em;
+}
+.form-container input{
+    width: 100%;
+}
+.image-container img{
+    border-top-left-radius: .25em;
+    border-bottom-left-radius: .25em;
+}

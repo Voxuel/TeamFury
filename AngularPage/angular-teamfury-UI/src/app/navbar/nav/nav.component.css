@@ -1,7 +1,7 @@
 .navbar{
     min-height: 13vh;
     display: flex;
-    background-color: grey;
+    background-color: rgb(144, 52, 156);
 }
 .navmenu{
     min-width: 30vw;
@@ -54,4 +54,7 @@ button:hover::after,
 button:focus-visible::after{
     transform-origin: left;
     scale: 1 1;
+}
+.title h1{
+    font-weight: bolder;
 }

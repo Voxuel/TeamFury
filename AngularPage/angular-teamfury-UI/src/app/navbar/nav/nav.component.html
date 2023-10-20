@@ -4,13 +4,14 @@
     </div>
     <div class="navmenu">
         <div class="theUser">
-            <p>welcome {{getUserName()}}</p>
+            <p>WELCOME {{getUserName()}}</p>
         </div>
         <nav>
-            <button routerLinkActive="active" *ngIf="getUserRole() == 'EMPLOYEE'"><a routerLink="/User" class="nav_menu_link">Employee</a></button>
-            <button routerLinkActive="active" *ngIf="getUserRole() == 'admin'"><a routerLink="/Admin" class="nav_menu_link" >Admin</a></button>
-            <button routerLinkActive="active"><a routerLink="/Profile" class="nav_menu_link" >Profile</a></button>
-            <button><a (click)="signOut()" class="nav_menu_link">LogOut</a></button>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'EMPLOYEE'"><a routerLink="/User" class="nav_menu_link">EMPLOYEE</a></button>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/Admin" class="nav_menu_link" >ADMIN</a></button>
+            <button routerLinkActive="active"><a routerLink="/Profile" class="nav_menu_link" >PROFILE</a></button>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/register" class="nav_menu_link">REGISTER</a></button>
+            <button><a (click)="signOut()" class="nav_menu_link">LOGOUT</a></button>
         </nav>
     </div>
 </div>
