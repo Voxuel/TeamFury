@@ -25,12 +25,20 @@ export class AdminService {
   constructor(private http:HttpClient) { }
 
   createUser(employee:Employee):Observable<Employee>{
-    return this.http.post<Employee>(APIUrlAuth + 'admin/employee', employee)
+    return this.http.post<Employee>(`${APIUrlAuth}admin/employee`, employee)
   }
 
   getAllUsers():Observable<UserViewModel[]>{
-    return this.http.get<ApiResponse>(APIUrlAuth + 'admin/employee/view')
+    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/employee/view`)
     .pipe(map((data) => data.result))
+  }
+
+  updateUser(employee:Employee):Observable<Employee>{
+    return this.http.put<any>(`${APIUrlAuth}admin/employee`,employee)
+  }
+
+  deleteUser(id:string):Observable<Employee>{
+    return this.http.delete<Employee>(`${APIUrlAuth}admin/employee/${id}`)
   }
 
 }
