@@ -24,6 +24,8 @@ export class AdminService {
 
   constructor(private http:HttpClient) { }
 
+  // User services as admin.
+
   createUser(employee:Employee):Observable<Employee>{
     return this.http.post<Employee>(`${APIUrlAuth}admin/employee`, employee)
   }
@@ -41,4 +43,5 @@ export class AdminService {
     return this.http.delete<Employee>(`${APIUrlAuth}admin/employee/${id}`)
   }
 
+  // Request services as admin.
 }
