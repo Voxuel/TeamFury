@@ -23,14 +23,14 @@ export class UserService extends DataService {
   }
 
   getLeaveDays(id:string):Observable<any>{
-    return this.httpPrivate.get<any>(APIUrlAuth + "/user/leavedays/" + id)
+    return this.httpPrivate.get<any>(APIUrlAuth + "user/leavedays/" + id)
   }
 
   getActiveRequests(id:string):Observable<any>{
-    return this.httpPrivate.get<any>(APIUrlAuth + "/user/request/" + id)
+    return this.httpPrivate.get<any>(APIUrlAuth + "user/request/" + id)
   }
 
   deleteRequest(id:number):Observable<any>{
-    return this.httpPrivate.delete<any>(APIUrlAuth + "/request/" + id)
+    return this.httpPrivate.delete<any>(APIUrlAuth + "request/" + id)
   }
 }
