@@ -51,6 +51,31 @@ public class AuthService : IAuthService
 
         return (1, token);
     }
+
+    public async Task<StatusResult> UpdatePassword(string password, string id)
+    {
+        var found = await _userManager.FindByIdAsync(id);
+        var result = new StatusResult();
+        if (found == null || string.IsNullOrEmpty(password))
+        {
+            result.ResultStatus = Status.Empty;
+            return result;
+        };
+        
+        var passwordToken = await _userManager.GeneratePasswordResetTokenAsync(found);
+        var valid = await _userManager.ResetPasswordAsync(found, passwordToken, password);
+        if (!valid.Succeeded)
+        {
+            result.ResultStatus = Status.Invalid;
+            return result;
+        }
+        await _userManager.UpdateAsync(found);
+        result.ResultStatus = Status.Accepted;
+        result.ResultUserObject = found;
+        return result;
+    }
+    
+    
     
     /// <summary>
     /// Generates a new access token.
@@ -102,4 +127,15 @@ public class AuthService : IAuthService
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
         };
     }
+}
+
+public class StatusResult
+{
+    public User ResultUserObject { get; set; }
+
+    public Status ResultStatus { get; set; }
+}
+public enum Status
+{
+    Accepted, Invalid, Empty
 }
