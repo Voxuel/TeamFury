@@ -33,4 +33,5 @@ export class AdminService {
     .pipe(map((data) => data.result))
   }
 
+
 }
