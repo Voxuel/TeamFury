@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 
 const APIUrlAuth = "https://localhost:7177/api/login";
+const APIUrl = "https://localhost:7177/api"
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +18,17 @@ export class UserService extends DataService {
 
   logIn(data: {username:string, password:string}):Observable<any>{
         return this.httpPrivate.post(APIUrlAuth, data)
+  }
+
+  getLeaveDays(id:string):Observable<any>{
+    return this.httpPrivate.get<any>(APIUrl + "/user/leavedays/" + id)
+  }
+
+  getActiveRequests(id:string):Observable<any>{
+    return this.httpPrivate.get<any>(APIUrl + "/user/request/" + id)
+  }
+
+  deleteRequest(id:number):Observable<any>{
+    return this.httpPrivate.delete<any>(APIUrl + "/request/" + id)
   }
 }

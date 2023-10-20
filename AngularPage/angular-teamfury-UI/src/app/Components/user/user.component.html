@@ -1,1 +1,43 @@
-<p>user works!</p>
+<div class="sidebar">
+    <a href="">Apply for Leave</a>
+    <a href="">Leave History</a>
+</div>
+  
+  <!-- Page content -->
+<div class="content">
+    <h1>Remaining Days</h1>
+    <div class="daysremaining">
+        <div class="daystype" *ngFor="let leaveDay of leaveDays">
+            <span class="type">{{leaveDay.leaveType}}</span>
+            <span class="days">{{leaveDay.daysLeft}}</span>
+        </div>
+    </div>
+    <div class="activerequests">
+        <h1>My Leave Records</h1>
+        <thead class="requests">
+            <tr style="border-bottom: 1px solid;">
+                <td class="request-header">Start Date</td>
+                <td class="request-header">End Date</td>
+                <td class="request-header">Request Sent</td>
+                <td class="request-header">Message</td>
+                <td class="request-header">Type</td>
+                <td class="request-header">Status</td>
+                <td class="request-header">Admin</td>
+                <td class="request-header">Cancel Request</td>
+            </tr>
+        </thead>
+        <tbody class="requests" *ngFor="let request of requests">
+            <tr class="request-row">
+                <td class="request">{{request.startDate | date:'yyyy-MM-dd'}}</td>
+                <td class="request">{{request.endDate | date:'yyyy-MM-dd'}}</td>
+                <td class="request">{{request.requestSent | date:'yyyy-MM-dd:mm:ss'}}</td>
+                <td class="request">{{request.messageForDecline}}</td>
+                <td class="request">{{request.requestType.name}}</td>
+                <td class="request">{{getStatusType(request.statusRequest)}}</td>
+                <td class="request">{{request.adminName}}</td>
+                <td class="request"><button type="button" class="btn btn-danger" (click)="deleteRequest(request.requestId);">Delete</button></td>
+            </tr>
+        </tbody>
+    </div>
+</div>
+
