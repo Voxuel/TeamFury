@@ -53,6 +53,7 @@ public class AdminService : IAdminService
         var usersWithRoles = await (from users in _userManager.Users
             select new UserViewDTO()
             {
+                Id = users.Id,
                 Username = users.UserName,
                 Email = users.Email,
                 PhoneNumber = users.PhoneNumber,
