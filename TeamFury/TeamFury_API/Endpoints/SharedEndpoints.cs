@@ -39,7 +39,7 @@ namespace TeamFury_API.Endpoints
                 .Produces(400)
                 .WithName("GetSingleEmployee");
 
-            app.MapDelete("/api/request/",
+            app.MapDelete("/api/request/{id}",
                 async (IRequestService service, int id) =>
             {
                 try
