@@ -28,8 +28,7 @@ export class DetailedComponent {
 
   obj:any;
 
-  constructor(private ar:ActivatedRoute, private adminService:AdminService, private builder:FormBuilder,
-    private authService:AuthService, private _snackBar:MatSnackBar){
+  constructor(private ar:ActivatedRoute, private adminService:AdminService, private builder:FormBuilder){
     this.obj = JSON.parse(ar.snapshot.params['user']);
     this.form = this.builder.group({
       id: this.user.id,
@@ -51,6 +50,7 @@ export class DetailedComponent {
 
   updateUser(user:UserViewModel){
     this.adminService.updateUser(user).subscribe(response => {this.getAllUsers()})
+
     this._snackBar.open("User updated", 'ℹ️')
   }
   deleteUser(id:string){
