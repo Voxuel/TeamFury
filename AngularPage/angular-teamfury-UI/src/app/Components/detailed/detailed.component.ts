@@ -54,7 +54,7 @@ export class DetailedComponent {
   updateUser(user:UserViewModel){
     this.adminService.updateUser(user).subscribe(response => {this.getAllUsers()})
 
-    this._snackBar.open("User updated", '')
+    this._snackBar.open("User updated", '✔️')
   }
   deleteUser(id:string){
     if(this.authService.getUserId() == this.user.id){
