@@ -3,3 +3,42 @@ body{
     font-size: 1.125rem;
     line-height: 1.6;
 }
+
+button a{
+    color:black;
+}
+button{
+    --color: hsl(208, 72%, 39%);
+    display:inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    border: 3px solid var(--color);
+    padding: .2em .8em;
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
+
+    position:relative;
+    isolation: isolate;
+}
+button::after{
+    content: '';
+    position: absolute;
+    z-index: -1;
+    background-color: var(--color);
+    inset: 0;
+    scale: 0 1;
+    transition: scale 450ms;
+    -webkit-transition: scale 450ms;
+    -moz-transition: scale 450ms;
+    -ms-transition: scale 450ms;
+    -o-transition: scale 450ms;
+    transform-origin: right;
+}
+button:hover::after,
+button:focus-visible::after{
+    transform-origin: left;
+    scale: 1 1;
+}

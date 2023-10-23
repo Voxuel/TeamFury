@@ -1,3 +1,41 @@
+.container-wrapper{
+    display: flex;
+    margin: .5em 1em;
+    overflow: hidden;
+}
 table{
+    --bgc: #8146a8;
+    background-color: var(--bgc);
+    min-height: 30vh;
+}
+.table-wrapper td, .table-wrapper th{
+    vertical-align: middle;
+    border-style: hidden!important;
+}
+.table-wrapper th{
+    min-width: 10vw;
+    padding: 1em;
+}
+.table-wrapper td{
+    padding: 1em;
+}
+
+.table-wrapper tr:nth-child(even){
+    background-color: #6842af
+}
+
+.table-wrapper tr:nth-child(odd){
+    background-color: var(--bgc);
+}
+.table-container{
     margin: 1em;
+    padding: 1em;
+
+}
+.image-container{
+    width: 50%;
+}
+.image-container img{
+    width: 100%;
+    height: auto;
 }
