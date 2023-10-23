@@ -27,8 +27,8 @@
             <input name="role" formControlName="role" [(ngModel)]="user.role"
                 class="form-control">
         </div>
-        <input class="btn btn-submit" type="submit"/>
-        <button class="btn btn-danger" type="button"
-        id="submit-btn"></button>
+        <input class="btn btn-primary" type="submit" value="Update"/>
+        <button class="btn btn-danger" type="button" (click)="deleteUser(user.id)">Delete</button>
+        <button class="btn btn-warning"><a href="../user-manager/">Back to list</a></button>
     </form>
 </div>

@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { AdminService } from 'src/app/Services/admin.service';
+import { AuthService } from 'src/app/Services/auth.service';
 import { UserViewModel } from 'src/app/models/user.view.model';
 
 @Component({
@@ -48,6 +50,16 @@ export class DetailedComponent {
 
   updateUser(user:UserViewModel){
     this.adminService.updateUser(user).subscribe(response => {this.getAllUsers()})
+
+    this._snackBar.open("User updated", 'ℹ️')
+  }
+  deleteUser(id:string){
+    if(this.authService.getUserId() == this.user.id){
+      alert("Can't delete yourself lol")
+      return;
+    }
+    this.adminService.deleteUser(id).subscribe()
+    this._snackBar.open("User deleted", '🗑️')
   }
 
   onSubmit(){
