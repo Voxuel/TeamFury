@@ -39,7 +39,7 @@ export function tokenGetter(){
     NavComponent,
     RegisterComponent,
     UserManagerComponent,
-    DetailedComponent
+    DetailedComponent,
     RequestComponent
 
   ],
