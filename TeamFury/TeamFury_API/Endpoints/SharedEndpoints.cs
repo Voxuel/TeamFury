@@ -1,5 +1,7 @@
 ﻿using Models.Models.API_Model_Tools;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
+using TeamFury_API.Data;
 using TeamFury_API.Services;
 using TeamFury_API.Services.AdminServices;
 
@@ -80,6 +82,23 @@ namespace TeamFury_API.Endpoints
             }).AllowAnonymous()
                 .WithName("GetRequestByID");
 
+            app.MapGet("/api/requesttype", async (AppDbContext context) => {
+                try
+                {
+                    var response = new ApiResponse();
+                    var result = await context.RequestTypes.ToListAsync();
+
+                    response.Result = result;
+                    response.IsSuccess = true;
+                    response.StatusCode = HttpStatusCode.OK;
+                    return Results.Ok(response);
+                }
+                catch (Exception e)
+                {
+                    return Results.BadRequest(e);
+                }
+            }).AllowAnonymous()
+            .WithName("GetAllRequestTypes");
         }
     }
 }

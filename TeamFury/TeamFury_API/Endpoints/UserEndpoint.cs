@@ -14,7 +14,7 @@ namespace TeamFury_API.Endpoints
     {
         public static void UserEndpointConfig(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/user/request/", async
+            app.MapPost("/api/user/request/{id}", async
                 (IRequestService service, IMapper mapper, IValidator<RequestCreateDTO> validator,
                     RequestCreateDTO req_c_DTO, string id) =>
                 {

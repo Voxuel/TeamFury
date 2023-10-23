@@ -7,12 +7,14 @@ import { authGuard } from './Guards/auth.guard';
 import { AdminComponent } from './Components/admin/admin.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { RegisterComponent } from './Components/register/register.component';
+import { RequestComponent } from './Components/request/request.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent, canActivate: [SecureInnerPagesGuard]},
   {path: 'User', component: UserComponent, canActivate: [authGuard], data: {role: ['EMPLOYEE']}},
   {path: 'Admin',component: AdminComponent,canActivate: [authGuard], data: {role: ['ADMIN'] }},
   {path: 'Profile', component:ProfileComponent, canActivate: [authGuard], data:{role:['ADMIN', 'EMPLOYEE']}},
+  {path: 'Request', component:RequestComponent, canActivate:[authGuard], data:{role:['EMPLOYEE']}},
   {path: 'register',component: RegisterComponent, canActivate:[authGuard], data:{role:['ADMIN']}},
   {path: '', redirectTo: 'login', pathMatch:'full'}
 ];
