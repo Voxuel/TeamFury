@@ -1,34 +1,42 @@
 <head>
     <link rel="stylesheet" href="detailed.component.css">
 </head>
-
-<div class="detailed-view-item">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <input name="id" formControlName="id" hidden>
-            <label>Username</label>
-            <input name="username" formControlName="username" [(ngModel)]="user.username" class="form-control">
+<div class="wrapper">
+    <div class="container-wrapper">
+        <div class="image-container">
+            <img src="https://blogassets.leverageedu.com/blog/wp-content/uploads/2019/11/23173353/Personal-Details-in-Resume.jpg">
         </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input name="password" formControlName="password" [(ngModel)]="user.password" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input name="email" formControlName="email" [(ngModel)]="user.email"
+        <div class="detailed-view-item">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <input name="id" formControlName="id" hidden>
+                    <label>Username</label>
+                    <input name="username" formControlName="username" [(ngModel)]="user.username" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input name="password" formControlName="password" [(ngModel)]="user.password" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                <input name="email" formControlName="email" [(ngModel)]="user.email"
                 class="form-control">
-        </div>
-        <div class="form-group">
-            <label>Phone</label>
-            <input name="phone" formControlName="phone" [(ngModel)]="user.phoneNumber" class="form-control">
-        </div>
-        <div class="form-group">
-            <label>Roles</label>
-            <input name="role" formControlName="role" [(ngModel)]="user.role"
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input name="phone" formControlName="phone" [(ngModel)]="user.phoneNumber" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Roles</label>
+                <input name="role" formControlName="role" [(ngModel)]="user.role"
                 class="form-control">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Update"/>
-        <button class="btn btn-danger" type="button" (click)="deleteUser(user.id)">Delete</button>
-        <button class="btn btn-warning"><a href="../user-manager/">Back to list</a></button>
-    </form>
+            </div>
+            <div class="button-group">
+                <input class="btn btn-primary" type="submit" value="Update"/>
+                <button class="btn btn-danger" type="button" (click)="deleteUser(user.id)">Delete</button>
+                <button class="btn btn-warning"><a href="../user-manager/">Back to list</a></button>
+            </div>
+        </form>
+    </div>
+</div>
 </div>
