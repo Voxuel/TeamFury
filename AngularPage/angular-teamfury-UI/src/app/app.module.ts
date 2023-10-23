@@ -25,6 +25,7 @@ import { DetailedComponent } from './Components/detailed/detailed.component';
 import { RequestComponent } from './Components/request/request.component';
 
 
+
 export function tokenGetter(){
   return sessionStorage.getItem("TOKEN_KEY");
 }

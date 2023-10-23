@@ -6,6 +6,7 @@ import { UserViewModel } from '../models/user.view.model';
 import { ApiResponse } from '../models/api-response';
 import { map } from 'rxjs';
 import { User } from '../models/user';
+import { LeaveDaysTotal } from '../models/leaveDaysTotal';
 
 
 const APIUrlAuth = "https://localhost:7177/api/"
@@ -49,5 +50,11 @@ export class AdminService {
   }
 
 
+  getTotalUsedLeavedays():Observable<LeaveDaysTotal[]>{
+    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/leavedays/totalused`)
+    .pipe(map((data) => data.result))
+  }
+
+  
   // Request services as admin.
 }

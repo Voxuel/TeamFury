@@ -1,0 +1,14 @@
+<h2 class="leavedays-title">Leavedays</h2>
+<h3 class="leavedays-subtitle">Monitor vacations of all employees</h3>
+<div class="monitor-container" id="table-data">
+    <div class="monitor-vacation" *ngFor="let item of leavedays">
+    <ul class="leavedays-firstTable">
+        <li class="leavedays-firstTable_table">
+            <h1 class="leavedays-firstTable_table__header">{{item.leaveType}}</h1>
+        </li>
+        <li class="leavedays-firstTable_table">
+            <p class="leavedays-firstTable_table__amount"><span>{{item.daysLeft}}</span>/<span>Days</span></p>
+        </li>
+    </ul>
+</div>
+</div>
