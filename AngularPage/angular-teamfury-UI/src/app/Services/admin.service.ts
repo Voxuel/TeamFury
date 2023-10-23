@@ -50,10 +50,11 @@ export class AdminService {
   }
 
 
-  // Request services as admin.
-
   getTotalUsedLeavedays():Observable<LeaveDaysTotal[]>{
     return this.http.get<ApiResponse>(`${APIUrlAuth}admin/leavedays/totalused`)
     .pipe(map((data) => data.result))
   }
+
+  
+  // Request services as admin.
 }
