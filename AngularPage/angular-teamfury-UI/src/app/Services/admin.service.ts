@@ -7,6 +7,7 @@ import { ApiResponse } from '../models/api-response';
 import { map } from 'rxjs';
 import { User } from '../models/user';
 import { LeaveDaysTotal } from '../models/leaveDaysTotal';
+import { RequestType } from '../models/requestType';
 
 
 const APIUrlAuth = "https://localhost:7177/api/"
@@ -15,14 +16,6 @@ const APIUrlAuth = "https://localhost:7177/api/"
   providedIn: 'root'
 })
 export class AdminService {
-
-  employee:Employee = {
-    username: "",
-    password: "",
-    email: "",
-    phoneNumber: "",
-    role: ""
-  };
 
   constructor(private http:HttpClient) { }
 
@@ -42,7 +35,7 @@ export class AdminService {
   }
 
   updateUser(employee:UserViewModel):Observable<UserViewModel>{
-    return this.http.put<any>(`${APIUrlAuth}admin/employee`,employee)
+    return this.http.put<any>(`${APIUrlAuth}admin/employee`, employee)
   }
 
   deleteUser(id:string):Observable<Employee>{
@@ -54,7 +47,13 @@ export class AdminService {
     return this.http.get<ApiResponse>(`${APIUrlAuth}admin/leavedays/totalused`)
     .pipe(map((data) => data.result))
   }
-
   
+  // Request-Type services as admin
+
+  createType(requestType:RequestType):Observable<RequestType>{
+    return this.http.post<RequestType>(`${APIUrlAuth}admin/type/`, requestType)
+  }
+
+
   // Request services as admin.
 }

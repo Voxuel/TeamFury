@@ -7,6 +7,8 @@ import { Employee } from 'src/app/models/employee';
 import { LeaveDaysTotal } from 'src/app/models/leaveDaysTotal';
 import { UserViewModel } from 'src/app/models/user.view.model';
 import { saveAs } from 'file-saver';
+import { RequestType } from 'src/app/models/requestType';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin',
@@ -16,8 +18,18 @@ import { saveAs } from 'file-saver';
 export class AdminComponent {
 
 leavedays:LeaveDaysTotal[] = []
+requestType:RequestType = {
+  name:'',
+  maxDays:''
+}
+rtForm:FormGroup
 
-constructor(private adminService:AdminService){}
+constructor(private adminService:AdminService, builder:FormBuilder, private _snackBar:MatSnackBar){
+  this.rtForm = builder.group({
+    name:'',
+    maxDays:''
+  })
+}
 
   ngOnInit():void{
     this.getTotalLeavedays();
@@ -28,6 +40,15 @@ constructor(private adminService:AdminService){}
     this.adminService.getTotalUsedLeavedays().subscribe(response => {this.leavedays = response})
   }
 
+  submitRequestTypeForm(){
+    if(this.rtForm.invalid){
+      return;
+    }
+    this.adminService.createType(this.requestType).subscribe()
+    this._snackBar.open("New Request-Type was created", '✔️')
+  }
+
+
   downloadRapport(){
     const ele = document.getElementById('table-data')!;
     let blob = new Blob([ele.innerText], {
@@ -35,6 +56,7 @@ constructor(private adminService:AdminService){}
     });
     saveAs(blob, "rapport-data.csv");
   }
+
 
 
 }
