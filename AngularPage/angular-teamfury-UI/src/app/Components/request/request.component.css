@@ -1,0 +1,86 @@
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: absolute;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  .sidebar a {
+    display: block;
+    color: rgb(0, 0, 0);
+    padding: 16px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+  .sidebar a.active{
+    background-color: #555;
+    color: white;
+  }
+  @media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+  }
+  
+  @media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }
+  div.content {
+    margin-left: 200px;
+    padding: 70px 30px;
+    height: 100%;
+  }
+  .request-container{
+    height: 400px;
+  }
+  .request-form{
+    box-shadow: 2px 3px 8px grey;
+    border-radius: 7px;
+    padding: 15px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+.req-group{
+    font-size: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.req-group input{
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+.submit{
+    margin-top: 20px;
+    height: 30px;
+    width: 70px;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+.date-group{
+    display: flex;
+    flex-direction: row;
+}

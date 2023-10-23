@@ -22,6 +22,8 @@ import { NavComponent } from './navbar/nav/nav.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { UserManagerComponent } from './Components/user-manager/user-manager.component';
 import { DetailedComponent } from './Components/detailed/detailed.component';
+import { RequestComponent } from './Components/request/request.component';
+
 
 export function tokenGetter(){
   return sessionStorage.getItem("TOKEN_KEY");
@@ -38,6 +40,8 @@ export function tokenGetter(){
     RegisterComponent,
     UserManagerComponent,
     DetailedComponent
+    RequestComponent
+
   ],
   imports: [
     MaterialModule,
