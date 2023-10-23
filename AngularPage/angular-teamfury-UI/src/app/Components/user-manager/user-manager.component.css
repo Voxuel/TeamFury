@@ -6,7 +6,6 @@
 table{
     --bgc: #8146a8;
     background-color: var(--bgc);
-    min-height: 30vh;
 }
 .table-wrapper td, .table-wrapper th{
     vertical-align: middle;
