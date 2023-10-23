@@ -20,7 +20,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { NavComponent } from './navbar/nav/nav.component';
 import { RegisterComponent } from './Components/register/register.component';
+import { UserManagerComponent } from './Components/user-manager/user-manager.component';
+import { DetailedComponent } from './Components/detailed/detailed.component';
 import { RequestComponent } from './Components/request/request.component';
+
 
 export function tokenGetter(){
   return sessionStorage.getItem("TOKEN_KEY");
@@ -35,7 +38,10 @@ export function tokenGetter(){
     ProfileComponent,
     NavComponent,
     RegisterComponent,
+    UserManagerComponent,
+    DetailedComponent
     RequestComponent
+
   ],
   imports: [
     MaterialModule,

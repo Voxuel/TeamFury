@@ -85,7 +85,7 @@ public static class AdminEndpoints
                 var response = new ApiResponse();
                 var hasher = new PasswordHasher<User>();
                 var user = mapper.Map<User>(user_c_dto);
-                user.PasswordHash = hasher.HashPassword(null, user_c_dto.Password);
+                user.PasswordHash = hasher.HashPassword(user, user_c_dto.Password);
                 var result = await services.CreateAsync(user, user_c_dto.Role);
                 if (result == null) return Results.BadRequest();
                 response.Result = result;

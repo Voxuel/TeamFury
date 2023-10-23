@@ -23,11 +23,14 @@ export class RegisterComponent {
     role: ""
   };
 
-  constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar){
+  succsses = false;
+  submitted = false;
+
+  constructor(private adminService:AdminService, builder:FormBuilder, private _snackBar:MatSnackBar){
 
       this.form = builder.group({
         username: ['', Validators.required],
-        password: ['', Validators.required, Validators.minLength(5)],
+        password: ['', Validators.required],
         email: ['', Validators.required],
         phoneNumber: ['', Validators.required],
         role: ['', Validators.required]
@@ -40,7 +43,14 @@ export class RegisterComponent {
         return;
       }
       this.adminService.createUser(this.employee).subscribe();
+      console.log(this.employee)
       this._snackBar.open("New user was created", '✔️')
+    }
+
+    get f():{
+      [key:string]:AbstractControl
+    }{
+      return this.form.controls;
     }
 
 }
