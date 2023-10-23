@@ -42,7 +42,7 @@ export class LoginComponent {
     return this.form.get('password');
   }
   // match errors in the submition of form
-  // matcher = new ErrorsStateMatcher();
+  matcher = new ErrorsStateMatcher();
   // submit fntc
   onSubmit() {
     const LoginInfo = {

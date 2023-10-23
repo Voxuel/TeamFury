@@ -28,7 +28,8 @@ export class DetailedComponent {
 
   obj:any;
 
-  constructor(private ar:ActivatedRoute, private adminService:AdminService, private builder:FormBuilder){
+  constructor(private ar:ActivatedRoute, private adminService:AdminService, private builder:FormBuilder,
+    private authService:AuthService, private _snackBar:MatSnackBar){
     this.obj = JSON.parse(ar.snapshot.params['user']);
     this.form = this.builder.group({
       id: this.user.id,
