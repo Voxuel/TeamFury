@@ -8,6 +8,7 @@ using Models.Models.API_Model_Tools;
 using System.Net;
 using TeamFury_API.Services;
 using TeamFury_API.Services.AdminServices;
+using TeamFury_API.Services.EmailServices;
 
 namespace TeamFury_API.Endpoints;
 
@@ -265,7 +266,7 @@ public static class AdminEndpoints
 
         app.MapPut("/api/admin/request/", 
             async(IRequestService service, ILeaveDaysService leaveDays,
-            IMapper mapper, RequestUpdateDTO req_u_DTO) =>
+            IMapper mapper, RequestUpdateDTO req_u_DTO, IEmailService emailService) =>
         {
             try
             {
@@ -282,9 +283,13 @@ public static class AdminEndpoints
                     response.IsSuccess = false;
                     return Results.BadRequest(response);
                 }
-                await leaveDays.UpdateLeaveDaysOnAprovedRequest(request);
+                if (result.StatusRequest == StatusRequest.Accepted)
+                {
+                    await leaveDays.UpdateLeaveDaysOnAprovedRequest(request);
+                }
+                var found = await leaveDays.FindByRequest(result);
+                await emailService.SendEmail(found);
                 await service.AddRequestToLog(result);
-
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;
                 response.Result = result;

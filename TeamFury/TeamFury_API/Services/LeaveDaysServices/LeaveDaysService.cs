@@ -47,6 +47,11 @@ namespace TeamFury_API.Services
         {
             return await _context.LeaveDays.FindAsync(id);
         }
+        public async Task<LeaveDays> FindByRequest(Request request)
+        {
+            return await _context.LeaveDays.Include(y=> y.IdentityUser)
+                .Include(z => z.Request.RequestType).FirstOrDefaultAsync(x=> x.Request == request);
+        }
 
 
         public async Task<LeaveDays> UpdateAsync(LeaveDays newUpdate)
@@ -65,7 +70,7 @@ namespace TeamFury_API.Services
             daysLeft.Days += daysOff;
             _context.Update(daysLeft);
             await _context.SaveChangesAsync();
-            return null;
+            return daysLeft;
         }
         #region LeavedaysUsedByEmployee
         public async Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysByEmployeeID(string id)
@@ -149,6 +154,8 @@ namespace TeamFury_API.Services
 
             return result;
         }
-            #endregion
+
+       
+        #endregion
     }
 }

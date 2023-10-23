@@ -14,8 +14,8 @@ using TeamFury_API.Endpoints;
 using TeamFury_API.MappingProfiles;
 using TeamFury_API.Services;
 using TeamFury_API.Services.AdminServices;
+using TeamFury_API.Services.EmailServices;
 using TeamFury_API.Services.SecurityServices;
-using TeamFury_API.Services.UserServices;
 
 
 namespace TeamFury_API
@@ -42,8 +42,8 @@ namespace TeamFury_API
                     policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
             });
             
+            builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
-            builder.Services.AddScoped<IUserServices, UserServices>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<ILeaveDaysService, LeaveDaysService>();
             builder.Services.AddScoped<IRequestService, RequestService>();

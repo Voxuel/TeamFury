@@ -10,8 +10,6 @@ using Models.DTOs;
 using Models.Models;
 using TeamFury_API.Data;
 using TeamFury_API.Services.SecurityServices;
-using TeamFury_API.Services.UserServices;
-
 namespace TeamFury_API.Endpoints;
 
 public static class SecurityEndpoints

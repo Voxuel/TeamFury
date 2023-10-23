@@ -8,6 +8,8 @@ namespace TeamFury_API.Services
         Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysByEmployeeID(string id);
         Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysUsed();
         Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(Request days);
+        Task<LeaveDays> FindByRequest(Request request);
+
 
     }
 }
