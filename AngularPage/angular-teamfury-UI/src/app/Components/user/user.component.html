@@ -1,5 +1,5 @@
 <div class="sidebar">
-    <a href="">Apply for Leave</a>
+    <a routerLink="/Request">Apply for Leave</a>
     <a href="">Leave History</a>
 </div>
   
@@ -30,7 +30,7 @@
             <tr class="request-row">
                 <td class="request">{{request.startDate | date:'yyyy-MM-dd'}}</td>
                 <td class="request">{{request.endDate | date:'yyyy-MM-dd'}}</td>
-                <td class="request">{{request.requestSent | date:'yyyy-MM-dd:mm:ss'}}</td>
+                <td class="request">{{request.requestSent | date:'yyyy-MM-dd-hh:mm:ss'}}</td>
                 <td class="request">{{request.messageForDecline}}</td>
                 <td class="request">{{request.requestType.name}}</td>
                 <td class="request">{{getStatusType(request.statusRequest)}}</td>
