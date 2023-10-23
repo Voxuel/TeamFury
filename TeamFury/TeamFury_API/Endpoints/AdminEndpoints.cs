@@ -285,7 +285,7 @@ public static class AdminEndpoints
                 }
                 if (result.StatusRequest == StatusRequest.Accepted)
                 {
-                    await leaveDays.UpdateLeaveDaysOnAprovedRequest(request);
+                    await leaveDays.UpdateLeaveDaysOnAprovedRequest(result);
                 }
                 var found = await leaveDays.FindByRequest(result);
                 await emailService.SendEmail(found);

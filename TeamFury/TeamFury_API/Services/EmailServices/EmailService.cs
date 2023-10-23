@@ -23,7 +23,10 @@ namespace TeamFury_API.Services.EmailServices
                 email.Subject = user.Request.RequestType.Name;
                 email.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = $"<h1>{user.Request.RequestType.Name} Aproved</h1>"
+                    Text = $"<h1>{user.Request.RequestType.Name} Approved</h1></br>" +
+                    $"<p>{user.Request.RequestType.Name} between {user.Request.StartDate:yyyy/MM/dd} and {user.Request.EndDate:yyyy/MM/dd} has been approved</p></br>" +
+                    $"<p>Additional comment: {user.Request.MessageForDecline}</p></br><p>Reviewed by {user.Request.AdminName}</p>"
+
                 };
             }
             else if (user.Request.StatusRequest == StatusRequest.Declined)
@@ -31,7 +34,10 @@ namespace TeamFury_API.Services.EmailServices
                 email.Subject = user.Request.RequestType.Name;
                 email.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = $"<h1>{user.Request.RequestType.Name} Declined</h1>"
+                    Text = $"<h1>{user.Request.RequestType.Name} Declined</h1> </br>" +
+                    $"<p>{user.Request.RequestType.Name} between {user.Request.StartDate:yyyy/MM/dd} and {user.Request.EndDate:yyyy/MM/dd} has been declined</p></br>" +
+                    $"<p>Additional comment: {user.Request.MessageForDecline}</p></br><p>Reviewed by {user.Request.AdminName}</p>"
+
                 };
 
             }
