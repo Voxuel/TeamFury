@@ -4,6 +4,7 @@ import { AdminService } from 'src/app/Services/admin.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserService } from 'src/app/Services/user.service';
 import { Employee } from 'src/app/models/employee';
+import { LeaveDaysTotal } from 'src/app/models/leaveDaysTotal';
 import { UserViewModel } from 'src/app/models/user.view.model';
 
 @Component({
@@ -13,7 +14,12 @@ import { UserViewModel } from 'src/app/models/user.view.model';
 })
 export class AdminComponent {
 
+leavedays:LeaveDaysTotal[] = []
 
+  constructor(private adminService:AdminService){}
 
-  constructor(){}
+  getTotalLeavedays(){
+    this.adminService.getTotalUsedLeavedays().subscribe(response => {this.leavedays = response})
+  }
+
 }
