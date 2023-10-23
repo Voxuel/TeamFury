@@ -1,17 +1,22 @@
-<div class="container">
-    <table class="table table-dark">
-        <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Roles</th>
-        </tr>
-        <tr *ngFor="let item of users">
-            <td>{{item.username}}</td>
-            <td>{{item.email}}</td>
-            <td>{{item.phoneNumber}}</td>
-            <td>{{item.role}}</td>
-            <td><button (click)="inspectUser(item)">Inspect</button></td>
-        </tr>
-    </table>
+<div class="container-wrapper">
+    <div class="image-container">
+        <img src="https://www.iconpacks.net/icons/1/free-user-group-icon-296-thumb.png" alt="three people">
+    </div>
+    <div class="table-container">
+        <table class="table-wrapper">
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Roles</th>
+            </tr>
+            <tr *ngFor="let item of users">
+                <td>{{item.username}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.phoneNumber}}</td>
+                <td>{{item.role}}</td>
+                <td><button (click)="inspectUser(item)">Inspect</button></td>
+            </tr>
+        </table>
+    </div>
 </div>
