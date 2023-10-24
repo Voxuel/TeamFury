@@ -31,11 +31,6 @@ namespace TeamFury_API.Services
         {
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
-
-            if (found.StatusRequest == StatusRequest.Accepted && newUpdate.StatusRequest != StatusRequest.Accepted)
-            {
-                return null;
-            }
             found.StatusRequest = newUpdate.StatusRequest;
             found.MessageForDecline = newUpdate.MessageForDecline;
             _context.Update(found);

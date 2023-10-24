@@ -1,5 +1,6 @@
 ﻿using Models.DTOs;
 using Models.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TeamFury_API.Services
 {
@@ -7,7 +8,7 @@ namespace TeamFury_API.Services
     {
         Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysByEmployeeID(string id);
         Task<IEnumerable<RemainingLeaveDaysDTO>> GetLeaveDaysUsed();
-        Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(Request days);
+        Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(RequestUpdateDTO comparison, Request toUpdate);
         Task<LeaveDays> FindByRequest(Request request);
 
 

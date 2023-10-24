@@ -267,26 +267,21 @@ public static class AdminEndpoints
         app.MapPut("/api/admin/request/", 
             async(IRequestService service, ILeaveDaysService leaveDays,
             IMapper mapper, RequestUpdateDTO req_u_DTO, IEmailService emailService) =>
-        {
+            {
             try
             {
                 var response = new ApiResponse();
-                
-
-                var request = mapper.Map<Request>(req_u_DTO);
-
-                var result = await service.UpdateAsync(request);
-                if (result == null)
+                var preUpdate = await service.GetByID(req_u_DTO.RequestID);
+                if (preUpdate == null)
                 {
-                    response.ErrorMessages.Add("Already approved");
+                    response.ErrorMessages.Add("Request not found");
                     response.StatusCode = HttpStatusCode.BadRequest;
                     response.IsSuccess = false;
                     return Results.BadRequest(response);
                 }
-                if (result.StatusRequest == StatusRequest.Accepted)
-                {
-                    await leaveDays.UpdateLeaveDaysOnAprovedRequest(result);
-                }
+                var request = mapper.Map<Request>(req_u_DTO);
+                await leaveDays.UpdateLeaveDaysOnAprovedRequest(req_u_DTO, preUpdate);
+                var result = await service.UpdateAsync(request);
                 var found = await leaveDays.FindByRequest(result);
                 await emailService.SendEmail(found);
                 await service.AddRequestToLog(result);

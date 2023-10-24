@@ -89,32 +89,6 @@ namespace TeamFury_API.Endpoints
                 .Produces<ApiResponse>(200)
                 .WithName("GetAllRequestLogs");
 
-            app.MapGet("/api/user/leavedays/used/{id}",
-               async (ILeaveDaysService service, string id) =>
-               {
-                   try
-                   {
-                       var response = new ApiResponse();
-                       var result = await service.GetLeaveDaysByEmployeeID(id);
-                       if (result == null)
-                       {
-                           response.IsSuccess = false;
-                           response.StatusCode = HttpStatusCode.BadRequest;
-                           response.ErrorMessages.Add("User not found");
-                           return Results.BadRequest();
-                       }
-                       response.IsSuccess = true;
-                       response.StatusCode = HttpStatusCode.OK;
-                       response.Result = result;
-                       return Results.Ok(response);
-                   }
-                   catch (Exception e)
-                   {
-                       return Results.BadRequest(e);
-                   }
-               }).AllowAnonymous()
-               .Produces<ApiResponse>(200)
-               .WithName("GetLeaveDaysLeft");
         }
     }
 }
