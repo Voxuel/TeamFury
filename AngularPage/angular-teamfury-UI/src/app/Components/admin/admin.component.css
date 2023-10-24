@@ -116,6 +116,7 @@ form{
 }
 .request{
     text-align: center;
+    padding: .5em 1em;
 }
 table {
     background-color: #7e7b7b;
@@ -124,8 +125,5 @@ table {
     -moz-border-radius: .25em;
     -ms-border-radius: .25em;
     -o-border-radius: .25em;
-}
-table td{
-    padding: .5em 1em;
 }
 
