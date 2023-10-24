@@ -15,9 +15,22 @@ import { saveAs } from 'file-saver';
 })
 export class AdminComponent {
 
-leavedays:LeaveDaysTotal[] = []
+  H1Title='LEAVEDAYS';
+  formTitle='Add new leave type';
 
-constructor(private adminService:AdminService){}
+leavedays:LeaveDaysTotal[] = []
+form:FormGroup
+leaveType:any ={
+  leavename:'',
+  maxdays:''
+}
+
+constructor(private adminService:AdminService, private builder:FormBuilder){
+  this.form = builder.group({
+    leavedays:'',
+    maxdays:''
+  })
+}
 
   ngOnInit():void{
     this.getTotalLeavedays();
@@ -36,5 +49,8 @@ constructor(private adminService:AdminService){}
     saveAs(blob, "rapport-data.csv");
   }
 
+  onSubmit(){
+    
+  }
 
 }
