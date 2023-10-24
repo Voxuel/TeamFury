@@ -25,12 +25,12 @@ export class AdminComponent {
 
 leavedays:LeaveDaysTotal[] = []
 allRequests:RequestViewModel[] = []
+allPending:RequestViewModel[] = []
 form:FormGroup
 leaveType:RequestTypeCreate ={
   name:'',
   maxDays:''
 }
-errors:any[] = []
 
 constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar){
   this.form = builder.group({
@@ -61,7 +61,15 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     this.adminService.getTotalUsedLeavedays().subscribe(response => {this.leavedays = response})
   }
   getRequests(){
-    this.adminService.getAllRequests().subscribe(response => {this.allRequests = response})
+    this.adminService.getAllRequests().subscribe(response => {
+      response.forEach(element => {
+        if(element.statusRequest == '0'){
+          this.allPending.push(element)
+        }
+      },
+      this.allRequests = response
+      );
+    })
   }
 
 
@@ -81,5 +89,4 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     this.adminService.createRequestType(this.leaveType).subscribe()
     this._snackBar.open('Created')
   }
-
 }
