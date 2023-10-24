@@ -7,6 +7,7 @@ import { ApiResponse } from '../models/api-response';
 import { map } from 'rxjs';
 import { User } from '../models/user';
 import { LeaveDaysTotal } from '../models/leaveDaysTotal';
+import { RequestViewModel } from '../models/requestViewModel';
 
 
 const APIUrlAuth = "https://localhost:7177/api/"
@@ -57,4 +58,9 @@ export class AdminService {
 
   
   // Request services as admin.
+
+  getAllRequests():Observable<RequestViewModel[]>{
+    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/request`)
+    .pipe(map((data) => data.result))
+  }
 }

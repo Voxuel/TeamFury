@@ -7,6 +7,8 @@ import { Employee } from 'src/app/models/employee';
 import { LeaveDaysTotal } from 'src/app/models/leaveDaysTotal';
 import { UserViewModel } from 'src/app/models/user.view.model';
 import { saveAs } from 'file-saver';
+import { Request } from 'src/app/models/request.model';
+import { RequestViewModel } from 'src/app/models/requestViewModel';
 
 @Component({
   selector: 'app-admin',
@@ -19,27 +21,33 @@ export class AdminComponent {
   formTitle='Add new leave type';
 
 leavedays:LeaveDaysTotal[] = []
+allRequests:RequestViewModel[] = []
 form:FormGroup
 leaveType:any ={
-  leavename:'',
+  name:'',
   maxdays:''
 }
 
 constructor(private adminService:AdminService, private builder:FormBuilder){
   this.form = builder.group({
-    leavedays:'',
+    name:'',
     maxdays:''
   })
 }
 
   ngOnInit():void{
     this.getTotalLeavedays();
+    this.getRequests();
   }
 
 
   getTotalLeavedays(){
     this.adminService.getTotalUsedLeavedays().subscribe(response => {this.leavedays = response})
   }
+  getRequests(){
+    this.adminService.getAllRequests().subscribe(response => {this.allRequests = response})
+  }
+
 
   downloadRapport(){
     const ele = document.getElementById('table-data')!;

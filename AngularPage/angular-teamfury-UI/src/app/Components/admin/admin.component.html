@@ -19,7 +19,7 @@
                 <h3>{{formTitle}}</h3>
                 <div class="form-group">
                     <label>Leave Type</label>
-                    <input name="leavename" formControlName="leavename" [(ngModel)]="leaveType.leavename" class="form-control" placeholder="Name">
+                    <input name="name" formControlName="name" [(ngModel)]="leaveType.name" class="form-control" placeholder="Name">
                 </div>
                 <div class="form-group">
                     <label>Max days</label>
@@ -34,7 +34,11 @@
 </div>
 <div class="container-Requests">
     <div class="wrapper-status">
-
+        <ul *ngFor="let item of allRequests">
+            <li>{{item.startDate}}</li>
+            <li>{{item.endDate}}</li>
+            <li>{{item.requestType.name}}</li>
+        </ul>   
     </div>
     <div class="wrapper-pendingRequest">
 
