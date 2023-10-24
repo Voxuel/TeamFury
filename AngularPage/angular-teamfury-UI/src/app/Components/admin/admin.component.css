@@ -100,7 +100,7 @@ form{
 
 .container-Requests{
     display: flex;
-    flex-direction: column;
+    justify-content: space-evenly;
     padding: 1em;
     background-color: aquamarine;
 }
