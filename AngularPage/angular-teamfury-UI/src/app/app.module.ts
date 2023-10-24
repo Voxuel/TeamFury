@@ -23,7 +23,7 @@ import { RegisterComponent } from './Components/register/register.component';
 import { UserManagerComponent } from './Components/user-manager/user-manager.component';
 import { DetailedComponent } from './Components/detailed/detailed.component';
 import { RequestComponent } from './Components/request/request.component';
-
+import { RequestlogComponent } from './Components/requestlog/requestlog.component';
 
 export function tokenGetter(){
   return sessionStorage.getItem("TOKEN_KEY");
@@ -39,9 +39,9 @@ export function tokenGetter(){
     NavComponent,
     RegisterComponent,
     UserManagerComponent,
-    DetailedComponent
-    RequestComponent
-
+    DetailedComponent,
+    RequestComponent,
+    RequestlogComponent
   ],
   imports: [
     MaterialModule,
