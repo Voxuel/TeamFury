@@ -1,16 +1,18 @@
 <div class="sidebar">
     <a routerLink="/Request">Apply for Leave</a>
-    <a href="">Leave History</a>
+    <a routerLink="/RequestLog">Leave History</a>
 </div>
   
   <!-- Page content -->
 <div class="content">
     <h1>Remaining Days</h1>
     <div class="daysremaining">
-        <div class="daystype" *ngFor="let leaveDay of leaveDays">
-            <span class="type">{{leaveDay.leaveType}}</span>
-            <span class="days">{{leaveDay.daysLeft}}</span>
-        </div>
+        <table class="table">
+            <tr class="daystype" *ngFor="let leaveDay of leaveDays">
+                <td class="type">{{leaveDay.leaveType}}</td>
+                <td class="days">{{leaveDay.daysLeft}}</td>
+            </tr>
+        </table>
     </div>
     <div class="activerequests">
         <h1>My Leave Records</h1>

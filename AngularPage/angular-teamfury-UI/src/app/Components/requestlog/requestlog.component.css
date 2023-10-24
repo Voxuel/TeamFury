@@ -1,0 +1,93 @@
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: absolute;
+    height: 100%;
+    overflow: auto;
+  }
+  
+  .sidebar a {
+    display: block;
+    color: rgb(0, 0, 0);
+    padding: 16px;
+    text-decoration: none;
+    font-size: 20px;
+  }
+
+  .sidebar a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+  }
+  .sidebar a.active{
+    background-color: #555;
+    color: white;
+  }
+  @media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+  }
+  
+  @media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }
+  div.content {
+    margin-left: 200px;
+    padding: 70px 30px;
+    height: 100%;
+  }
+  .log-container{
+    margin-top: 50px;
+    box-shadow: 2px 3px 8px grey;
+    height: 50%;
+    width: 100%;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+    padding: 15px;
+}
+.requests{
+    height: 100%;
+    width: 100%;
+    display: table;
+    border-collapse: collapse;
+    empty-cells: show;
+  }
+  .request{
+      padding: 10px;
+      font-size: 18px;
+      position:relative;
+      width: 140px;
+  }
+  .request-header{
+    padding: 10px;
+      font-size: 18px;
+      position:relative;
+      width: 140px;
+      font-size: 20px;
+      font-weight: bold;
+  }
+  .request-row{
+    border:none;
+    height: 100px;
+  }
+  .request-row:first-child{
+    border-top: 1px solid;
+  }
+  .accepted{
+    color: green;
+  }
+  .declined{
+    color: red;
+  }

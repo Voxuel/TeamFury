@@ -28,6 +28,7 @@ request:any = {
   startDate:'',
   endDate:'',
   requestTypeID:'',
+  messageForDecline:''
 }
   constructor(private authService:AuthService, private userService:UserService, private router:Router){
   }
@@ -46,9 +47,19 @@ request:any = {
     this.userService.getRequestTypes().subscribe(response => {this.requestTypes = response.result})
   }
 
+  addRequest(){
+    this.userService.addRequest(this.userId, this.request).subscribe(response => {this.request = response.result; 
+    if(response.result == null){
+      alert("You can't apply for leave within these dates.")
+      location.reload();
+    }})
+  }
+  
   onSubmit(){
-    this.userService.addRequest(this.userId, this.request).subscribe()
-    this.router.navigate(["/User"]);
+    this.addRequest()
     console.log(this.request)
+    setTimeout(() => {
+      this.router.navigate(["/User"]);
+    }, 500);
   }
 }
