@@ -10,6 +10,7 @@ import { RegisterComponent } from './Components/register/register.component';
 import { UserManagerComponent } from './Components/user-manager/user-manager.component';
 import { DetailedComponent } from './Components/detailed/detailed.component';
 import { RequestComponent } from './Components/request/request.component';
+import { RequestlogComponent } from './Components/requestlog/requestlog.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'Admin',component: AdminComponent,canActivate: [authGuard], data: {role: ['ADMIN'] }},
   {path: 'Profile', component:ProfileComponent, canActivate: [authGuard], data:{role:['ADMIN', 'EMPLOYEE']}},
   {path: 'Request', component:RequestComponent, canActivate:[authGuard], data:{role:['EMPLOYEE']}},
+  {path: 'RequestLog', component:RequestlogComponent, canActivate:[authGuard], data:{role:['EMPLOYEE']}},
   {path: 'register',component: RegisterComponent, canActivate:[authGuard], data:{role:['ADMIN']}},
   {path: 'user-manager', component:UserManagerComponent, canActivate:[authGuard], data:{role:['ADMIN']}},
   {path: 'detailed/:user', component:DetailedComponent, canActivate:[authGuard], data:{role:['ADMIN']}},

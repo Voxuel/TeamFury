@@ -31,7 +31,8 @@ export class UserService extends DataService {
   }
 
   getActiveRequests(id:string):Observable<any>{
-    return this.httpPrivate.get<any>(APIUrlAuth + "user/request/" + id)
+    const requests = this.httpPrivate.get<any>(APIUrlAuth + "user/request/" + id)
+    return requests;
   }
 
   deleteRequest(id:number):Observable<any>{
@@ -40,5 +41,9 @@ export class UserService extends DataService {
 
   addRequest(id:string, request:Request):Observable<any>{
     return this.httpPrivate.post<any>(APIUrlAuth + "user/request/" + id, request)
+  }
+
+  getRequestLog(id:string):Observable<any>{
+    return this.httpPrivate.get<any>(APIUrlAuth + "user/request/log/" + id)
   }
 }

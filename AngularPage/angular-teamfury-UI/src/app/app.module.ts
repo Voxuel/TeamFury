@@ -23,7 +23,7 @@ import { RegisterComponent } from './Components/register/register.component';
 import { UserManagerComponent } from './Components/user-manager/user-manager.component';
 import { DetailedComponent } from './Components/detailed/detailed.component';
 import { RequestComponent } from './Components/request/request.component';
-
+import { RequestlogComponent } from './Components/requestlog/requestlog.component';
 
 
 export function tokenGetter(){
@@ -41,7 +41,8 @@ export function tokenGetter(){
     RegisterComponent,
     UserManagerComponent,
     DetailedComponent,
-    RequestComponent
+    RequestComponent,
+    RequestlogComponent
 
   ],
   imports: [

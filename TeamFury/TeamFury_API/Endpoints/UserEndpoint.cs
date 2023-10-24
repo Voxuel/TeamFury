@@ -81,7 +81,7 @@ namespace TeamFury_API.Endpoints
                     var result = await service.GetRequestsByEmployeeID(id);
                     if (!result.Any())
                     {
-                        response.Result = "You have no pending requests at the moment";
+                        response.Result = null;
                         return Results.Ok(response);
                     }
 
@@ -126,13 +126,13 @@ namespace TeamFury_API.Endpoints
                 .Produces(400)
                 .WithName("GetTotalLeavedaysByEmployeeID");
 
-            app.MapGet("/api/user/request/log/",
-                async (IRequestService service, IMapper mapper, string EmpId) =>
+            app.MapGet("/api/user/request/log/{id}",
+                async (IRequestService service, IMapper mapper, string id) =>
                 {
                     try
                     {
                         var response = new ApiResponse();
-                        var result = await service.GetAllLogs(EmpId);
+                        var result = await service.GetAllLogs(id);
                         var logDtos = mapper.Map<IEnumerable<RequestLogEntityDTO>>(result);
                         if (!result.Any()) return Results.Ok();
 

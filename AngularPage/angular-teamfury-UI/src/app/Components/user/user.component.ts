@@ -15,7 +15,7 @@ export class UserComponent {
     daysLeft: '',
     leaveType: ''
   }
-
+  activeRequests:any;
   requests:any[] = [];
   request:any = {
     requestId:'',
