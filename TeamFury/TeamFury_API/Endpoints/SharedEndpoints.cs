@@ -1,5 +1,5 @@
-﻿using Models.Models.API_Model_Tools;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Models.Models.API_Model_Tools;
 using System.Net;
 using TeamFury_API.Data;
 using TeamFury_API.Services;
@@ -81,7 +81,7 @@ namespace TeamFury_API.Endpoints
                 }
             }).AllowAnonymous()
                 .WithName("GetRequestByID");
-          
+
             app.MapGet("/api/user/leavedays/used/{id}",
                async (ILeaveDaysService service, string id) =>
                {
@@ -109,7 +109,8 @@ namespace TeamFury_API.Endpoints
                  .Produces<ApiResponse>(200)
                  .WithName("GetLeaveDaysLeft");
 
-            app.MapGet("/api/requesttype", async (AppDbContext context) => {
+            app.MapGet("/api/requesttype", async (AppDbContext context) =>
+            {
                 try
                 {
                     var response = new ApiResponse();
@@ -126,6 +127,35 @@ namespace TeamFury_API.Endpoints
                 }
             }).AllowAnonymous()
             .WithName("GetAllRequestTypes");
+
+            app.MapGet("/api/user/leavedays/{id}",
+                async (ILeaveDaysService service, string id) =>
+                {
+                    try
+                    {
+                        var response = new ApiResponse();
+                        var result = await service.GetLeaveDaysByEmployeeID(id);
+                        if (result == null)
+                        {
+                            response.IsSuccess = false;
+                            response.ErrorMessages.Add("No user with ID given exists");
+                            response.StatusCode = HttpStatusCode.NotFound;
+                            return Results.NotFound(response);
+                        }
+
+                        response.IsSuccess = true;
+                        response.StatusCode = HttpStatusCode.OK;
+                        response.Result = result;
+                        return Results.Ok(response);
+                    }
+                    catch (Exception e)
+                    {
+                        return Results.BadRequest(e);
+                    }
+                }).AllowAnonymous()
+.Produces<ApiResponse>(200)
+.Produces(400)
+.WithName("GetTotalLeavedaysByEmployeeID");
         }
     }
 }
