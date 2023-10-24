@@ -3,9 +3,7 @@ using FluentValidation;
 using Models.DTOs;
 using Models.Models;
 using Models.Models.API_Model_Tools;
-using System.Data.Entity;
 using System.Net;
-using TeamFury_API.Data;
 using TeamFury_API.Services;
 
 namespace TeamFury_API.Endpoints
@@ -14,6 +12,7 @@ namespace TeamFury_API.Endpoints
     {
         public static void UserEndpointConfig(this IEndpointRouteBuilder app)
         {
+          
             app.MapPost("/api/user/request/{id}", async
                 (IRequestService service, IMapper mapper, IValidator<RequestCreateDTO> validator,
                     RequestCreateDTO req_c_DTO, string id) =>
@@ -148,6 +147,7 @@ namespace TeamFury_API.Endpoints
                 }).AllowAnonymous()
                 .Produces<ApiResponse>(200)
                 .WithName("GetAllRequestLogs");
+
         }
     }
 }
