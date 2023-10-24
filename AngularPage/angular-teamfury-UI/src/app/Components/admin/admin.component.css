@@ -117,3 +117,15 @@ form{
 .request{
     text-align: center;
 }
+table {
+    background-color: #7e7b7b;
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
+}
+table td{
+    padding: .5em 1em;
+}
+
