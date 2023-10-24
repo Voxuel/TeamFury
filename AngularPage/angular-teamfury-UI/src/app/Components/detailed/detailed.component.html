@@ -1,10 +1,11 @@
 <head>
     <link rel="stylesheet" href="detailed.component.css">
 </head>
-<div class="wrapper">
-    <div class="container-wrapper">
+<div class="wrapper" [ngSwitch]="incomingType">
+    <div class="container-wrapper" *ngSwitchCase="'0'">
         <div class="image-container">
-            <img src="https://blogassets.leverageedu.com/blog/wp-content/uploads/2019/11/23173353/Personal-Details-in-Resume.jpg">
+            <img
+                src="https://blogassets.leverageedu.com/blog/wp-content/uploads/2019/11/23173353/Personal-Details-in-Resume.jpg">
         </div>
         <div class="detailed-view-item">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -19,24 +20,47 @@
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                <input name="email" formControlName="email" [(ngModel)]="user.email"
-                class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Phone</label>
-                <input name="phone" formControlName="phone" [(ngModel)]="user.phoneNumber" class="form-control">
-            </div>
-            <div class="form-group">
-                <label>Roles</label>
-                <input name="role" formControlName="role" [(ngModel)]="user.role"
-                class="form-control">
-            </div>
-            <div class="button-group">
-                <input class="btn btn-primary" type="submit" value="Update"/>
-                <button class="btn btn-danger" type="button" (click)="deleteUser(user.id)">Delete</button>
-                <button class="btn btn-warning"><a href="../user-manager/">Back to list</a></button>
-            </div>
-        </form>
+                    <input name="email" formControlName="email" [(ngModel)]="user.email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input name="phone" formControlName="phone" [(ngModel)]="user.phoneNumber" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Roles</label>
+                    <input name="role" formControlName="role" [(ngModel)]="user.role" class="form-control">
+                </div>
+                <div class="button-group">
+                    <input class="btn btn-primary" type="submit" value="Update" />
+                    <button class="btn btn-danger" type="button" (click)="deleteUser(user.id)">Delete</button>
+                    <button class="btn btn-warning"><a href="../user-manager/">Back to list</a></button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+    <div class="container-wrapper" *ngSwitchCase="'1'">
+        <div class="image-container">
+            <img
+                src="https://blogassets.leverageedu.com/blog/wp-content/uploads/2019/11/23173353/Personal-Details-in-Resume.jpg">
+        </div>
+        <div class="detailed-view-item">
+            <form [formGroup]="form" (ngSubmit)="updateRequestType(requestType)">
+                <div class="form-group">
+                    <label>Request Type</label>
+                    <input name="name" formControlName="name" [(ngModel)]="requestType.name" class="form-control"
+                    placeholder="{{requestType.name}}">
+                </div>
+                <div class="form-group">
+                    <label>Max days</label>
+                    <input name="maxDays" formControlName="maxDays" [(ngModel)]="requestType.maxDays" class="form-control"
+                    placeholder="{{requestType.maxDays}}">
+                </div>
+                <div class="button-group">
+                    <input class="btn btn-primary" type="submit" value="Update" />
+                    <button class="btn btn-danger" type="button" (click)="deleteRt(requestType.requestTypeID)">Delete</button>
+                    <button class="btn btn-warning"><a href="../user-manager/">Back to list</a></button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

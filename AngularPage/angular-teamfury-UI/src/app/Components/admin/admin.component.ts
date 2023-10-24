@@ -11,6 +11,8 @@ import { Request } from 'src/app/models/request.model';
 import { RequestViewModel } from 'src/app/models/requestViewModel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RequestTypeCreate } from 'src/app/models/requestTypeCreate';
+import { RequestTypeBase } from 'src/app/models/requestTypeBase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -23,7 +25,7 @@ export class AdminComponent {
   formTitle='ADD NEW LEAVE TYPE';
   requestHead='ALL REQUESTS'
 
-leavedays:LeaveDaysTotal[] = []
+leavedays:RequestTypeBase[] = []
 allRequests:RequestViewModel[] = []
 allPending:RequestViewModel[] = []
 form:FormGroup
@@ -32,7 +34,8 @@ leaveType:RequestTypeCreate ={
   maxDays:''
 }
 
-constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar){
+constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar,
+  private router:Router){
   this.form = builder.group({
     name:'',
     maxdays:''
@@ -88,5 +91,8 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     }
     this.adminService.createRequestType(this.leaveType).subscribe()
     this._snackBar.open('Created')
+  }
+  updateRt(rtUpdate:RequestTypeBase){
+    this.router.navigate(['/detailed', JSON.stringify(rtUpdate)])
   }
 }
