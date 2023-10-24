@@ -9,6 +9,8 @@ import { UserViewModel } from 'src/app/models/user.view.model';
 import { saveAs } from 'file-saver';
 import { Request } from 'src/app/models/request.model';
 import { RequestViewModel } from 'src/app/models/requestViewModel';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RequestTypeCreate } from 'src/app/models/requestTypeCreate';
 
 @Component({
   selector: 'app-admin',
@@ -23,12 +25,13 @@ export class AdminComponent {
 leavedays:LeaveDaysTotal[] = []
 allRequests:RequestViewModel[] = []
 form:FormGroup
-leaveType:any ={
+leaveType:RequestTypeCreate ={
   name:'',
-  maxdays:''
+  maxDays:''
 }
+errors:any[] = []
 
-constructor(private adminService:AdminService, private builder:FormBuilder){
+constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar){
   this.form = builder.group({
     name:'',
     maxdays:''
@@ -58,7 +61,12 @@ constructor(private adminService:AdminService, private builder:FormBuilder){
   }
 
   onSubmit(){
-    
+    if(this.form.invalid){
+      this._snackBar.open("This form is not filled out correctly", '❌')
+      return;
+    }
+    this.adminService.createRequestType(this.leaveType).subscribe()
+    this._snackBar.open('Created')
   }
 
 }
