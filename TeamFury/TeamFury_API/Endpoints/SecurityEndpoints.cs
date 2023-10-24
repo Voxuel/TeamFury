@@ -12,8 +12,6 @@ using Models.Models;
 using Models.Models.API_Model_Tools;
 using TeamFury_API.Data;
 using TeamFury_API.Services.SecurityServices;
-using TeamFury_API.Services.UserServices;
-
 namespace TeamFury_API.Endpoints;
 
 public static class SecurityEndpoints

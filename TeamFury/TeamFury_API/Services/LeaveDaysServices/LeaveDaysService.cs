@@ -47,6 +47,11 @@ namespace TeamFury_API.Services
         {
             return await _context.LeaveDays.FindAsync(id);
         }
+        public async Task<LeaveDays> FindByRequest(Request request)
+        {
+            return await _context.LeaveDays.Include(y => y.IdentityUser)
+                .Include(z => z.Request.RequestType).FirstOrDefaultAsync(x => x.Request == request);
+        }
 
 
         public async Task<LeaveDays> UpdateAsync(LeaveDays newUpdate)
@@ -58,13 +63,20 @@ namespace TeamFury_API.Services
             return found;
         }
 
-        public async Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(Request days)
+        public async Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(RequestUpdateDTO comparison , Request toUpdate)
         {
-            var daysLeft = await _context.LeaveDays.Include(leaveDays =>
-                leaveDays.IdentityUser).FirstOrDefaultAsync(x => x.Request.RequestID == days.RequestID);
-            var daysOff = days.EndDate.Subtract(days.StartDate).TotalDays;
-            
-            daysLeft.Days += Convert.ToInt32(daysOff);
+
+            var daysLeft = await _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == toUpdate.RequestID);
+            if (toUpdate.StatusRequest != StatusRequest.Accepted && comparison.StatusRequest == StatusRequest.Accepted)
+            {
+                var daysOff = Convert.ToInt32((toUpdate.EndDate - toUpdate.StartDate).TotalDays);
+                daysLeft.Days += daysOff;
+            }
+            else if (toUpdate.StatusRequest != StatusRequest.Declined && comparison.StatusRequest == StatusRequest.Declined)
+            {
+                daysLeft.Days = 0;
+            }
+            else return null;
             _context.Update(daysLeft);
             await _context.SaveChangesAsync();
             return null;
@@ -132,7 +144,7 @@ namespace TeamFury_API.Services
                     combined[day.Request.RequestType.Name] += day.Days;
                     continue;
                 }
-                combined.Add(day.Request.RequestType.Name,  day.Days);
+                combined.Add(day.Request.RequestType.Name, day.Days);
             }
 
             var result = mapper.Map<List<RemainingLeaveDaysDTO>>(Rts);
@@ -151,6 +163,8 @@ namespace TeamFury_API.Services
 
             return result;
         }
-            #endregion
+
+
+        #endregion
     }
 }

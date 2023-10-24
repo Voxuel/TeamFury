@@ -32,15 +32,29 @@
         </div>
     </div>
 </div>
+
 <div class="container-Requests">
-    <div class="wrapper-status">
-        <ul *ngFor="let item of allRequests">
-            <li>{{item.startDate}}</li>
-            <li>{{item.endDate}}</li>
-            <li>{{item.requestType.name}}</li>
-            <li>{{item.statusRequest}}</li>
-        </ul>   
-    </div>
     <div class="wrapper-pendingRequest">
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perferendis amet ducimus debitis quam corporis, <br>recusandae natus necessitatibus inventore deserunt libero?</p>
+    </div>
+    <div class="wrapper-status">
+        <table >
+            <thead>
+                <tr>
+                    <th class="request-header">Request Type</th>
+                    <th class="request-header">Start Date</th>
+                    <th class="request-header">End Date</th>
+                    <th class="request-header">Status</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let item of allRequests">
+                <tr>
+                    <td class="request">{{item.requestType.name}}</td>
+                    <td class="request">{{item.startDate | date:'yyyy-MM-dd'}} </td>
+                    <td class="request">{{item.endDate | date:'yyyy-MM-dd'}}</td>
+                    <td class="request">{{getStatusType(item.statusRequest)}}</td>
+                </tr>
+            </tbody>
+        </table>   
     </div>
 </div>
