@@ -53,14 +53,14 @@ export class UserComponent {
     this.requests = this.requests.filter(request => request.requestId != id)
   }
 
-  getStatusType(statusType:any){
-    if(statusType == 0){
+  getStatusType(statusRequest:any){
+    if(statusRequest == 0){
       return 'Pending'
     }
-    if(statusType == 1){
+    if(statusRequest == 1){
       return 'Accepted'
     }
-    if(statusType == 2){
+    if(statusRequest == 2){
       return 'Declined'
     }
     return null;

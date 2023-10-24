@@ -18,7 +18,8 @@ import { RequestViewModel } from 'src/app/models/requestViewModel';
 export class AdminComponent {
 
   H1Title='LEAVEDAYS';
-  formTitle='Add new leave type';
+  formTitle='ADD NEW LEAVE TYPE';
+  requestHead='ALL REQUESTS'
 
 leavedays:LeaveDaysTotal[] = []
 allRequests:RequestViewModel[] = []
@@ -38,6 +39,18 @@ constructor(private adminService:AdminService, private builder:FormBuilder){
   ngOnInit():void{
     this.getTotalLeavedays();
     this.getRequests();
+  }
+  getStatusType(statusType:any){
+    if(statusType == 0){
+      return 'Pending'
+    }
+    if(statusType == 1){
+      return 'Accepted'
+    }
+    if(statusType == 2){
+      return 'Declined'
+    }
+    return null;
   }
 
 
