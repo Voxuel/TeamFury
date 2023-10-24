@@ -45,7 +45,12 @@ export class UserComponent {
   }
 
   getActiveRequests(){
-    this.userService.getActiveRequests(this.userId).subscribe(response => {this.requests = response.result; console.log(this.requests)})
+    this.userService.getActiveRequests(this.userId).subscribe(response => {
+      if(typeof(response.result) == 'string'){
+        return;
+      }
+      this.requests = response.result
+    })
   }
   
   deleteRequest(id:any){

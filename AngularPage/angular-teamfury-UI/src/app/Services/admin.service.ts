@@ -8,6 +8,7 @@ import { map } from 'rxjs';
 import { User } from '../models/user';
 import { LeaveDaysTotal } from '../models/leaveDaysTotal';
 import { RequestViewModel } from '../models/requestViewModel';
+import { RequestTypeCreate } from '../models/requestTypeCreate';
 
 
 const APIUrlAuth = "https://localhost:7177/api/"
@@ -56,7 +57,10 @@ export class AdminService {
     .pipe(map((data) => data.result))
   }
 
-  
+  createRequestType(rtCreate:RequestTypeCreate):Observable<RequestTypeCreate>{
+    return this.http.post<RequestTypeCreate>(`${APIUrlAuth}admin/type`, rtCreate)
+  }
+
   // Request services as admin.
 
   getAllRequests():Observable<RequestViewModel[]>{
