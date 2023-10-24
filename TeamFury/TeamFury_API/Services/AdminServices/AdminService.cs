@@ -22,8 +22,23 @@ public class AdminService : IAdminService
         _context = context;
     }
 
+    #region Development Commands
+
+    public async Task ResetLeaveDays()
+    {
+        var ld = await _context.LeaveDays.ToListAsync();
+        foreach (var day in ld)
+        {
+            day.Days = 0;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
     #region Employee Commands
-    
+
     /// <summary>
     /// Gets all employees in the database.
     /// </summary>
@@ -32,6 +47,26 @@ public class AdminService : IAdminService
     {
         return await _userManager.Users.ToListAsync();
     }
+
+    public async Task<IEnumerable<UserViewDTO>> GetAllViewModels()
+    {
+        var usersWithRoles = await (from users in _userManager.Users
+            select new UserViewDTO()
+            {
+                Id = users.Id,
+                Username = users.UserName,
+                Email = users.Email,
+                PhoneNumber = users.PhoneNumber,
+                Role = (from ur in _context.UserRoles
+                        join role in _context.Roles on ur.RoleId
+                            equals role.Id
+                            where ur.UserId == users.Id
+                                select role.Name).ToList()
+            }).ToListAsync();
+
+        return usersWithRoles;
+    }
+
 
     /// <summary>
     /// Gets single entity from database.

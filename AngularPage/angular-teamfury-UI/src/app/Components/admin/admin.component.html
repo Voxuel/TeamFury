@@ -1,1 +1,46 @@
-<p>admin works!</p>
+<div class="outer-container">
+    <div class="wrapper-leavedays">
+        <h1 class="leavedays-title">{{H1Title}}</h1>
+        <div class="monitor-container" id="table-data">
+            <div class="monitor-vacation" *ngFor="let item of leavedays">
+                <ul class="leavedays-firstTable">
+                    <li><h1>{{item.leaveType}}</h1></li>
+                    <li>{{item.daysLeft}} / Days</li>
+                </ul>
+            </div>
+        </div>
+        <div class="button-container">
+            <button (click)="downloadRapport()">DOWNLOAD RAPPORT</button>
+        </div>
+    </div>
+    <div class="wrapper-newLeaveType">
+        <div class="form-container">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <h3>{{formTitle}}</h3>
+                <div class="form-group">
+                    <label>Leave Type</label>
+                    <input name="name" formControlName="name" [(ngModel)]="leaveType.name" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label>Max days</label>
+                    <input name="maxdays" formControlName="maxdays" [(ngModel)]="leaveType.maxDays" clasS="form-control" >
+                </div>
+                <div class="button-container">
+                    <button type="submit">CREATE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-Requests">
+    <div class="wrapper-status">
+        <ul *ngFor="let item of allRequests">
+            <li>{{item.startDate}}</li>
+            <li>{{item.endDate}}</li>
+            <li>{{item.requestType.name}}</li>
+        </ul>   
+    </div>
+    <div class="wrapper-pendingRequest">
+
+    </div>
+</div>

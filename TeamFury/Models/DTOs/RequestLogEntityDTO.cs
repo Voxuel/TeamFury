@@ -4,6 +4,7 @@ namespace Models.DTOs;
 
 public class RequestLogEntityDTO
 {
+    public int RequestId { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public DateTime RequestSent { get; set; }

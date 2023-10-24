@@ -1,0 +1,30 @@
+<div class="sidebar">
+    <a routerLink="/Request" class="active">Apply for Leave</a>
+    <a routerLink="/RequestLog">Leave History</a>
+</div>
+<div class="content">
+    <h1>New Leave Request</h1>
+    <div class="request-container">
+        <div class="request-form">
+            <form #form ="ngForm" (ngSubmit)="onSubmit();">
+                <div class="date-group">
+                    <div class="req-group">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" name="startDate" [(ngModel)]="request.startDate">
+                    </div>
+                    <div class="req-group" style="margin-left: 50px;">
+                        <label for="endDate">End Date</label>
+                        <input type="date" name="endDate" [(ngModel)]="request.endDate">
+                    </div>
+                </div>
+                <div class="req-group">
+                    <label for="requestTypeID">Type</label>
+                    <select class="form-control" name="leaveType" [(ngModel)]="request.requestTypeID">
+                        <option *ngFor="let requestType of requestTypes" [value]="requestType.requestTypeID">{{requestType.name}}</option>
+                    </select>
+                </div>
+                <button class="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</div>

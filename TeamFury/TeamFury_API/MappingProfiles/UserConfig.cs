@@ -12,5 +12,8 @@ public class UserConfig : Profile
     {
         CreateMap<User, UserCreateDTO>().ReverseMap();
         CreateMap<User, UserUpdateDTO>().ReverseMap();
+        CreateMap<User, UserViewDTO>().ReverseMap();
+        CreateMap<UserViewDTO, User>().ForAllMembers(opt =>
+            opt.MapFrom(inner => inner));
     }
 }

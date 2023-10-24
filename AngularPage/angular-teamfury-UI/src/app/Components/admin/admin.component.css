@@ -1,0 +1,92 @@
+.outer-container{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1em;
+}
+
+.wrapper-leavedays{
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.monitor-container{
+    display: flex;
+    text-align: center;
+}
+
+.monitor-vacation {
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
+    margin: .2em;
+    &:hover
+    {
+        transform: translateY(-10px);
+        box-shadow: 10px 20px 20px 0 #90349c;
+    }
+    &:active{
+        box-shadow: inset 0 0 10px 1px rgba(102, 165, 100, 1), 0px 40px 29px -19px rgba(102, 172, 100, 0.95);
+        transform: scale(0.95) translateY(-9px);
+    }
+}
+
+.monitor-vacation li{
+    list-style: none;
+}
+
+
+.leavedays-firstTable{
+    padding: 0;
+    min-width: 10vw;
+
+}
+
+.leavedays-title{
+    align-self: center;
+    font-weight: bolder;
+}
+.button-container{
+    display: flex;
+    justify-content: center;
+}
+
+button{
+    --color: hsl(208, 72%, 39%);
+    background-color: transparent;
+    width: fit-content;
+    display:inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    border: 3px solid var(--color);
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
+
+    position:relative;
+    isolation: isolate;
+}
+button::after{
+    content: '';
+    position: absolute;
+    z-index: -1;
+    background-color: var(--color);
+    inset: 0;
+    scale: 0 1;
+    transition: scale 450ms;
+    -webkit-transition: scale 450ms;
+    -moz-transition: scale 450ms;
+    -ms-transition: scale 450ms;
+    -o-transition: scale 450ms;
+    transform-origin: right;
+}
+button:hover::after,
+button:focus-visible::after{
+    transform-origin: left;
+    scale: 1 1;
+}

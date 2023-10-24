@@ -3,11 +3,15 @@
         <h1>{{title}}</h1>
     </div>
     <div class="navmenu">
+        <div class="theUser">
+            <p>WELCOME {{getUserName()}}</p>
+        </div>
         <nav>
-            <p>welcome {{getUserName()}}</p>
             <button routerLinkActive="active" *ngIf="getUserRole() == 'EMPLOYEE'"><a routerLink="/User" class="nav_menu_link">Employee</a></button>
             <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/Admin" class="nav_menu_link" >Admin</a></button>
             <button routerLinkActive="active"><a routerLink="/Profile" class="nav_menu_link" >Profile</a></button>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/register" class="nav_menu_link">Register</a></button>
+            <button routerLinkActive="active" *ngIf="getUserRole() == 'ADMIN'"><a routerLink="/user-manager" class="nav_menu_link">Manage Users</a></button>
             <button><a (click)="signOut()" class="nav_menu_link">LogOut</a></button>
         </nav>
     </div>

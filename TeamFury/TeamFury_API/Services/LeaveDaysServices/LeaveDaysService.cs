@@ -65,6 +65,7 @@ namespace TeamFury_API.Services
 
         public async Task<LeaveDays> UpdateLeaveDaysOnAprovedRequest(RequestUpdateDTO comparison , Request toUpdate)
         {
+
             var daysLeft = await _context.LeaveDays.FirstOrDefaultAsync(x => x.Request.RequestID == toUpdate.RequestID);
             if (toUpdate.StatusRequest != StatusRequest.Accepted && comparison.StatusRequest == StatusRequest.Accepted)
             {
