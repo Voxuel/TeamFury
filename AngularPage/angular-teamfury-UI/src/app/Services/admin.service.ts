@@ -9,6 +9,7 @@ import { User } from '../models/user';
 import { LeaveDaysTotal } from '../models/leaveDaysTotal';
 import { RequestViewModel } from '../models/requestViewModel';
 import { RequestTypeCreate } from '../models/requestTypeCreate';
+import { RequestTypeBase } from '../models/requestTypeBase';
 
 
 const APIUrlAuth = "https://localhost:7177/api/"
@@ -52,13 +53,19 @@ export class AdminService {
   }
 
 
-  getTotalUsedLeavedays():Observable<LeaveDaysTotal[]>{
-    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/leavedays/totalused`)
+  getTotalUsedLeavedays():Observable<RequestTypeBase[]>{
+    return this.http.get<ApiResponse>(`${APIUrlAuth}requesttype`)
     .pipe(map((data) => data.result))
   }
 
   createRequestType(rtCreate:RequestTypeCreate):Observable<RequestTypeCreate>{
     return this.http.post<RequestTypeCreate>(`${APIUrlAuth}admin/type`, rtCreate)
+  }
+  deleteRequestType(id:string):Observable<RequestTypeBase>{
+    return this.http.delete<any>(`${APIUrlAuth}admin/type/${id}`)
+  }
+  updateRequestType(rtUpdate:RequestTypeBase):Observable<RequestTypeBase>{
+    return this.http.put<any>(`${APIUrlAuth}admin/type/${rtUpdate.requestTypeID}`, rtUpdate)
   }
 
   // Request services as admin.

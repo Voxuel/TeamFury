@@ -4,7 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { AdminService } from 'src/app/Services/admin.service';
 import { AuthService } from 'src/app/Services/auth.service';
+import { RequestTypeBase } from 'src/app/models/requestTypeBase';
 import { UserViewModel } from 'src/app/models/user.view.model';
+import {instanceOfUser} from 'src/app/models/user.view.model'
 
 @Component({
   selector: 'app-detailed',
@@ -12,6 +14,8 @@ import { UserViewModel } from 'src/app/models/user.view.model';
   styleUrls: ['./detailed.component.css']
 })
 export class DetailedComponent {
+
+  incomingType:string = ''
 
   user:UserViewModel = {
     id:'',
@@ -21,18 +25,23 @@ export class DetailedComponent {
     phoneNumber: '',
     role: []
   }
+  requestType:RequestTypeBase = {
+    requestTypeID:'',
+    name:'',
+    maxDays:''
+  }
 
   users:UserViewModel[] = []
 
-  form:FormGroup 
+  form:FormGroup
+  rtForm:FormGroup
 
   obj:any;
 
 
   constructor(private ar:ActivatedRoute, private adminService:AdminService, private builder:FormBuilder,
     private authService:AuthService, private _snackBar:MatSnackBar){
-
-    this.obj = JSON.parse(ar.snapshot.params['user']);
+    this.obj = JSON.parse(ar.snapshot.params['incomming']);
     this.form = this.builder.group({
       id: this.user.id,
       username: this.user.username,
@@ -41,10 +50,21 @@ export class DetailedComponent {
       phone: this.user.phoneNumber,
       role: this.user.role
     })
+    this.rtForm = this.builder.group({
+      requestTypeID: this.requestType.requestTypeID,
+      name: this.requestType.name,
+      maxDays: this.requestType.maxDays
+    })
   }
 
   ngOnInit():void{
-    this.user = this.obj;
+    if(instanceOfUser(this.obj)){
+      this.user = this.obj
+      this.incomingType = '0'
+      return;
+    }
+    this.incomingType = '1'
+    this.requestType = this.obj
   }
 
   getAllUsers(){
@@ -65,7 +85,17 @@ export class DetailedComponent {
     this._snackBar.open("User deleted", '🗑️')
   }
 
+  updateRequestType(rtUpdate:RequestTypeBase){
+    this.adminService.updateRequestType(rtUpdate).subscribe()
+  }
+  deleteRt(id:string){
+    this.adminService.deleteRequestType(id).subscribe()
+  }
+
   onSubmit(){
-    this.updateUser(this.user);
+    if(instanceOfUser(this.obj)){
+      this.updateUser(this.user);
+    }
+    this.updateRequestType(this.requestType)
   }
 }
