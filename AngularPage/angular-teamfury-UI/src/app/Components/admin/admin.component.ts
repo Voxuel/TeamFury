@@ -22,9 +22,8 @@ import { RequestUpdate } from 'src/app/models/requestUpdate';
 })
 export class AdminComponent {
 
-  H1Title='LEAVEDAYS';
+  H1Title='LEAVEDAY TYPES';
   formTitle='ADD NEW LEAVE TYPE';
-  requestHead='ALL REQUESTS'
 
 leavedays:RequestTypeBase[] = []
 allRequests:RequestViewModel[] = []
