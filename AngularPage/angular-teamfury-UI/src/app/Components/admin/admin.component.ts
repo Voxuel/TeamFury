@@ -38,11 +38,12 @@ req:RequestUpdate = {
   requestID: '',
   messageForDecline: '',
   adminName: '',
-  statusRequest: ''
+  statusRequest: 0
 }
 
+
 constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar,
-  private router:Router){
+  private router:Router,private authService:AuthService){
   this.form = builder.group({
     name:'',
     maxdays:''
@@ -83,7 +84,13 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     })
   }
   
-  setParams(){
+
+  setStatus(input:any, reqSubmit:any, msg:string){
+    this.req.statusRequest = input
+    this.req.messageForDecline = msg
+    this.req.requestID = reqSubmit.requestID,
+    this.req.adminName = this.authService.getUser()!
+    console.log(this.req)
     this.UpdateRequest(this.req)
   }
   UpdateRequest(reqUpdate:RequestUpdate){

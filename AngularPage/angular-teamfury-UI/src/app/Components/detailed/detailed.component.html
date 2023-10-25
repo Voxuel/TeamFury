@@ -47,17 +47,17 @@
             <form [formGroup]="form" (ngSubmit)="updateRequestType(requestType)">
                 <div class="form-group">
                     <label>Request Type</label>
-                    <input name="name" formControlName="name" [(ngModel)]="requestType.name" class="form-control"
-                    placeholder="{{requestType.name}}">
+                    <input name="name" formControlName="name" [(ngModel)]="requestType.leaveType" class="form-control"
+                    placeholder="{{requestType.leaveType}}">
                 </div>
                 <div class="form-group">
                     <label>Max days</label>
-                    <input name="maxDays" formControlName="maxDays" [(ngModel)]="requestType.maxDays" class="form-control"
-                    placeholder="{{requestType.maxDays}}">
+                    <input name="maxDays" formControlName="maxDays" [(ngModel)]="requestType.daysLeft" class="form-control"
+                    placeholder="{{requestType.daysLeft}}">
                 </div>
                 <div class="button-group">
                     <input class="btn btn-primary" type="submit" value="Update" />
-                    <button class="btn btn-danger" type="button" (click)="deleteRt(requestType.requestTypeID)">Delete</button>
+                    <button class="btn btn-danger" type="button" (click)="deleteRt(requestType.requestTypeId)">Delete</button>
                     <button class="btn btn-warning"><a href="../user-manager/">Back to list</a></button>
                 </div>
             </form>

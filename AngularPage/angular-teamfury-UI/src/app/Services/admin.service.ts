@@ -56,7 +56,7 @@ export class AdminService {
 
 
   getTotalUsedLeavedays():Observable<RequestTypeBase[]>{
-    return this.http.get<ApiResponse>(`${APIUrlAuth}requesttype`)
+    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/leavedays/totalused`)
     .pipe(map((data) => data.result))
   }
 
@@ -67,7 +67,7 @@ export class AdminService {
     return this.http.delete<any>(`${APIUrlAuth}admin/type/${id}`)
   }
   updateRequestType(rtUpdate:RequestTypeBase):Observable<RequestTypeBase>{
-    return this.http.put<any>(`${APIUrlAuth}admin/type/${rtUpdate.requestTypeID}`, rtUpdate)
+    return this.http.put<any>(`${APIUrlAuth}admin/type/${rtUpdate.requestTypeId}`, rtUpdate)
   }
 
   // Request services as admin.
