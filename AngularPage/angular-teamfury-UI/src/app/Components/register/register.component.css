@@ -10,6 +10,7 @@
 }
 .form-container input{
     width: 100%;
+    height: fit-content;
 }
 .image-container img{
     border-top-left-radius: .25em;

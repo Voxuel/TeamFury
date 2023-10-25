@@ -21,9 +21,8 @@ import { Router } from '@angular/router';
 })
 export class AdminComponent {
 
-  H1Title='LEAVEDAYS';
+  H1Title='LEAVEDAY TYPES';
   formTitle='ADD NEW LEAVE TYPE';
-  requestHead='ALL REQUESTS'
 
 leavedays:RequestTypeBase[] = []
 allRequests:RequestViewModel[] = []
