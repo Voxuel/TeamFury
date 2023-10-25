@@ -46,4 +46,8 @@ export class UserService extends DataService {
   getRequestLog(id:string):Observable<any>{
     return this.httpPrivate.get<any>(APIUrlAuth + "user/request/log/" + id)
   }
+
+  getActiveUser(id:string):Observable<any>{
+    return this.httpPrivate.get<any>(APIUrlAuth + "shared/employee/" + id)
+  }
 }
