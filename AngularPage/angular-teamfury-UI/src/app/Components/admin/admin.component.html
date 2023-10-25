@@ -5,9 +5,11 @@
             <div class="monitor-container" id="table-data">
                 <div class="monitor-vacation" *ngFor="let item of leavedays">
                     <ul class="leavedays-firstTable">
-                        <li><h1>{{item.name}}</h1></li>
-                        <li>{{item.maxDays}} / Days</li>
-                        <button (click)="updateRt(item)">UPDATE</button>
+                        <li>
+                            <h1>{{item.name}}</h1>
+                            <button (click)="updateRt(item)">UPDATE</button>
+                        </li>
+                        <li>{{item.maxDays}}/Days Used</li>
                     </ul>
                 </div>
             </div>

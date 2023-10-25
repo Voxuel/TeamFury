@@ -36,9 +36,11 @@ body{
 
 
 .leavedays-firstTable{
-    padding: 0;
-    min-width: 10vw;
-
+    padding: .3em;
+    min-width: fit-content;
+}
+.leavedays-firstTable h1{
+    margin: .3em; 
 }
 
 .leavedays-title{
