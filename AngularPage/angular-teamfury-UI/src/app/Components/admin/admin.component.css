@@ -2,7 +2,6 @@
     display: flex;
     justify-content: space-evenly;
     padding: 1em;
-    background-color: aliceblue;
 }
 
 .wrapper-leavedays{
@@ -98,32 +97,38 @@ form{
     -o-border-radius: .25em;
 }
 
+/*end of leavedays and new leave type styling
+start of time off tables*/
+
 .container-Requests{
     display: flex;
     justify-content: space-evenly;
     padding: 1em;
-    background-color: aquamarine;
 }
-.wrapper-status{
+.wrapper-Request{
     display: flex;
-    padding: 1em;
-    justify-content: center;
+    flex-direction: column;
+    
+}
+.wrapper-Request h2{
+    align-self: center;
 }
 
 .request-header{
     padding: 1em;
     text-align: center;
+    background-color: var(--basecolor);
 }
 .request{
     text-align: center;
     padding: .5em 1em;
 }
-table {
-    background-color: #7e7b7b;
-    border-radius: .25em;
-    -webkit-border-radius: .25em;
-    -moz-border-radius: .25em;
-    -ms-border-radius: .25em;
-    -o-border-radius: .25em;
+tbody:nth-child(even){
+    background-color: cadetblue;
 }
-
+tbody:nth-child(odd){
+    background-color: var(--basecolor);
+}
+.request input{
+    text-align: center;
+}
