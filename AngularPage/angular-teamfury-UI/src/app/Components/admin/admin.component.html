@@ -6,10 +6,10 @@
                 <div class="monitor-vacation" *ngFor="let item of leavedays">
                     <ul class="leavedays-firstTable">
                         <li>
-                            <h1>{{item.name}}</h1>
+                            <h1>{{item.leaveType}}</h1>
                             <button (click)="updateRt(item)">UPDATE</button>
                         </li>
-                        <li>{{item.maxDays}}/Days Used</li>
+                        <li>{{item.daysLeft}}/Days Used</li>
                     </ul>
                 </div>
             </div>
