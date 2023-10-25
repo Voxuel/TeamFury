@@ -15,6 +15,8 @@ import { RequestTypeBase } from 'src/app/models/requestTypeBase';
 import { Router } from '@angular/router';
 import { RequestUpdate } from 'src/app/models/requestUpdate';
 import { timeout } from 'rxjs';
+import { RequestWithUser } from 'src/app/models/requestWithUser';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-admin',
@@ -23,12 +25,14 @@ import { timeout } from 'rxjs';
 })
 export class AdminComponent {
 
+
   H1Title='LEAVEDAY TYPES';
   formTitle='ADD NEW LEAVE TYPE';
 
 leavedays:RequestTypeBase[] = []
-allRequests:RequestViewModel[] = []
-allPending:RequestViewModel[] = []
+allRequests:RequestWithUser[] = []
+allPending:RequestWithUser[] = []
+requestsWithUsers:RequestWithUser[] = []
 form:FormGroup
 leaveType:RequestTypeCreate ={
   name:'',
@@ -42,8 +46,9 @@ req:RequestUpdate = {
 }
 
 
+
 constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar,
-  private router:Router,private authService:AuthService){
+  private router:Router,private authService:AuthService, private userService:UserService){
   this.form = builder.group({
     name:'',
     maxdays:''
@@ -53,7 +58,7 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
 
   ngOnInit():void{
     this.getTotalLeavedays();
-    this.getRequests();
+    this.getAllRequestsWithUser();
   }
   getStatusType(statusType:any){
     if(statusType == 0){
@@ -68,27 +73,26 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     return null;
   }
 
-
   getTotalLeavedays(){
     this.adminService.getTotalUsedLeavedays().subscribe(response => {this.leavedays = response})
   }
-  getRequests(){
-    this.adminService.getAllRequests().subscribe(response => {
+  getAllRequestsWithUser(){
+    this.adminService.getAllRequestsWithuser().subscribe(response => {
       response.forEach(element => {
-        if(element.statusRequest == '0'){
+        if(element.request.statusRequest == '0'){
           this.allPending.push(element)
         }
-      },
+      });
       this.allRequests = response
-      );
     })
   }
   
 
+
   setStatus(input:any, reqSubmit:any, msg:string){
     this.req.statusRequest = input
     this.req.messageForDecline = msg
-    this.req.requestID = reqSubmit.requestID,
+    this.req.requestID = reqSubmit.request.requestID,
     this.req.adminName = this.authService.getUser()!
     this.UpdateRequest(this.req)
   }
@@ -96,8 +100,9 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     this.adminService.adminUpdateRequest(reqUpdate).subscribe()
     setTimeout(() => {
       location.reload();
-    }, 300);
+    }, 500);
   }
+
 
 
   downloadRapport(){
@@ -119,5 +124,5 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
   updateRt(rtUpdate:RequestTypeBase){
     this.router.navigate(['/detailed', JSON.stringify(rtUpdate)])
   }
-
 }
+
