@@ -41,6 +41,7 @@ namespace TeamFury_API.Endpoints
                                 response.IsSuccess = false;
                                 response.ErrorMessages.Add(result.MessageForDecline);
                                 response.StatusCode = HttpStatusCode.BadRequest;
+                                return Results.BadRequest(response);
                             }
                         }
 
@@ -49,6 +50,7 @@ namespace TeamFury_API.Endpoints
                             response.IsSuccess = false;
                             response.ErrorMessages.Add("Request already exist");
                             response.StatusCode = HttpStatusCode.BadRequest;
+                            return Results.BadRequest(response);
                         }
 
                         response.IsSuccess = true;

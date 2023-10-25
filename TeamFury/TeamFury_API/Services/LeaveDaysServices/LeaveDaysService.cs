@@ -158,7 +158,7 @@ namespace TeamFury_API.Services
                 RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.LeaveType == key);
                 if (found != null) result.Remove(found);
 
-                result.Add(new RemainingLeaveDaysDTO() { DaysLeft = value, LeaveType = key });
+                result.Add(new RemainingLeaveDaysDTO() { DaysLeft = value, LeaveType = key, RequestTypeId = found.RequestTypeId});
             }
 
             return result;
