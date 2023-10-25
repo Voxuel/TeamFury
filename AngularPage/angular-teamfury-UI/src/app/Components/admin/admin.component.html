@@ -6,7 +6,7 @@
                 <ul class="leavedays-firstTable">
                     <li><h1>{{item.name}}</h1></li>
                     <li>{{item.maxDays}} / Days</li>
-                    <li><button (click)="updateRt(item)">U</button></li>
+                    <button (click)="updateRt(item)">UPDATE</button>
                 </ul>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 <h3>{{formTitle}}</h3>
                 <div class="form-group">
                     <label>Leave Type</label>
-                    <input name="name" formControlName="name" [(ngModel)]="leaveType.name" class="form-control" placeholder="Name">
+                    <input name="name" formControlName="name" [(ngModel)]="leaveType.name" class="form-control" placeholder="Name" required>
                 </div>
                 <div class="form-group">
                     <label>Max days</label>
@@ -35,10 +35,36 @@
 </div>
 
 <div class="container-Requests">
-    <div class="wrapper-pendingRequest">
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perferendis amet ducimus debitis quam corporis, <br>recusandae natus necessitatibus inventore deserunt libero?</p>
+    <div class="wrapper-Request">
+        <h2>PENDING</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th class="request-header">Request Type</th>
+                    <th class="request-header">Start Date</th>
+                    <th class="request-header">End Date</th>
+                    <th class="request-header">Status</th>
+                    <th class="request-header">Approve/Decline</th>
+                    <th class="request-header">Message</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let item of allPending">
+                <tr>
+                    <td class="request">{{item.requestType.name}}</td>
+                    <td class="request">{{item.startDate | date:'yyyy-MM-dd'}} </td>
+                    <td class="request">{{item.endDate | date:'yyyy-MM-dd'}}</td>
+                    <td class="request">{{getStatusType(item.statusRequest)}}</td>
+                    <td class="request">
+                        <button>Approve</button>
+                        <button>Decline</button>
+                    </td>
+                    <td class="request"><input type="text" placeholder="Reason"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="wrapper-status">
+    <div class="wrapper-Request">
+        <h2>ALL REQUESTS</h2>
         <table >
             <thead>
                 <tr>
