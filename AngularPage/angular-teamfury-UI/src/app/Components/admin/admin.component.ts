@@ -14,6 +14,7 @@ import { RequestTypeCreate } from 'src/app/models/requestTypeCreate';
 import { RequestTypeBase } from 'src/app/models/requestTypeBase';
 import { Router } from '@angular/router';
 import { RequestUpdate } from 'src/app/models/requestUpdate';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -89,11 +90,13 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     this.req.messageForDecline = msg
     this.req.requestID = reqSubmit.requestID,
     this.req.adminName = this.authService.getUser()!
-    console.log(this.req)
     this.UpdateRequest(this.req)
   }
   UpdateRequest(reqUpdate:RequestUpdate){
     this.adminService.adminUpdateRequest(reqUpdate).subscribe()
+    setTimeout(() => {
+      location.reload();
+    }, 300);
   }
 
 
