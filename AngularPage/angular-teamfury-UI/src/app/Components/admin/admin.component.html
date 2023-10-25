@@ -58,10 +58,11 @@
                         <td class="request">{{item.endDate | date:'yyyy-MM-dd'}}</td>
                         <td class="request">{{getStatusType(item.statusRequest)}}</td>
                         <td class="request">
-                            <button>Approve</button>
-                            <button>Decline</button>
+                            <button (click)="setStatus(1,item, reason.value)">Approve</button>
+                            <button (click)="setStatus(2,item, reason.value)">Decline</button>
                         </td>
-                        <td class="request"><input type="text" placeholder="Reason"></td>
+                        <td class="request"><input type="text" placeholder="Reason" #reason
+                            name="reason"></td>
                     </tr>
                 </tbody>
             </table>

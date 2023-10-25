@@ -96,7 +96,7 @@ namespace TeamFury_API.Services
         {
             var total = toCreate.EndDate.Subtract(toCreate.StartDate).TotalDays;
             var time = Convert.ToInt32(total);
-            if (daysCheck.MaxDays - (time) + usedDays.Sum() < 0)
+            if (daysCheck.MaxDays - ((time) + usedDays.Sum()) < 0)
             {
                 var req = new Request
                 {
