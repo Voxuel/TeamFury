@@ -32,21 +32,7 @@ namespace TeamFury_API.Services
         {
             var found = await _context.Requests.FindAsync(newUpdate.RequestID);
             if (found == null) return null;
-
-            switch (found.StatusRequest)
-            {
-                case StatusRequest.Accepted when newUpdate.StatusRequest != StatusRequest.Accepted:
-                case StatusRequest.Declined:
-                    return null;
-                case StatusRequest.Pending:
-                    break;
-            }
-
-            if (newUpdate.StatusRequest == StatusRequest.Accepted)
-            {
-                found.AdminName = newUpdate.AdminName;
-            }
-
+            found.AdminName = newUpdate.AdminName;
             found.StatusRequest = newUpdate.StatusRequest;
             found.MessageForDecline = newUpdate.MessageForDecline;
             _context.Update(found);

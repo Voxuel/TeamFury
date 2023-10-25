@@ -1,7 +1,11 @@
+body{
+    background-color: aliceblue;
+}
 .outer-container{
     display: flex;
     justify-content: space-evenly;
     padding: 1em;
+    box-shadow: 0 4px 4px -2px var(--basecolor);
 }
 
 .wrapper-leavedays{
@@ -23,15 +27,7 @@
     -ms-border-radius: .25em;
     -o-border-radius: .25em;
     margin: .2em;
-    &:hover
-    {
-        transform: translateY(-10px);
-        box-shadow: 10px 20px 20px 0 #90349c;
-    }
-    &:active{
-        box-shadow: inset 0 0 10px 1px rgba(102, 165, 100, 1), 0px 40px 29px -19px rgba(102, 172, 100, 0.95);
-        transform: scale(0.95) translateY(-9px);
-    }
+        box-shadow: inset 0 0 10px 1px rgb(144, 52, 156);
 }
 
 .monitor-vacation li{
@@ -40,9 +36,11 @@
 
 
 .leavedays-firstTable{
-    padding: 0;
-    min-width: 10vw;
-
+    padding: .3em;
+    min-width: fit-content;
+}
+.leavedays-firstTable h1{
+    margin: .3em; 
 }
 
 .leavedays-title{
@@ -89,4 +87,62 @@ button:hover::after,
 button:focus-visible::after{
     transform-origin: left;
     scale: 1 1;
+}
+
+.form-container h3{
+    text-align: center;
+}
+
+form{
+    background-color: var(--basecolor);
+    padding: 2em;
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
+}
+
+/*end of leavedays and new leave type styling
+start of time off tables*/
+
+.container-Requests{
+    display: flex;
+    justify-content: space-around;
+    padding: 1em;
+    margin: 0;
+}
+.wrapper-Request{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+.wrapper-Request h2{
+    align-self: center;
+}
+
+.request-header{
+    padding: 1em;
+    text-align: center;
+    background-color: var(--basecolor);
+}
+.request{
+    text-align: center;
+    padding: .5em 1em;
+}
+tbody:nth-child(even){
+    background-color: cadetblue;
+}
+tbody:nth-child(odd){
+    background-color: var(--basecolor);
+}
+.request input{
+    text-align: center;
+}
+table{
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
 }

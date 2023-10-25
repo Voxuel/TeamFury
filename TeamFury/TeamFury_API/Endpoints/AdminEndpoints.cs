@@ -8,6 +8,7 @@ using Models.Models.API_Model_Tools;
 using System.Net;
 using TeamFury_API.Services;
 using TeamFury_API.Services.AdminServices;
+using TeamFury_API.Services.EmailServices;
 
 namespace TeamFury_API.Endpoints;
 
@@ -282,26 +283,25 @@ public static class AdminEndpoints
 
         app.MapPut("/api/admin/request/", 
             async(IRequestService service, ILeaveDaysService leaveDays,
-            IMapper mapper, RequestUpdateDTO req_u_DTO) =>
-        {
+            IMapper mapper, RequestUpdateDTO req_u_DTO, IEmailService emailService) =>
+            {
             try
             {
                 var response = new ApiResponse();
-                
-
-                var request = mapper.Map<Request>(req_u_DTO);
-
-                var result = await service.UpdateAsync(request);
-                if (result == null)
+                var preUpdate = await service.GetByID(req_u_DTO.RequestID);
+                if (preUpdate == null)
                 {
-                    response.ErrorMessages.Add("Already approved");
+                    response.ErrorMessages.Add("Request not found");
                     response.StatusCode = HttpStatusCode.BadRequest;
                     response.IsSuccess = false;
                     return Results.BadRequest(response);
                 }
-                await leaveDays.UpdateLeaveDaysOnAprovedRequest(result);
+                var request = mapper.Map<Request>(req_u_DTO);
+                await leaveDays.UpdateLeaveDaysOnAprovedRequest(req_u_DTO, preUpdate);
+                var result = await service.UpdateAsync(request);
+                var found = await leaveDays.FindByRequest(result);
+                await emailService.SendEmail(found);
                 await service.AddRequestToLog(result);
-
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;
                 response.Result = result;

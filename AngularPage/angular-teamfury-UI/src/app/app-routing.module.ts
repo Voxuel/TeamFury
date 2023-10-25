@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'RequestLog', component:RequestlogComponent, canActivate:[authGuard], data:{role:['EMPLOYEE']}},
   {path: 'register',component: RegisterComponent, canActivate:[authGuard], data:{role:['ADMIN']}},
   {path: 'user-manager', component:UserManagerComponent, canActivate:[authGuard], data:{role:['ADMIN']}},
-  {path: 'detailed/:user', component:DetailedComponent, canActivate:[authGuard], data:{role:['ADMIN']}},
+  {path: 'detailed/:incomming', component:DetailedComponent, canActivate:[authGuard], data:{role:['ADMIN']}},
   {path: '', redirectTo: 'login', pathMatch:'full'}
 ];
 

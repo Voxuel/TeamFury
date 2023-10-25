@@ -3,9 +3,7 @@ using FluentValidation;
 using Models.DTOs;
 using Models.Models;
 using Models.Models.API_Model_Tools;
-using System.Data.Entity;
 using System.Net;
-using TeamFury_API.Data;
 using TeamFury_API.Services;
 
 namespace TeamFury_API.Endpoints
@@ -14,6 +12,7 @@ namespace TeamFury_API.Endpoints
     {
         public static void UserEndpointConfig(this IEndpointRouteBuilder app)
         {
+          
             app.MapPost("/api/user/request/{id}", async
                 (IRequestService service, IMapper mapper, IValidator<RequestCreateDTO> validator,
                     RequestCreateDTO req_c_DTO, string id) =>
@@ -96,36 +95,7 @@ namespace TeamFury_API.Endpoints
             }).AllowAnonymous()
                 .Produces<ApiResponse>(200)
                 .WithName("GetPendingRequestsForEmployee");
-            
-            app.MapGet("/api/user/leavedays/{id}", async
-                (ILeaveDaysService service, string id) =>
-            {
-                try
-                {
-                    var response = new ApiResponse();
-                    var result = await service.GetLeaveDaysByEmployeeID(id);
-                    if (result == null)
-                    {
-                        response.IsSuccess = false;
-                        response.ErrorMessages.Add("No user with ID given exists");
-                        response.StatusCode = HttpStatusCode.NotFound;
-                        return Results.NotFound(response);
-                    }
-
-                    response.IsSuccess = true;
-                    response.StatusCode = HttpStatusCode.OK;
-                    response.Result = result;
-                    return Results.Ok(response);
-                }
-                catch (Exception e)
-                {
-                    return Results.BadRequest(e);
-                }
-            }).AllowAnonymous()
-                .Produces<ApiResponse>(200)
-                .Produces(400)
-                .WithName("GetTotalLeavedaysByEmployeeID");
-
+         
             app.MapGet("/api/user/request/log/{id}",
                 async (IRequestService service, IMapper mapper, string id) =>
                 {
@@ -148,6 +118,7 @@ namespace TeamFury_API.Endpoints
                 }).AllowAnonymous()
                 .Produces<ApiResponse>(200)
                 .WithName("GetAllRequestLogs");
+
         }
     }
 }

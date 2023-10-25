@@ -1,46 +1,95 @@
-<div class="outer-container">
-    <div class="wrapper-leavedays">
-        <h1 class="leavedays-title">{{H1Title}}</h1>
-        <div class="monitor-container" id="table-data">
-            <div class="monitor-vacation" *ngFor="let item of leavedays">
-                <ul class="leavedays-firstTable">
-                    <li><h1>{{item.leaveType}}</h1></li>
-                    <li>{{item.daysLeft}} / Days</li>
-                </ul>
+<body>
+    <div class="outer-container">
+        <div class="wrapper-leavedays">
+            <h1 class="leavedays-title">{{H1Title}}</h1>
+            <div class="monitor-container" id="table-data">
+                <div class="monitor-vacation" *ngFor="let item of leavedays">
+                    <ul class="leavedays-firstTable">
+                        <li>
+                            <h1>{{item.name}}</h1>
+                            <button (click)="updateRt(item)">UPDATE</button>
+                        </li>
+                        <li>{{item.maxDays}}/Days Used</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="button-container">
+                <button (click)="downloadRapport()">DOWNLOAD RAPPORT</button>
             </div>
         </div>
-        <div class="button-container">
-            <button (click)="downloadRapport()">DOWNLOAD RAPPORT</button>
+        <div class="wrapper-newLeaveType">
+            <div class="form-container">
+                <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                    <h3>{{formTitle}}</h3>
+                    <div class="form-group">
+                        <label>Leave Type</label>
+                        <input name="name" formControlName="name" [(ngModel)]="leaveType.name" class="form-control" placeholder="Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Max days</label>
+                        <input name="maxdays" formControlName="maxdays" [(ngModel)]="leaveType.maxDays" clasS="form-control" >
+                    </div>
+                    <div class="button-container">
+                        <button type="submit">CREATE</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="wrapper-newLeaveType">
-        <div class="form-container">
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                <h3>{{formTitle}}</h3>
-                <div class="form-group">
-                    <label>Leave Type</label>
-                    <input name="name" formControlName="name" [(ngModel)]="leaveType.name" class="form-control" placeholder="Name">
-                </div>
-                <div class="form-group">
-                    <label>Max days</label>
-                    <input name="maxdays" formControlName="maxdays" [(ngModel)]="leaveType.maxDays" clasS="form-control" >
-                </div>
-                <div class="button-container">
-                    <button type="submit">CREATE</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="container-Requests">
-    <div class="wrapper-status">
-        <ul *ngFor="let item of allRequests">
-            <li>{{item.startDate}}</li>
-            <li>{{item.endDate}}</li>
-            <li>{{item.requestType.name}}</li>
-        </ul>   
-    </div>
-    <div class="wrapper-pendingRequest">
 
+    <div class="container-Requests">
+        <div class="wrapper-Request">
+            <h2>PENDING</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="request-header">Request Type</th>
+                        <th class="request-header">Start Date</th>
+                        <th class="request-header">End Date</th>
+                        <th class="request-header">Status</th>
+                        <th class="request-header">Approve/Decline</th>
+                        <th class="request-header">Message</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of allPending">
+                    <tr>
+                        <td class="request">{{item.requestType.name}}</td>
+                        <td class="request">{{item.startDate | date:'yyyy-MM-dd'}} </td>
+                        <td class="request">{{item.endDate | date:'yyyy-MM-dd'}}</td>
+                        <td class="request">{{getStatusType(item.statusRequest)}}</td>
+                        <td class="request">
+                            <button>Approve</button>
+                            <button>Decline</button>
+                        </td>
+                        <td class="request"><input type="text" placeholder="Reason"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+    <div class="container-Requests">
+        
+        <div class="wrapper-Request">
+            <h2>ALL REQUESTS</h2>
+            <table >
+                <thead>
+                    <tr>
+                        <th class="request-header">Request Type</th>
+                        <th class="request-header">Start Date</th>
+                        <th class="request-header">End Date</th>
+                        <th class="request-header">Status</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let item of allRequests">
+                    <tr>
+                        <td class="request">{{item.requestType.name}}</td>
+                        <td class="request">{{item.startDate | date:'yyyy-MM-dd'}} </td>
+                        <td class="request">{{item.endDate | date:'yyyy-MM-dd'}}</td>
+                        <td class="request">{{getStatusType(item.statusRequest)}}</td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+
+</body>

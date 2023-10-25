@@ -11,6 +11,9 @@ import { Request } from 'src/app/models/request.model';
 import { RequestViewModel } from 'src/app/models/requestViewModel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RequestTypeCreate } from 'src/app/models/requestTypeCreate';
+import { RequestTypeBase } from 'src/app/models/requestTypeBase';
+import { Router } from '@angular/router';
+import { RequestUpdate } from 'src/app/models/requestUpdate';
 
 @Component({
   selector: 'app-admin',
@@ -19,28 +22,49 @@ import { RequestTypeCreate } from 'src/app/models/requestTypeCreate';
 })
 export class AdminComponent {
 
-  H1Title='LEAVEDAYS';
-  formTitle='Add new leave type';
+  H1Title='LEAVEDAY TYPES';
+  formTitle='ADD NEW LEAVE TYPE';
 
-leavedays:LeaveDaysTotal[] = []
+leavedays:RequestTypeBase[] = []
 allRequests:RequestViewModel[] = []
+allPending:RequestViewModel[] = []
 form:FormGroup
 leaveType:RequestTypeCreate ={
   name:'',
   maxDays:''
 }
-errors:any[] = []
+req:RequestUpdate = {
+  requestID: '',
+  messageForDecline: '',
+  adminName: '',
+  statusRequest: 0
+}
 
-constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar){
+
+constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar,
+  private router:Router,private authService:AuthService){
   this.form = builder.group({
     name:'',
     maxdays:''
   })
 }
 
+
   ngOnInit():void{
     this.getTotalLeavedays();
     this.getRequests();
+  }
+  getStatusType(statusType:any){
+    if(statusType == 0){
+      return 'Pending'
+    }
+    if(statusType == 1){
+      return 'Accepted'
+    }
+    if(statusType == 2){
+      return 'Declined'
+    }
+    return null;
   }
 
 
@@ -48,7 +72,28 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     this.adminService.getTotalUsedLeavedays().subscribe(response => {this.leavedays = response})
   }
   getRequests(){
-    this.adminService.getAllRequests().subscribe(response => {this.allRequests = response})
+    this.adminService.getAllRequests().subscribe(response => {
+      response.forEach(element => {
+        if(element.statusRequest == '0'){
+          this.allPending.push(element)
+        }
+      },
+      this.allRequests = response
+      );
+    })
+  }
+  
+
+  setStatus(input:any, reqSubmit:any, msg:string){
+    this.req.statusRequest = input
+    this.req.messageForDecline = msg
+    this.req.requestID = reqSubmit.requestID,
+    this.req.adminName = this.authService.getUser()!
+    console.log(this.req)
+    this.UpdateRequest(this.req)
+  }
+  UpdateRequest(reqUpdate:RequestUpdate){
+    this.adminService.adminUpdateRequest(reqUpdate).subscribe()
   }
 
 
@@ -67,6 +112,9 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     }
     this.adminService.createRequestType(this.leaveType).subscribe()
     this._snackBar.open('Created')
+  }
+  updateRt(rtUpdate:RequestTypeBase){
+    this.router.navigate(['/detailed', JSON.stringify(rtUpdate)])
   }
 
 }
