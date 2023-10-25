@@ -25,8 +25,8 @@ button{
     cursor: pointer;
     text-decoration: none;
     border: 3px solid var(--color);
-    padding: .5em 1em;
-    margin: .5em;
+    padding: .25em .5em;
+    margin: .7em;
     border-radius: .25em;
     -webkit-border-radius: .25em;
     -moz-border-radius: .25em;

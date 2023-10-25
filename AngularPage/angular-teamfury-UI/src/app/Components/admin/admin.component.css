@@ -1,7 +1,11 @@
+body{
+    background-color: aliceblue;
+}
 .outer-container{
     display: flex;
     justify-content: space-evenly;
     padding: 1em;
+    box-shadow: 0 4px 4px -2px var(--basecolor);
 }
 
 .wrapper-leavedays{
@@ -88,7 +92,7 @@ button:focus-visible::after{
 }
 
 form{
-    background-color: #7e7b7b;
+    background-color: var(--basecolor);
     padding: 2em;
     border-radius: .25em;
     -webkit-border-radius: .25em;
@@ -102,13 +106,14 @@ start of time off tables*/
 
 .container-Requests{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     padding: 1em;
+    margin: 0;
 }
 .wrapper-Request{
     display: flex;
     flex-direction: column;
-    
+    width: fit-content;
 }
 .wrapper-Request h2{
     align-self: center;
@@ -131,4 +136,11 @@ tbody:nth-child(odd){
 }
 .request input{
     text-align: center;
+}
+table{
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
 }
