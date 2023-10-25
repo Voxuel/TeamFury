@@ -10,6 +10,7 @@ import { LeaveDaysTotal } from '../models/leaveDaysTotal';
 import { RequestViewModel } from '../models/requestViewModel';
 import { RequestTypeCreate } from '../models/requestTypeCreate';
 import { RequestTypeBase } from '../models/requestTypeBase';
+import { RequestUpdate } from '../models/requestUpdate';
 
 
 const APIUrlAuth = "https://localhost:7177/api/"
@@ -26,6 +27,7 @@ export class AdminService {
     phoneNumber: "",
     role: ""
   };
+
 
   constructor(private http:HttpClient) { }
 
@@ -54,7 +56,7 @@ export class AdminService {
 
 
   getTotalUsedLeavedays():Observable<RequestTypeBase[]>{
-    return this.http.get<ApiResponse>(`${APIUrlAuth}requesttype`)
+    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/leavedays/totalused`)
     .pipe(map((data) => data.result))
   }
 
@@ -65,7 +67,7 @@ export class AdminService {
     return this.http.delete<any>(`${APIUrlAuth}admin/type/${id}`)
   }
   updateRequestType(rtUpdate:RequestTypeBase):Observable<RequestTypeBase>{
-    return this.http.put<any>(`${APIUrlAuth}admin/type/${rtUpdate.requestTypeID}`, rtUpdate)
+    return this.http.put<any>(`${APIUrlAuth}admin/type/${rtUpdate.requestTypeId}`, rtUpdate)
   }
 
   // Request services as admin.
@@ -73,5 +75,8 @@ export class AdminService {
   getAllRequests():Observable<RequestViewModel[]>{
     return this.http.get<ApiResponse>(`${APIUrlAuth}admin/request`)
     .pipe(map((data) => data.result))
+  }
+  adminUpdateRequest(reqUpdate:RequestUpdate):Observable<RequestUpdate>{
+    return this.http.put<RequestUpdate>(`${APIUrlAuth}admin/request`, reqUpdate)
   }
 }

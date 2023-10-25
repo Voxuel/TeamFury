@@ -26,9 +26,9 @@ export class DetailedComponent {
     role: []
   }
   requestType:RequestTypeBase = {
-    requestTypeID:'',
-    name:'',
-    maxDays:''
+    requestTypeId:'',
+    leaveType:'',
+    daysLeft:''
   }
 
   users:UserViewModel[] = []
@@ -51,9 +51,9 @@ export class DetailedComponent {
       role: this.user.role
     })
     this.rtForm = this.builder.group({
-      requestTypeID: this.requestType.requestTypeID,
-      name: this.requestType.name,
-      maxDays: this.requestType.maxDays
+      requestTypeID: this.requestType.requestTypeId,
+      name: this.requestType.leaveType,
+      maxDays: this.requestType.daysLeft
     })
   }
 

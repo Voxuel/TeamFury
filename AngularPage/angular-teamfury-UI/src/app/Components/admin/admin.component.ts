@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RequestTypeCreate } from 'src/app/models/requestTypeCreate';
 import { RequestTypeBase } from 'src/app/models/requestTypeBase';
 import { Router } from '@angular/router';
+import { RequestUpdate } from 'src/app/models/requestUpdate';
 
 @Component({
   selector: 'app-admin',
@@ -32,14 +33,22 @@ leaveType:RequestTypeCreate ={
   name:'',
   maxDays:''
 }
+req:RequestUpdate = {
+  requestID: '',
+  messageForDecline: '',
+  adminName: '',
+  statusRequest: 0
+}
+
 
 constructor(private adminService:AdminService, private builder:FormBuilder, private _snackBar:MatSnackBar,
-  private router:Router){
+  private router:Router,private authService:AuthService){
   this.form = builder.group({
     name:'',
     maxdays:''
   })
 }
+
 
   ngOnInit():void{
     this.getTotalLeavedays();
@@ -73,6 +82,19 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
       );
     })
   }
+  
+
+  setStatus(input:any, reqSubmit:any, msg:string){
+    this.req.statusRequest = input
+    this.req.messageForDecline = msg
+    this.req.requestID = reqSubmit.requestID,
+    this.req.adminName = this.authService.getUser()!
+    console.log(this.req)
+    this.UpdateRequest(this.req)
+  }
+  UpdateRequest(reqUpdate:RequestUpdate){
+    this.adminService.adminUpdateRequest(reqUpdate).subscribe()
+  }
 
 
   downloadRapport(){
@@ -94,4 +116,5 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
   updateRt(rtUpdate:RequestTypeBase){
     this.router.navigate(['/detailed', JSON.stringify(rtUpdate)])
   }
+
 }
