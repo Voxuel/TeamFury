@@ -22,6 +22,22 @@ public class AdminService : IAdminService
         _context = context;
     }
 
+    #region RequestUtility
+
+    public async Task<IEnumerable<RequestWithUser>> GetUserRequestName()
+    {
+        var connection = await _context.LeaveDays.Include(leaveDays =>
+            leaveDays.IdentityUser).Include(r => r.Request)
+            .ThenInclude(req => req.RequestType).ToListAsync();
+
+        return connection.Select(userRequest =>
+            new RequestWithUser() {Request = userRequest.Request,
+                UserName = userRequest.IdentityUser.UserName,
+                UserId = userRequest.IdentityUser.Id}).ToList();
+    }
+
+    #endregion
+    
     #region Development Commands
 
     public async Task ResetLeaveDays()
