@@ -13,7 +13,7 @@ import { RequestTypeBase } from '../models/requestTypeBase';
 import { RequestUpdate } from '../models/requestUpdate';
 
 
-const APIUrlAuth = "https://localhost:7177/api/"
+const APIUrlAuth = "https://teamfury.azurewebsites.net/api/"
 
 @Injectable({
   providedIn: 'root'
