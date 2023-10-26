@@ -19,7 +19,7 @@ table{
 }
 
 .table-wrapper tr:nth-child(even){
-    background-color: aliceblue;
+    background-color: cadetblue;
 }
 
 .table-wrapper tr:nth-child(odd){

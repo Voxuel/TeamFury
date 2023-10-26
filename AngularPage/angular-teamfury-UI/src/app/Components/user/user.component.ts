@@ -41,7 +41,7 @@ export class UserComponent {
 
 
   getLeaveDays(){
-    this.userService.getLeaveDays(this.userId).subscribe(response => {this.leaveDays = response.result; console.log(this.leaveDays)})
+    this.userService.getLeaveDays(this.userId).subscribe(response => {this.leaveDays = response.result; })
   }
 
   getActiveRequests(){
