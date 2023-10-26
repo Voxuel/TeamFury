@@ -15,9 +15,5 @@ export interface RequestWithUser {
   },
   userId:string,
   userName:string,
-  DaysLeft:{
-    requestTypeId:string,
-    daysLeft:number,
-    leaveType:string
-  }
+  daysLeftOfType:string
 }

@@ -44,7 +44,6 @@ req:RequestUpdate = {
   adminName: '',
   statusRequest: 0
 }
-days:number = 0
 reqIncoming:RequestWithUser = {
   request: {
     requestID: '',
@@ -62,11 +61,7 @@ reqIncoming:RequestWithUser = {
   },
   userId:'',
   userName:'',
-  DaysLeft:{
-    requestTypeId:'',
-    daysLeft:0,
-    leaveType:''
-  }
+  daysLeftOfType:''
 }
 daysByUser:LeaveDaysByUserList[] = []
 
@@ -113,9 +108,6 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
     })
   }
 
-  getSelectedDaysLeft(item:RequestWithUser){
-  
-  }
   
 
 
