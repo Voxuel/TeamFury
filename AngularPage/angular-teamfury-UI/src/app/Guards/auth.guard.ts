@@ -35,14 +35,14 @@ export class authGuard implements CanActivate {
         '❌'
         );
         this.authService.signOut();
-        this.router.navigate(['/login'], {
+        this.router.navigate(['#login'], {
           queryParams: { returnUrl: state.url },
         });
       }
       else{
         if(route.data['role'] && route.data['role'].indexof(userRole) === -1) {
           this._snackBar.open('Access denied! Role Not Granted.', '❌');
-          this.router.navigate(['/login'], {
+          this.router.navigate(['#login'], {
             queryParams: {returnUrl: state.url }
           });
           return false;

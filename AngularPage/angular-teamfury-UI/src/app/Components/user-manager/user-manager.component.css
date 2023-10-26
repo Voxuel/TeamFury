@@ -4,8 +4,7 @@
     overflow: hidden;
 }
 table{
-    --bgc: #8146a8;
-    background-color: var(--bgc);
+    background-color: var(--basecolor);
 }
 .table-wrapper td, .table-wrapper th{
     vertical-align: middle;
@@ -20,11 +19,11 @@ table{
 }
 
 .table-wrapper tr:nth-child(even){
-    background-color: #6842af
+    background-color: aliceblue;
 }
 
 .table-wrapper tr:nth-child(odd){
-    background-color: var(--bgc);
+    background-color: var(--basecolor);
 }
 .table-container{
     margin: 1em;
