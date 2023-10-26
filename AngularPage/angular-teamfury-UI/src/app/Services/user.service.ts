@@ -6,7 +6,7 @@ import { AdminService } from './admin.service';
 import { Request } from '../models/request.model'
 
 
-const APIUrlAuth = "https://localhost:7177/api/";
+const APIUrlAuth = "https://teamfury.azurewebsites.net/api/";
 
 
 @Injectable({
