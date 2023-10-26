@@ -52,7 +52,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "4b6dea18-c0c8-4b1e-8392-85ff0119f50c",
+                            ConcurrencyStamp = "dd115171-8ccc-4df4-9bfd-8822c4968280",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

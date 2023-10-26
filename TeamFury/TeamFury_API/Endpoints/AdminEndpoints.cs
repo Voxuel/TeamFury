@@ -99,7 +99,7 @@ public static class AdminEndpoints
                 {
                     return Results.BadRequest(e.Message);
                 }
-            }).RequireAuthorization("IsAdmin")
+            }).AllowAnonymous()
             .Accepts<UserCreateDTO>("application/json")
             .Produces<ApiResponse>(201)
             .Produces(400)
