@@ -106,6 +106,16 @@
     font-size: 20px;
     font-weight: bold;
 }
+.fa-arrow-down{
+  position: sticky;
+  left: 100%;
+  cursor: pointer;
+}
+
+.fa-arrow-up{
+  position:relative;
+  cursor: pointer;
+}
 .request-row{
   border:none;
 }

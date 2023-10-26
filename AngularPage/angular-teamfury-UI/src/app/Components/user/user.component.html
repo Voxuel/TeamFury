@@ -18,11 +18,11 @@
         <h1>My Leave Records</h1>
         <thead class="requests">
             <tr style="border-bottom: 1px solid;">
-                <td class="request-header">Start Date</td>
-                <td class="request-header">End Date</td>
-                <td class="request-header">Request Sent</td>
+                <td class="request-header">Start Date<i class="fa-solid fa-arrow-up" style="left:30%" (click)="sortStartDateUp()"></i><i class="fa-solid fa-arrow-down" (click)="sortStartDate()"></i></td>
+                <td class="request-header">End Date<i class="fa-solid fa-arrow-up" style="left:35%" (click)="sortEndDateUp()"></i><i class="fa-solid fa-arrow-down" (click)="sortEndDate()"></i></td>
+                <td class="request-header">Request Sent<i class="fa-solid fa-arrow-up" style="left:15%" (click)="sortRequestDateUp()"></i><i class="fa-solid fa-arrow-down"  (click)="sortRequestDate()"></i></td>
                 <td class="request-header">Message</td>
-                <td class="request-header">Type</td>
+                <td class="request-header">Type<i class="fa-solid fa-arrow-up" style="left:58%" (click)="sortTypeUp()"></i><i class="fa-solid fa-arrow-down"  (click)="sortTypeDown()"></i></td>
                 <td class="request-header">Status</td>
                 <td class="request-header">Admin</td>
                 <td class="request-header">Cancel Request</td>
@@ -37,7 +37,7 @@
                 <td class="request">{{request.requestType.name}}</td>
                 <td class="request">{{getStatusType(request.statusRequest)}}</td>
                 <td class="request">{{request.adminName}}</td>
-                <td class="request"><button type="button" class="btn btn-danger" (click)="deleteRequest(request.requestId);">Delete</button></td>
+                <td class="request"><button type="button" class="btn btn-danger" (click)="deleteRequest(request.requestId);">Delete <i class="fa-solid fa-trash"></i></button></td>
             </tr>
         </tbody>
     </div>
