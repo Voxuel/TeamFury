@@ -56,7 +56,7 @@
                 <tbody *ngFor="let item of allPending">
                     <tr>
                         <td class="request">{{item.userName}}</td>
-                        <td class="request"></td>
+                        <td class="request"><span [innerHTML]="days"></span></td>
                         <td class="request">{{item.request.requestType.name}}</td>
                         <td class="request">{{item.request.startDate | date:'yyyy-MM-dd'}} </td>
                         <td class="request">{{item.request.endDate | date:'yyyy-MM-dd'}}</td>

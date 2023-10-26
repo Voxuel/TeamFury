@@ -4,7 +4,7 @@ import { AdminService } from 'src/app/Services/admin.service';
 import { AuthService } from 'src/app/Services/auth.service';
 import { UserService } from 'src/app/Services/user.service';
 import { Employee } from 'src/app/models/employee';
-import { LeaveDaysTotal } from 'src/app/models/leaveDaysTotal';
+import { LeaveDaysByUserList, LeaveDaysTotal } from 'src/app/models/leaveDaysTotal';
 import { UserViewModel } from 'src/app/models/user.view.model';
 import { saveAs } from 'file-saver';
 import { Request } from 'src/app/models/request.model';
@@ -44,6 +44,31 @@ req:RequestUpdate = {
   adminName: '',
   statusRequest: 0
 }
+days:number = 0
+reqIncoming:RequestWithUser = {
+  request: {
+    requestID: '',
+    startDate: '',
+    endDate: '',
+    requestSent: '',
+    messageForDecline: '',
+    requestType: {
+      requestTypeID: '',
+      name: '',
+      maxdays: '',
+    },
+    statusRequest: '',
+    adminName: '',
+  },
+  userId:'',
+  userName:'',
+  DaysLeft:{
+    requestTypeId:'',
+    daysLeft:0,
+    leaveType:''
+  }
+}
+daysByUser:LeaveDaysByUserList[] = []
 
 
 
@@ -59,6 +84,7 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
   ngOnInit():void{
     this.getTotalLeavedays();
     this.getAllRequestsWithUser();
+    
   }
   getStatusType(statusType:any){
     if(statusType == 0){
@@ -85,6 +111,10 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
       });
       this.allRequests = response
     })
+  }
+
+  getSelectedDaysLeft(item:RequestWithUser){
+  
   }
   
 

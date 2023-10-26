@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AdminService } from './admin.service';
 import { Request } from '../models/request.model'
+import { LeaveDaysByUserList, LeaveDaysTotal } from '../models/leaveDaysTotal';
+import { ApiResponse } from '../models/api-response';
+import { map } from 'rxjs';
 
 
 const APIUrlAuth = "https://localhost:7177/api/";
