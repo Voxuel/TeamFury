@@ -9,4 +9,6 @@ public class RequestWithUser
 
     public string UserId { get; set; }
     public string UserName { get; set; }
+
+    public int DaysLeftOfType { get; set; }
 }

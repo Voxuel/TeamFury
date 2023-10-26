@@ -94,7 +94,7 @@ namespace TeamFury_API.Services
             return result;
         }
 
-        private static IEnumerable<RemainingLeaveDaysDTO> CalculateLeaveDays
+        public static IEnumerable<RemainingLeaveDaysDTO> CalculateLeaveDays
             (List<LeaveDays> leaveDays, List<RequestType> Rts, IMapper mapper)
         {
             var combined = new Dictionary<string, int?>();
