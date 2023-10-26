@@ -56,7 +56,7 @@ jobs:
         run: dotnet build TeamFury/TeamFury.sln
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.GITHUB_WORKSPACE}}\myapp"
+        run: dotnet publish "TeamFury/TeamFury_API/TeamFury_API.csproj" -c Release -o "${{env.GITHUB_WORKSPACE}}\myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
