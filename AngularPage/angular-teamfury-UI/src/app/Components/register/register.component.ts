@@ -43,7 +43,6 @@ export class RegisterComponent {
         return;
       }
       this.adminService.createUser(this.employee).subscribe();
-      console.log(this.employee)
       this._snackBar.open("New user was created", '✔️')
     }
 

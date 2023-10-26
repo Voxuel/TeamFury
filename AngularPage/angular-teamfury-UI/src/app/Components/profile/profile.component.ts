@@ -42,7 +42,6 @@ export class ProfileComponent {
     this.userName = this.authService.getUser();
     this.userId = this.authService.getUserId();
     this.role = this.authService.getRole();
-    console.log(this.role)
     this.getLeaveDays();
     this.getActiveRequests();
     this.getActiveUser(this.userId);
@@ -51,7 +50,7 @@ export class ProfileComponent {
   }
 
   getLeaveDays(){
-    this.userService.getLeaveDays(this.userId).subscribe(response => {this.leaveDays = response.result; console.log(response.result)})
+    this.userService.getLeaveDays(this.userId).subscribe(response => {this.leaveDays = response.result; })
   }
 
   getActiveRequests(){
@@ -60,7 +59,6 @@ export class ProfileComponent {
         return;
       }
       this.requests = response.result
-      console.log(this.requests)
     })
   }
 
