@@ -13,4 +13,4 @@ jobs:
         with:
           node-version: 18
       - run: npm install -g surge
-      - run: surge "./AngularPage/angular-teamfury-UI/dist/angular-teamfury-ui/" ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+      - run: surge "./dist/angular-teamfury-ui/" ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
