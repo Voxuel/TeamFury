@@ -11,6 +11,7 @@ import { RequestViewModel } from '../models/requestViewModel';
 import { RequestTypeCreate } from '../models/requestTypeCreate';
 import { RequestTypeBase } from '../models/requestTypeBase';
 import { RequestUpdate } from '../models/requestUpdate';
+import { RequestWithUser } from '../models/requestWithUser';
 
 
 const APIUrlAuth = "https://teamfury.azurewebsites.net/api/"
@@ -78,5 +79,9 @@ export class AdminService {
   }
   adminUpdateRequest(reqUpdate:RequestUpdate):Observable<RequestUpdate>{
     return this.http.put<RequestUpdate>(`${APIUrlAuth}admin/request`, reqUpdate)
+  }
+  getAllRequestsWithuser():Observable<RequestWithUser[]>{
+    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/user/utility`)
+    .pipe(map((data) => data.result))
   }
 }

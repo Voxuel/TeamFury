@@ -11,6 +11,7 @@ import { UserManagerComponent } from './Components/user-manager/user-manager.com
 import { DetailedComponent } from './Components/detailed/detailed.component';
 import { RequestComponent } from './Components/request/request.component';
 import { RequestlogComponent } from './Components/requestlog/requestlog.component';
+import { HashLocationStrategy } from '@angular/common';
 
 
 const routes: Routes = [

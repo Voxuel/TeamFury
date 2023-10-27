@@ -43,6 +43,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th class="request-header">Employee Name</th>
                         <th class="request-header">Request Type</th>
                         <th class="request-header">Start Date</th>
                         <th class="request-header">End Date</th>
@@ -53,10 +54,11 @@
                 </thead>
                 <tbody *ngFor="let item of allPending">
                     <tr>
-                        <td class="request">{{item.requestType.name}}</td>
-                        <td class="request">{{item.startDate | date:'yyyy-MM-dd'}} </td>
-                        <td class="request">{{item.endDate | date:'yyyy-MM-dd'}}</td>
-                        <td class="request">{{getStatusType(item.statusRequest)}}</td>
+                        <td class="request">{{item.userName}}</td>
+                        <td class="request">{{item.request.requestType.name}}</td>
+                        <td class="request">{{item.request.startDate | date:'yyyy-MM-dd'}} </td>
+                        <td class="request">{{item.request.endDate | date:'yyyy-MM-dd'}}</td>
+                        <td class="request">{{getStatusType(item.request.statusRequest)}}</td>
                         <td class="request">
                             <button (click)="setStatus(1,item, reason.value)">Approve</button>
                             <button (click)="setStatus(2,item, reason.value)">Decline</button>
@@ -75,6 +77,7 @@
             <table >
                 <thead>
                     <tr>
+                        <th class="request-header">Employee Name</th>
                         <th class="request-header">Request Type</th>
                         <th class="request-header">Start Date</th>
                         <th class="request-header">End Date</th>
@@ -83,10 +86,11 @@
                 </thead>
                 <tbody *ngFor="let item of allRequests">
                     <tr>
-                        <td class="request">{{item.requestType.name}}</td>
-                        <td class="request">{{item.startDate | date:'yyyy-MM-dd'}} </td>
-                        <td class="request">{{item.endDate | date:'yyyy-MM-dd'}}</td>
-                        <td class="request">{{getStatusType(item.statusRequest)}}</td>
+                        <td class="request">{{item.userName}}</td>
+                        <td class="request">{{item.request.requestType.name}}</td>
+                        <td class="request">{{item.request.startDate | date:'yyyy-MM-dd'}} </td>
+                        <td class="request">{{item.request.endDate | date:'yyyy-MM-dd'}}</td>
+                        <td class="request">{{getStatusType(item.request.statusRequest)}}</td>
                     </tr>
                 </tbody>
             </table>   
