@@ -1,10 +1,15 @@
 using System.Text;
 using System.Text.RegularExpressions;
+using Azure.Core;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Azure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Models.DTOs;
@@ -25,13 +30,26 @@ namespace TeamFury_API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            
 
             #region Service Container
-            
+
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry =
+                {
+                    Delay = TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(16),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                }
+            };
+            var client = new SecretClient(new Uri(builder.Configuration["KeyVaultConfig:KeyVaultURL"]),
+                new DefaultAzureCredential(), options);
+            KeyVaultSecret kvs = client.GetSecret("Default");
             
             builder.Services.AddDbContext<AppDbContext>(opt =>
-                opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+                opt.UseSqlServer(kvs.Value));
             
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -53,6 +71,7 @@ namespace TeamFury_API
             builder.Services.AddAutoMapper(typeof(RequestTypeConfig));
             builder.Services.AddAutoMapper(typeof(RequestLogConfig));
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+            builder.Services.AddScoped<IKeyVaultManager, KeyVaultManager>();
 
             #endregion
 
