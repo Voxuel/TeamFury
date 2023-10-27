@@ -16,7 +16,6 @@ public interface IAdminService : ICRUDService<User>
     Task<RequestType> UpdateRequestTypeAsync(RequestType requestType);
     Task<RequestType> DeleteRequestTypeAsync(int id);
     Task<IEnumerable<RequestWithUser>> GetUserRequestName();
-    Task<int> GetRequestDaysLeft(int requestId, string userId);
     
     // Used for development
     Task ResetLeaveDays();

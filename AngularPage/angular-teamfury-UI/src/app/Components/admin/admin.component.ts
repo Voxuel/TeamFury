@@ -61,7 +61,6 @@ reqIncoming:RequestWithUser = {
   },
   userId:'',
   userName:'',
-  daysLeftOfType:''
 }
 daysByUser:LeaveDaysByUserList[] = []
 

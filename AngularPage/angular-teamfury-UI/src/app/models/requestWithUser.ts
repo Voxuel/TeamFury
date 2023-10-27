@@ -14,6 +14,5 @@ export interface RequestWithUser {
     adminName: string,
   },
   userId:string,
-  userName:string,
-  daysLeftOfType:string
+  userName:string
 }

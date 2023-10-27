@@ -33,49 +33,13 @@ public class AdminService : IAdminService
         var result = new List<RequestWithUser>();
         foreach (var ld in connection)
         {
-            var days = await GetRequestDaysLeft(ld.Request.RequestID, ld.IdentityUser.Id);
             result.Add(new RequestWithUser()
             {
                 Request = ld.Request,
                 UserName = ld.IdentityUser.UserName,
                 UserId = ld.IdentityUser.Id,
-                DaysLeftOfType = days
             });
         }
-        return result;
-    }
-
-    public async Task<int> GetRequestDaysLeft(int requestId, string userId)
-    {
-        var request = await _context.Requests.FindAsync(requestId);
-        var user = await _userManager.FindByIdAsync(userId);
-        var leaveDays = await _context.LeaveDays.Include(r =>
-                r.Request).Include(u =>
-                u.IdentityUser)
-            .FirstOrDefaultAsync(x =>
-                x.IdentityUser == user && x.Request == request);
-        var types = await _context.RequestTypes.ToListAsync();
-
-        var result = await CalulateSingleRequest(leaveDays, types);
-
-        var days = result.MaxDays;
-
-        return days.Value;
-    }
-
-    private async Task<RequestType> CalulateSingleRequest(LeaveDays ld,
-        IEnumerable<RequestType> rts)
-    {
-        var daysMaxOfSelectedType = rts.Where(x =>
-            x.RequestTypeID == ld.Request.RequestType.RequestTypeID).Select(x => x.MaxDays).Sum();
-
-        var daysSubtracted = Convert.ToInt32(ld.Request.EndDate.Subtract(ld.Request.StartDate).TotalDays);
-
-        var daysLeft = daysMaxOfSelectedType - daysSubtracted;
-        
-        var result = new RequestType(){MaxDays = daysLeft};
-        
-
         return result;
     }
 
