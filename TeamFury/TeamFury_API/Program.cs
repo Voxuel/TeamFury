@@ -37,12 +37,6 @@ namespace TeamFury_API
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
             
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("default",
-                    policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
-            });
-            
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IAdminService, AdminService>();
@@ -96,9 +90,13 @@ namespace TeamFury_API
             });
 
             #endregion
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("default",
+                    policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
+            });
             #region Authentication/Authorization options.
-
+        
             builder.Services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
