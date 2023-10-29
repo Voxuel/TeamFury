@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TeamFury_API.Migrations
 {
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -242,7 +242,7 @@ namespace TeamFury_API.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "4b6dea18-c0c8-4b1e-8392-85ff0119f50c", "Admin", "ADMIN" });
+                values: new object[] { "6c9cfbde-730a-4217-93ea-6d8fba1ee541", "dd115171-8ccc-4df4-9bfd-8822c4968280", "Admin", "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

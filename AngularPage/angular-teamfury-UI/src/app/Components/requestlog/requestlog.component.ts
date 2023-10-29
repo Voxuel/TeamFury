@@ -31,8 +31,7 @@ export class RequestlogComponent {
   }
 
   getRequestLogs(){
-    this.userService.getRequestLog(this.userId).subscribe(response => {this.requests = response.result; console.log(this.requests)})
-    console.log(this.requests)
+    this.userService.getRequestLog(this.userId).subscribe(response => {this.requests = response.result; })
   }
 
   getStatusType(statusType:any){

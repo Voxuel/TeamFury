@@ -12,8 +12,8 @@ using TeamFury_API.Data;
 namespace TeamFury_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231023123805_Init")]
-    partial class Init
+    [Migration("20231026190025_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,7 @@ namespace TeamFury_API.Migrations
                         new
                         {
                             Id = "6c9cfbde-730a-4217-93ea-6d8fba1ee541",
-                            ConcurrencyStamp = "4b6dea18-c0c8-4b1e-8392-85ff0119f50c",
+                            ConcurrencyStamp = "dd115171-8ccc-4df4-9bfd-8822c4968280",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

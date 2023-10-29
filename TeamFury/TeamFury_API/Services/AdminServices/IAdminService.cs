@@ -1,4 +1,5 @@
-﻿using Models.DTOs;
+﻿using AutoMapper;
+using Models.DTOs;
 using Models.Models;
 
 namespace TeamFury_API.Services.AdminServices;

@@ -11,9 +11,10 @@ import { RequestViewModel } from '../models/requestViewModel';
 import { RequestTypeCreate } from '../models/requestTypeCreate';
 import { RequestTypeBase } from '../models/requestTypeBase';
 import { RequestUpdate } from '../models/requestUpdate';
+import { RequestWithUser } from '../models/requestWithUser';
 
 
-const APIUrlAuth = "https://localhost:7177/api/"
+const APIUrlAuth = "https://teamfury.azurewebsites.net/api/"
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,10 @@ export class AdminService {
   adminUpdateRequest(reqUpdate:RequestUpdate):Observable<RequestUpdate>{
     return this.http.put<RequestUpdate>(`${APIUrlAuth}admin/request`, reqUpdate)
   }
+
+  getAllRequestsWithuser():Observable<RequestWithUser[]>{
+    return this.http.get<ApiResponse>(`${APIUrlAuth}admin/user/utility`)
+}
   getDaysLeftForUser(id:string):Observable<RequestTypeBase[]>{
     return this.http.get<ApiResponse>(`${APIUrlAuth}user/leavedays/used/${id}`)
     .pipe(map((data) => data.result))

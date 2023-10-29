@@ -2,6 +2,9 @@
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using Azure.Core;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -84,11 +87,25 @@ public class AuthService : IAuthService
     /// <returns>JwtToken with roles as claims for login</returns>
     private string GenerateToken(IEnumerable<Claim> claims)
     {
-        var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        SecretClientOptions options = new SecretClientOptions()
+        {
+            Retry =
+            {
+                Delay = TimeSpan.FromSeconds(2),
+                MaxDelay = TimeSpan.FromSeconds(16),
+                MaxRetries = 5,
+                Mode = RetryMode.Exponential
+            }
+        };
+        var client = new SecretClient(new Uri(_config["KeyVaultConfig:KeyVaultURL"]),
+            new DefaultAzureCredential(), options);
+        KeyVaultSecret kvKey = client.GetSecret("AuthKey");
+        KeyVaultSecret kvConnect = client.GetSecret("IssuerAdu");
+        var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(kvKey.Value));
         var tokenDesc = new SecurityTokenDescriptor()
         {
-            Issuer = _config["Jwt:Issuer"],
-            Audience = _config["Jwt:Audience"],
+            Issuer = kvConnect.Value,
+            Audience = kvConnect.Value,
             Expires = DateTime.Now.AddHours(3),
             SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
             Subject = new ClaimsIdentity(claims)
@@ -97,35 +114,6 @@ public class AuthService : IAuthService
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDesc);
         return tokenHandler.WriteToken(token);
-    }
-    
-    
-    /// <summary>
-    /// Validates the created token and throws exception if not valid using IPrincipal with ValidateToken.
-    /// </summary>
-    /// <param name="authToken"></param>
-    /// <returns></returns>
-    private bool ValidateToken(string authToken)
-    {
-        var tokenhandler = new JwtSecurityTokenHandler();
-        var validationParameters = GetValidationParameters();
-        
-        SecurityToken validatedToken;
-        IPrincipal principal = tokenhandler.ValidateToken(authToken, validationParameters, out validatedToken);
-        return true;
-    }
-    
-    private TokenValidationParameters GetValidationParameters()
-    {
-        return new TokenValidationParameters()
-        {
-            ValidateLifetime = true,
-            ValidateAudience = true,
-            ValidateIssuer = true,
-            ValidIssuer = _config["Jwt:Issuer"],
-            ValidAudience = _config["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
-        };
     }
 }
 

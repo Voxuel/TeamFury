@@ -41,7 +41,7 @@ export class UserComponent {
 
 
   getLeaveDays(){
-    this.userService.getLeaveDays(this.userId).subscribe(response => {this.leaveDays = response.result; console.log(this.leaveDays)})
+    this.userService.getLeaveDays(this.userId).subscribe(response => {this.leaveDays = response.result; })
   }
 
   getActiveRequests(){
@@ -69,5 +69,42 @@ export class UserComponent {
       return 'Declined'
     }
     return null;
+  }
+
+  sortEndDate(){
+    this.requests = this.requests.sort((b, a) => {
+      return new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
+    })
+  }
+  sortEndDateUp(){
+    this.requests = this.requests.sort((b, a) => {
+      return new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+    })
+  }
+  sortStartDate(){
+    this.requests = this.requests.sort((b, a) => {
+      return new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+    })
+  }
+  sortStartDateUp(){
+    this.requests = this.requests.sort((b, a) => {
+      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    })
+  }
+  sortRequestDate(){
+    this.requests = this.requests.sort((b, a) => {
+      return new Date(b.requestSent).getTime() - new Date(a.requestSent).getTime()
+    })
+  }
+  sortRequestDateUp(){
+    this.requests = this.requests.sort((b, a) => {
+      return new Date(a.requestSent).getTime() - new Date(b.requestSent).getTime()
+    })
+  }
+  sortTypeDown(){
+    this.requests.sort((b, a) => b.requestType.name.localeCompare(a.requestType.name))
+  }
+  sortTypeUp(){
+    this.requests.sort((b, a) => a.requestType.name.localeCompare(b.requestType.name))
   }
 }

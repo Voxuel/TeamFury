@@ -27,17 +27,24 @@ public class AdminService : IAdminService
     public async Task<IEnumerable<RequestWithUser>> GetUserRequestName()
     {
         var connection = await _context.LeaveDays.Include(leaveDays =>
-            leaveDays.IdentityUser).Include(r => r.Request)
+                leaveDays.IdentityUser).Include(r => r.Request)
             .ThenInclude(req => req.RequestType).ToListAsync();
 
-        return connection.Select(userRequest =>
-            new RequestWithUser() {Request = userRequest.Request,
-                UserName = userRequest.IdentityUser.UserName,
-                UserId = userRequest.IdentityUser.Id}).ToList();
+        var result = new List<RequestWithUser>();
+        foreach (var ld in connection)
+        {
+            result.Add(new RequestWithUser()
+            {
+                Request = ld.Request,
+                UserName = ld.IdentityUser.UserName,
+                UserId = ld.IdentityUser.Id,
+            });
+        }
+        return result;
     }
 
     #endregion
-    
+
     #region Development Commands
 
     public async Task ResetLeaveDays()
@@ -74,10 +81,10 @@ public class AdminService : IAdminService
                 Email = users.Email,
                 PhoneNumber = users.PhoneNumber,
                 Role = (from ur in _context.UserRoles
-                        join role in _context.Roles on ur.RoleId
-                            equals role.Id
-                            where ur.UserId == users.Id
-                                select role.Name).ToList()
+                    join role in _context.Roles on ur.RoleId
+                        equals role.Id
+                    where ur.UserId == users.Id
+                    select role.Name).ToList()
             }).ToListAsync();
 
         return usersWithRoles;
@@ -93,7 +100,7 @@ public class AdminService : IAdminService
     {
         return await _userManager.FindByIdAsync(id);
     }
-    
+
     /// <summary>
     /// Updates existing employee in the database
     /// </summary>
@@ -116,12 +123,12 @@ public class AdminService : IAdminService
         found.Email = newUpdate.Email;
         found.NormalizedUserName = newUpdate.Email.ToUpper();
         found.PhoneNumber = newUpdate.PhoneNumber;
-        
+
         await _userManager.UpdateAsync(found);
 
         return found;
     }
-    
+
     /// <summary>
     /// Deletes employee with given ID in the database.
     /// </summary>
@@ -131,9 +138,9 @@ public class AdminService : IAdminService
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user == null) return null;
-        
+
         var userDeleted = await _userManager.DeleteAsync(user);
-        
+
         return !userDeleted.Succeeded ? null : user;
     }
 
@@ -147,7 +154,7 @@ public class AdminService : IAdminService
     {
         var userFound = await _userManager.FindByNameAsync(user.UserName);
         if (userFound != null) return null;
-        
+
         user.SecurityStamp = Guid.NewGuid().ToString();
         var createUserResult = await _userManager.CreateAsync(user);
 
@@ -161,8 +168,10 @@ public class AdminService : IAdminService
             await _roleManager.CreateAsync(new IdentityRole(role));
             await _userManager.AddToRoleAsync(user, role);
         }
+
         return user;
     }
+
     #endregion
 
     #region RequestType Commands
@@ -203,12 +212,14 @@ public class AdminService : IAdminService
     }
 
     #endregion
-    
+
     #region Overridden methods
+
     public Task<User> UpdateAsync(User newUpdate)
     {
         throw new NotImplementedException();
     }
+
     public Task<User> DeleteAsync(int id)
     {
         throw new NotImplementedException();
@@ -223,5 +234,6 @@ public class AdminService : IAdminService
     {
         throw new NotImplementedException();
     }
+
     #endregion
 }
