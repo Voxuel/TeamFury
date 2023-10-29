@@ -227,7 +227,6 @@ public static class AdminEndpoints
                         }
 
                         var requestType = mapper.Map<RequestType>(rt_u_dto);
-                        requestType.RequestTypeID = id;
                         var result = await services.UpdateRequestTypeAsync(requestType);
                         if (result == null)
                         {
