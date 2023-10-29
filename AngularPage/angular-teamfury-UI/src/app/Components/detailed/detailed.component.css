@@ -52,3 +52,19 @@ button a:hover{
     border-top-left-radius: .25em;
     border-bottom-left-radius: .25em;
 }
+
+.someList{
+    display: flex;
+    background-color: #00355f;
+    border-top-right-radius: .25em;
+    border-bottom-right-radius: .25em;
+}
+
+.someList th{
+    padding: 1.4em;
+    text-decoration: underline;
+}
+
+.someList td{
+    padding: .5em 1.4em;
+}
