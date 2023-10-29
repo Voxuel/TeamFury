@@ -26,15 +26,15 @@
             <table class="table">
                 <h1>Remaining Leave Days</h1>
                 <tr class="daystype" *ngFor="let leaveDay of leaveDays">
-                    <td class="type">{{leaveDay.leaveType}}</td>
-                    <td class="days">{{leaveDay.daysLeft}}</td>
+                    <td class="type">{{leaveDay.name}}</td>
+                    <td class="days">{{leaveDay.maxDays}}</td>
                 </tr>
                 <a routerLink="/RequestLog"><button class="btn">History</button></a>
             </table>
             <table class="table">
                 <h1>Active Requests</h1>
                 <tr class="daystype" *ngFor="let leaveDay of leaveDays">
-                    <td class="type">{{leaveDay.leaveType}}</td>
+                    <td class="type">{{leaveDay.name}}</td>
                     <td class="days">{{filterRequests(leaveDay)}}</td>
                 </tr>
                 <a routerLink="/User"><button class="btn">Active Requests</button></a>
@@ -48,8 +48,8 @@
             <table class="table">
                 <h1>Active Request Types</h1>
                 <tr class="daystype" *ngFor="let leaveDay of leaveDays">
-                    <td class="type">{{leaveDay.leaveType}}</td>
-                    <td class="days">{{leaveDay.daysLeft}}</td>
+                    <td class="type">{{leaveDay.name}}</td>
+                    <td class="days">{{leaveDay.maxDays}}</td>
                 </tr>
                 <a routerLink="/Admin"><button class="btn">New Request Type</button></a>
             </table>

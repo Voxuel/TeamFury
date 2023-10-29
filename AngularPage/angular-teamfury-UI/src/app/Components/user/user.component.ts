@@ -12,8 +12,8 @@ export class UserComponent {
   userId:any;
   requestId:any;
   leaveDay:any = {
-    daysLeft: '',
-    leaveType: ''
+    maxDays: '',
+    name: ''
   }
   activeRequests:any;
   requests:any[] = [];

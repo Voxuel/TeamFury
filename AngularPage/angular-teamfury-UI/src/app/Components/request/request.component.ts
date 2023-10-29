@@ -20,8 +20,8 @@ requestType:any = {
 requestyTypeID:any;
 leaveDays:any[] = [];
 leaveDay:any = {
-  daysLeft: '',
-  leaveType: ''
+  maxDays: '',
+  name: ''
 }
 requests:Request[] = [];
 request:any = {

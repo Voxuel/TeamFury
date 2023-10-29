@@ -14,8 +14,8 @@ export class ProfileComponent {
   role:any;
   leaveDays:any[] = [];
   leaveDay:any = {
-    daysLeft: '',
-    leaveType: ''
+    maxDays: '',
+    name: ''
   }
   requests:any[] = [];
   request:any = {
@@ -63,7 +63,7 @@ export class ProfileComponent {
   }
 
   filterRequests(leaveDay:any){
-    const filtered = this.requests.filter(x => x.requestType.name == leaveDay.leaveType).length
+    const filtered = this.requests.filter(x => x.requestType.name == leaveDay.name).length
     return filtered;
   }
 

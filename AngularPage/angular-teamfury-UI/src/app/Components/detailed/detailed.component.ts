@@ -65,8 +65,8 @@ export class DetailedComponent {
     this.obj = JSON.parse(ar.snapshot.params['incomming']);
     this.rtForm = this.builder.group({
       requestTypeID: this.requestType.requestTypeId,
-      name: this.requestType.name,
-      maxDays: this.requestType.maxDays
+      name: '',
+      maxDays: ''
     })
     this.form = this.builder.group({
       id: this.user.id,
@@ -118,9 +118,11 @@ export class DetailedComponent {
 
   updateRequestType(rtUpdate:RequestTypeBase){
     this.adminService.updateRequestType(rtUpdate).subscribe()
+    this._snackBar.open("Type updated", '✔️')
   }
   deleteRt(id:string){
     this.adminService.deleteRequestType(id).subscribe()
+    this._snackBar.open("Type deleted", '🗑️')
   }
 
   onSubmit(){

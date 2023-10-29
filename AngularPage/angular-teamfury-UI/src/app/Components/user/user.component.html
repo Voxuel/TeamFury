@@ -9,8 +9,8 @@
     <div class="daysremaining">
         <table class="table">
             <tr class="daystype" *ngFor="let leaveDay of leaveDays">
-                <td class="type">{{leaveDay.leaveType}}</td>
-                <td class="days">{{leaveDay.daysLeft}}</td>
+                <td class="type">{{leaveDay.name}}</td>
+                <td class="days">{{leaveDay.maxDays}}</td>
             </tr>
         </table>
     </div>
