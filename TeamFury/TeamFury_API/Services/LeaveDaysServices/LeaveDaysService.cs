@@ -114,10 +114,10 @@ namespace TeamFury_API.Services
 
             foreach (var (key, value) in combined)
             {
-                RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.LeaveType == key);
+                RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.Name == key);
                 if (found != null) result.Remove(found);
 
-                result.Add(new RemainingLeaveDaysDTO() { DaysLeft = value, LeaveType = key });
+                result.Add(new RemainingLeaveDaysDTO() { MaxDays = value, Name = key });
             }
 
             return result;
@@ -150,15 +150,15 @@ namespace TeamFury_API.Services
             var result = mapper.Map<List<RemainingLeaveDaysDTO>>(Rts);
             foreach (var res in result)
             {
-                res.DaysLeft = 0;
+                res.MaxDays = 0;
             }
 
             foreach (var (key, value) in combined)
             {
-                RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.LeaveType == key);
+                RemainingLeaveDaysDTO found = result.FirstOrDefault(x => x.Name == key);
                 if (found != null) result.Remove(found);
 
-                result.Add(new RemainingLeaveDaysDTO() { DaysLeft = value, LeaveType = key, RequestTypeId = found.RequestTypeId});
+                result.Add(new RemainingLeaveDaysDTO() { MaxDays = value, Name = key, RequestTypeId = found.RequestTypeId});
             }
 
             return result;

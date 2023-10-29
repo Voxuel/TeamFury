@@ -12,10 +12,10 @@ public class RequestTypeConfig : Profile
         CreateMap<RemaningCorrectDTO, RequestType>().ForAllMembers(opt => 
             opt.MapFrom(d => d));
         CreateMap<RequestType, RemainingLeaveDaysDTO>().ForMember(dest =>
-                dest.LeaveType, opt =>
+                dest.Name, opt =>
                 opt.MapFrom(src => src.Name))
         .ForMember(dest =>
-            dest.DaysLeft, opt =>
+            dest.MaxDays, opt =>
             opt.MapFrom(src => src.MaxDays));
         
         CreateMap<RequestType, RequestTypeDto>().ReverseMap();
