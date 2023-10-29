@@ -7,9 +7,9 @@
                     <ul class="leavedays-firstTable">
                         <li>
                             <h1>{{item.leaveType}}</h1>
-                            <button (click)="updateRt(item)">UPDATE</button>
                         </li>
                         <li>{{item.daysLeft}}/Days Used</li>
+                        <button (click)="updateRt(item)">UPDATE</button>
                     </ul>
                 </div>
             </div>
@@ -63,8 +63,7 @@
                             <button (click)="setStatus(1,item, reason.value)">Approve</button>
                             <button (click)="setStatus(2,item, reason.value)">Decline</button>
                         </td>
-                        <td class="request"><input type="text" placeholder="Reason" #reason
-                            name="reason"></td>
+                        <td class="request"><input type="text" placeholder="Reason" #reason name="reason"></td>
                     </tr>
                 </tbody>
             </table>
