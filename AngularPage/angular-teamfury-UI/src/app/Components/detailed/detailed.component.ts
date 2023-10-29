@@ -7,6 +7,9 @@ import { AuthService } from 'src/app/Services/auth.service';
 import { RequestTypeBase } from 'src/app/models/requestTypeBase';
 import { UserViewModel } from 'src/app/models/user.view.model';
 import {instanceOfUser} from 'src/app/models/user.view.model'
+import { instanceOfRequestType } from 'src/app/models/requestTypeBase';
+import { RequestViewModel } from 'src/app/models/requestViewModel';
+import { RequestWithUser } from 'src/app/models/requestWithUser';
 
 @Component({
   selector: 'app-detailed',
@@ -32,7 +35,25 @@ export class DetailedComponent {
   }
 
   users:UserViewModel[] = []
-
+  daysLeftOfTypes:RequestTypeBase[] = [];
+  requestIncomming:RequestWithUser = {
+    request: {
+      requestID: '',
+      startDate: '',
+      endDate: '',
+      requestSent: '',
+      messageForDecline: '',
+      requestType: {
+        requestTypeID: '',
+        name: '',
+        maxdays: '',
+      },
+      statusRequest: '',
+      adminName: '',
+    },
+    userId:'',
+    userName:''
+  }
   form:FormGroup
   rtForm:FormGroup
 
@@ -63,8 +84,18 @@ export class DetailedComponent {
       this.incomingType = '0'
       return;
     }
-    this.incomingType = '1'
-    this.requestType = this.obj
+    else if(instanceOfRequestType(this.obj)){
+      this.incomingType = '1'
+      this.requestType = this.obj
+      return;
+    }
+    this.incomingType = '2'
+    this.requestIncomming = this.obj
+    this.getDaysLeftForUser()
+  }
+
+  getDaysLeftForUser(){
+    this.adminService.getDaysLeftForUser(this.requestIncomming.userId).subscribe(response => {this.daysLeftOfTypes = response})
   }
 
   getAllUsers(){
@@ -96,6 +127,6 @@ export class DetailedComponent {
     if(instanceOfUser(this.obj)){
       this.updateUser(this.user);
     }
-    this.updateRequestType(this.requestType)
+      this.updateRequestType(this.requestType)
   }
 }

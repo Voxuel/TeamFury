@@ -145,5 +145,10 @@ constructor(private adminService:AdminService, private builder:FormBuilder, priv
   updateRt(rtUpdate:RequestTypeBase){
     this.router.navigate(['/detailed', JSON.stringify(rtUpdate)])
   }
+
+  seeTimeLeft(req:RequestWithUser){
+    this.router.navigate(['/detailed', JSON.stringify(req)])
+  }
+
 }
 

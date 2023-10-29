@@ -44,7 +44,8 @@ namespace TeamFury_API
                     Mode = RetryMode.Exponential
                 }
             };
-            var client = new SecretClient(new Uri(builder.Configuration["KeyVaultConfig:KeyVaultURL"]),
+            
+             var client = new SecretClient(new Uri(builder.Configuration["KeyVaultConfig:KeyVaultURL"]),
                 new DefaultAzureCredential(), options);
             KeyVaultSecret kvs = client.GetSecret("Default");
             
@@ -54,12 +55,6 @@ namespace TeamFury_API
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
-            
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("default",
-                    policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
-            });
             
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
@@ -71,7 +66,6 @@ namespace TeamFury_API
             builder.Services.AddAutoMapper(typeof(RequestTypeConfig));
             builder.Services.AddAutoMapper(typeof(RequestLogConfig));
             builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-            builder.Services.AddScoped<IKeyVaultManager, KeyVaultManager>();
 
             #endregion
 
@@ -115,12 +109,15 @@ namespace TeamFury_API
             });
 
             #endregion
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("default",
+                    policy => { policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); });
+            });
             #region Authentication/Authorization options.
 
             KeyVaultSecret kvAd = client.GetSecret("IssuerAdu");
             KeyVaultSecret kvJwt = client.GetSecret("AuthKey");
-            
             builder.Services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -133,7 +130,7 @@ namespace TeamFury_API
                     ValidIssuer = kvAd.Value,
                     ValidAudience = kvAd.Value,
                     IssuerSigningKey = new SymmetricSecurityKey
-                        (Encoding.UTF8.GetBytes(kvJwt.Value)),
+                                                (Encoding.UTF8.GetBytes(kvJwt.Value)),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = false,

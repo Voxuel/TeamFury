@@ -80,8 +80,13 @@ export class AdminService {
   adminUpdateRequest(reqUpdate:RequestUpdate):Observable<RequestUpdate>{
     return this.http.put<RequestUpdate>(`${APIUrlAuth}admin/request`, reqUpdate)
   }
+
   getAllRequestsWithuser():Observable<RequestWithUser[]>{
     return this.http.get<ApiResponse>(`${APIUrlAuth}admin/user/utility`)
+    .pipe(map((data) => data.result))
+}
+  getDaysLeftForUser(id:string):Observable<RequestTypeBase[]>{
+    return this.http.get<ApiResponse>(`${APIUrlAuth}user/leavedays/used/${id}`)
     .pipe(map((data) => data.result))
   }
 }
