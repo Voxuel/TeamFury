@@ -45,10 +45,12 @@ namespace TeamFury_API
                 }
             };
             
-            
+             var client = new SecretClient(new Uri(builder.Configuration["KeyVaultConfig:KeyVaultURL"]),
+                new DefaultAzureCredential(), options);
+            KeyVaultSecret kvs = client.GetSecret("Default");
             
             builder.Services.AddDbContext<AppDbContext>(opt =>
-                opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+                opt.UseSqlServer(kvs.Value));
             
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -114,7 +116,8 @@ namespace TeamFury_API
             });
             #region Authentication/Authorization options.
 
-            
+            KeyVaultSecret kvAd = client.GetSecret("IssuerAdu");
+            KeyVaultSecret kvJwt = client.GetSecret("AuthKey");
             builder.Services.AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -124,10 +127,10 @@ namespace TeamFury_API
             {
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidIssuer = kvAd.Value,
+                    ValidAudience = kvAd.Value,
                     IssuerSigningKey = new SymmetricSecurityKey
-                        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                                                (Encoding.UTF8.GetBytes(kvJwt.Value)),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = false,
