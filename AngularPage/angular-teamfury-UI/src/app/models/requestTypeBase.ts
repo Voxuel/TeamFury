@@ -1,8 +1,8 @@
 export interface RequestTypeBase{
     requestTypeId:string,
-    daysLeft:string,
-    leaveType:string
+    name:string,
+    maxDays:string
 }
 export function instanceOfRequestType(object:any):object is RequestTypeBase{
-    return 'daysLeft' in object
+    return 'name' in object
 }

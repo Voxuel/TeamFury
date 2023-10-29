@@ -46,16 +46,14 @@
                 src="https://blogassets.leverageedu.com/blog/wp-content/uploads/2019/11/23173353/Personal-Details-in-Resume.jpg">
             </div>
             <div class="detailed-view-item">
-                <form [formGroup]="form" (ngSubmit)="updateRequestType(requestType)">
+                <form [formGroup]="rtForm" (ngSubmit)="updateRequestType(requestType)">
                     <div class="form-group">
                         <label>Request Type</label>
-                        <input name="name" formControlName="name" [(ngModel)]="requestType.leaveType" class="form-control"
-                        placeholder="{{requestType.leaveType}}">
+                        <input name="name" formControlName='name' [(ngModel)]="requestType.name" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Max days</label>
-                        <input name="maxDays" formControlName="maxDays" [(ngModel)]="requestType.daysLeft" class="form-control"
-                        placeholder="{{requestType.daysLeft}}">
+                        <input name="maxDays" formControlName='maxDays' [(ngModel)]="requestType.maxDays" class="form-control">
                     </div>
                     <div class="button-group">
                         <input class="btn btn-primary" type="submit" value="Update" />
@@ -78,8 +76,8 @@
                             <th>Days Left</th>
                         </tr>
                         <tr *ngFor="let item of daysLeftOfTypes">
-                            <td>{{item.leaveType}}</td>
-                            <td>{{item.daysLeft}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.maxDays}}</td>
                         </tr>
                     </form>
                 </div>

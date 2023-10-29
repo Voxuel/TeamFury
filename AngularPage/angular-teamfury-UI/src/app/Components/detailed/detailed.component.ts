@@ -30,8 +30,8 @@ export class DetailedComponent {
   }
   requestType:RequestTypeBase = {
     requestTypeId:'',
-    leaveType:'',
-    daysLeft:''
+    name:'',
+    maxDays:''
   }
 
   users:UserViewModel[] = []
@@ -63,6 +63,11 @@ export class DetailedComponent {
   constructor(private ar:ActivatedRoute, private adminService:AdminService, private builder:FormBuilder,
     private authService:AuthService, private _snackBar:MatSnackBar){
     this.obj = JSON.parse(ar.snapshot.params['incomming']);
+    this.rtForm = this.builder.group({
+      requestTypeID: this.requestType.requestTypeId,
+      name: this.requestType.name,
+      maxDays: this.requestType.maxDays
+    })
     this.form = this.builder.group({
       id: this.user.id,
       username: this.user.username,
@@ -70,11 +75,6 @@ export class DetailedComponent {
       email: this.user.email,
       phone: this.user.phoneNumber,
       role: this.user.role
-    })
-    this.rtForm = this.builder.group({
-      requestTypeID: this.requestType.requestTypeId,
-      name: this.requestType.leaveType,
-      maxDays: this.requestType.daysLeft
     })
   }
 
@@ -127,6 +127,8 @@ export class DetailedComponent {
     if(instanceOfUser(this.obj)){
       this.updateUser(this.user);
     }
+    else if(instanceOfRequestType(this.obj)){
       this.updateRequestType(this.requestType)
+    }
   }
 }
