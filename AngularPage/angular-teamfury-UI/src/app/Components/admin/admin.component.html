@@ -62,6 +62,7 @@
                         <td class="request">
                             <button (click)="setStatus(1,item, reason.value)">Approve</button>
                             <button (click)="setStatus(2,item, reason.value)">Decline</button>
+                            <button (click)="seeTimeLeft(item)">Time Balance</button>
                         </td>
                         <td class="request"><input type="text" placeholder="Reason" #reason name="reason"></td>
                     </tr>

@@ -97,15 +97,11 @@ public class AuthService : IAuthService
                 Mode = RetryMode.Exponential
             }
         };
-        var client = new SecretClient(new Uri(_config["KeyVaultConfig:KeyVaultURL"]),
-            new DefaultAzureCredential(), options);
-        KeyVaultSecret kvKey = client.GetSecret("AuthKey");
-        KeyVaultSecret kvConnect = client.GetSecret("IssuerAdu");
-        var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(kvKey.Value));
+        var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
         var tokenDesc = new SecurityTokenDescriptor()
         {
-            Issuer = kvConnect.Value,
-            Audience = kvConnect.Value,
+            Issuer = _config["Jwt:Issuer"],
+            Audience = _config["Jwt:Audience"],
             Expires = DateTime.Now.AddHours(3),
             SigningCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
             Subject = new ClaimsIdentity(claims)

@@ -9,7 +9,7 @@ import { ApiResponse } from '../models/api-response';
 import { map } from 'rxjs';
 
 
-const APIUrlAuth = "https://teamfury.azurewebsites.net/api/";
+const APIUrlAuth = "https://localhost:7177/api/";
 
 
 @Injectable({

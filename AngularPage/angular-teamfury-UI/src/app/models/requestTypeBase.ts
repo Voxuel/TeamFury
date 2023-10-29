@@ -4,5 +4,5 @@ export interface RequestTypeBase{
     leaveType:string
 }
 export function instanceOfRequestType(object:any):object is RequestTypeBase{
-    return 'leaveType' in object
+    return 'daysLeft' in object
 }

@@ -14,7 +14,7 @@ import { RequestUpdate } from '../models/requestUpdate';
 import { RequestWithUser } from '../models/requestWithUser';
 
 
-const APIUrlAuth = "https://teamfury.azurewebsites.net/api/"
+const APIUrlAuth = "https://localhost:7177/api/"
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +83,7 @@ export class AdminService {
 
   getAllRequestsWithuser():Observable<RequestWithUser[]>{
     return this.http.get<ApiResponse>(`${APIUrlAuth}admin/user/utility`)
+    .pipe(map((data) => data.result))
 }
   getDaysLeftForUser(id:string):Observable<RequestTypeBase[]>{
     return this.http.get<ApiResponse>(`${APIUrlAuth}user/leavedays/used/${id}`)
