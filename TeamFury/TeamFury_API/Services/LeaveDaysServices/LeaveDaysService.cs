@@ -70,7 +70,7 @@ namespace TeamFury_API.Services
             if (toUpdate.StatusRequest != StatusRequest.Accepted && comparison.StatusRequest == StatusRequest.Accepted)
             {
                 var daysOff = Convert.ToInt32((toUpdate.EndDate - toUpdate.StartDate).TotalDays);
-                daysLeft.Days += daysOff;
+                daysLeft.Days = daysOff + 1;
             }
             else if (toUpdate.StatusRequest != StatusRequest.Declined && comparison.StatusRequest == StatusRequest.Declined)
             {
